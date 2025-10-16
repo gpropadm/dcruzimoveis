@@ -99,6 +99,8 @@ export default function Header() {
 
             <Link
               href="/admin/login"
+              target="_blank"
+              rel="noopener noreferrer"
               className="font-medium transition-colors"
               style={{
                 color: (isScrolled || isOnPageWithoutHero) ? primaryColor : 'white'
