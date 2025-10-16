@@ -38,8 +38,8 @@ export default function Footer() {
             <div className="flex items-start text-sm text-gray-600 mb-3">
               <i className="fas fa-map-marker-alt mr-2 mt-1" style={{ fontSize: '14px' }}></i>
               <span>
-                QR 218 Conj. O Lote 30<br />
-                Brasília - DF
+                QC 1 conjunto G, lote 14 loja 01<br />
+                Santa Maria, Brasília - DF, 72535-070
               </span>
             </div>
           </div>
