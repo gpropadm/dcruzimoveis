@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import { useFavorites } from '@/hooks/useFavorites'
 import { useTheme } from '@/contexts/ThemeContext'
@@ -15,44 +15,55 @@ export default function Header() {
   const pathname = usePathname()
   const { favoritesCount } = useFavorites()
   const { primaryColor } = useTheme()
+  const isAnimatingRef = useRef(false)
+  const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Determinar se estamos numa página que não tem hero section (fundo escuro)
   const isOnPageWithoutHero = pathname !== '/'
 
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout | null = null
-    let lastScrollY = window.scrollY
+    let ticking = false
 
     const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      const scrolled = currentScrollY > 50
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.scrollY > 50
+          setIsScrolled(scrolled)
 
-      setIsScrolled(scrolled)
+          // Sempre mostrar animação quando rolar (após animação anterior terminar)
+          if (scrolled && !isAnimatingRef.current) {
+            isAnimatingRef.current = true
+            setShowBorderAnimation(true)
 
-      // Ativar animação quando houver movimento de scroll
-      if (scrolled && Math.abs(currentScrollY - lastScrollY) > 10) {
-        setShowBorderAnimation(true)
+            // Limpar timeout anterior se existir
+            if (animationTimeoutRef.current) {
+              clearTimeout(animationTimeoutRef.current)
+            }
 
-        if (scrollTimeout) {
-          clearTimeout(scrollTimeout)
-        }
+            // Desativar animação e permitir nova após 800ms
+            animationTimeoutRef.current = setTimeout(() => {
+              setShowBorderAnimation(false)
+              // Esperar um pouco antes de permitir nova animação
+              setTimeout(() => {
+                isAnimatingRef.current = false
+              }, 100)
+            }, 700)
+          }
 
-        scrollTimeout = setTimeout(() => {
-          setShowBorderAnimation(false)
-        }, 700)
+          ticking = false
+        })
+
+        ticking = true
       }
-
-      lastScrollY = currentScrollY
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    // Trigger inicial se já estiver scrollado
-    handleScroll()
+    handleScroll() // Verificar estado inicial
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout)
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current)
       }
     }
   }, [])
