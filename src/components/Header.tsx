@@ -20,20 +20,40 @@ export default function Header() {
   const isOnPageWithoutHero = pathname !== '/'
 
   useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout | null = null
+    let lastScrollY = window.scrollY
+
     const handleScroll = () => {
-      const scrolled = window.scrollY > 50
+      const currentScrollY = window.scrollY
+      const scrolled = currentScrollY > 50
+
       setIsScrolled(scrolled)
 
-      // Ativar animação sempre que rolar
-      if (scrolled) {
+      // Ativar animação quando houver movimento de scroll
+      if (scrolled && Math.abs(currentScrollY - lastScrollY) > 10) {
         setShowBorderAnimation(true)
-        setTimeout(() => setShowBorderAnimation(false), 700)
+
+        if (scrollTimeout) {
+          clearTimeout(scrollTimeout)
+        }
+
+        scrollTimeout = setTimeout(() => {
+          setShowBorderAnimation(false)
+        }, 700)
       }
+
+      lastScrollY = currentScrollY
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    // Trigger inicial se já estiver scrollado
+    handleScroll()
+
     return () => {
       window.removeEventListener('scroll', handleScroll)
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout)
+      }
     }
   }, [])
 
@@ -166,12 +186,13 @@ export default function Header() {
       {/* Animated bottom border - só aparece quando rola */}
       {showBorderAnimation && (
         <div
-          className="fixed left-0 right-0 h-1 bottom-border-slide"
+          className="fixed left-0 right-0 bottom-border-slide"
           style={{
             top: isScrolled ? '72px' : '88px',
             background: `linear-gradient(90deg, transparent, ${primaryColor}, ${primaryColor}, transparent)`,
-            height: '2px',
-            zIndex: 49
+            height: '3px',
+            zIndex: 49,
+            boxShadow: `0 0 8px ${primaryColor}`
           }}
         />
       )}
