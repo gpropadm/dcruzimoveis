@@ -98,9 +98,7 @@ export default function Header() {
             </Link>
 
             <Link
-              href="https://www.bsimoveisdf.com.br/admin/login"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/admin/login"
               className="font-medium transition-colors"
               style={{
                 color: (isScrolled || isOnPageWithoutHero) ? primaryColor : 'white'
