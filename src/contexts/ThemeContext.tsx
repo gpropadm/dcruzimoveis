@@ -12,7 +12,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export const themeColors = {
-  'Marrom (Padrão)': '#35140d',
+  'Vermelho D Cruz (Padrão)': '#c62f37',
   'Roxo Escuro': '#5c08b2',
   'Azul': '#3b82f6',
   'Verde': '#10b981',
@@ -24,8 +24,8 @@ export const themeColors = {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [primaryColor, setPrimaryColor] = useState('#35140d')
-  const [themeName, setThemeName] = useState('Marrom (Padrão)')
+  const [primaryColor, setPrimaryColor] = useState('#c62f37')
+  const [themeName, setThemeName] = useState('Vermelho D Cruz (Padrão)')
 
   // Carregar tema do localStorage ao montar
   useEffect(() => {
