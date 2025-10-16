@@ -539,7 +539,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             color: '#212529'
                           }}
                         >
-                          BS Imóveis
+                          D Cruz Imóveis
                         </div>
                         <div
                           className="font-sora"

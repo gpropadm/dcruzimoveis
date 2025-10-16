@@ -17,14 +17,14 @@ const sora = Sora({
 
 export const metadata: Metadata = {
   title: {
-    default: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis",
-    template: "%s | BS Imóveis"
+    default: "Imóveis em Brasília - Casas e Apartamentos | D Cruz Imóveis",
+    template: "%s | D Cruz Imóveis"
   },
-  description: "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na BS Imóveis DF.",
-  keywords: ["imóveis brasília", "casas brasília df", "apartamentos brasília", "venda imóveis df", "aluguel brasília", "imobiliária brasília", "bs imóveis", "imóveis distrito federal"],
-  authors: [{ name: "BS Imóveis DF" }],
-  creator: "BS Imóveis DF",
-  publisher: "BS Imóveis DF",
+  description: "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na D Cruz Imóveis DF.",
+  keywords: ["imóveis brasília", "casas brasília df", "apartamentos brasília", "venda imóveis df", "aluguel brasília", "imobiliária brasília", "d cruz imóveis", "imóveis distrito federal"],
+  authors: [{ name: "D Cruz Imóveis DF" }],
+  creator: "D Cruz Imóveis DF",
+  publisher: "D Cruz Imóveis DF",
   robots: {
     index: true,
     follow: true,
@@ -32,15 +32,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://www.bsimoveisdf.com.br",
-    siteName: "BS Imóveis",
-    title: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis",
-    description: "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na BS Imóveis DF.",
+    url: "https://dcruzimoveis.vercel.app",
+    siteName: "D Cruz Imóveis",
+    title: "Imóveis em Brasília - Casas e Apartamentos | D Cruz Imóveis",
+    description: "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na D Cruz Imóveis DF.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis",
-    description: "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na BS Imóveis DF.",
+    title: "Imóveis em Brasília - Casas e Apartamentos | D Cruz Imóveis",
+    description: "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na D Cruz Imóveis DF.",
   },
 };
 
@@ -53,10 +53,10 @@ export default function RootLayout({
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
-    "name": "BS Imóveis",
-    "description": "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na BS Imóveis.",
-    "url": "https://www.bsimoveisdf.com.br",
-    "logo": "https://www.bsimoveisdf.com.br/logo.png",
+    "name": "D Cruz Imóveis",
+    "description": "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na D Cruz Imóveis.",
+    "url": "https://dcruzimoveis.vercel.app",
+    "logo": "https://dcruzimoveis.vercel.app/logo.png",
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "BR",

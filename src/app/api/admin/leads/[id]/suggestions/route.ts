@@ -183,7 +183,7 @@ Responda esta mensagem ou ligue para nós!
 ---
 Para não receber mais sugestões: ${optOutUrl}
 
-BS Imóveis DF`
+D Cruz Imóveis DF`
 
     console.log(`📱 Enviando sugestões para ${lead.name}:`, {
       original: lead.phone,

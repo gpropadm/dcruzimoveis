@@ -57,7 +57,7 @@ export default function OptOutPage() {
                 Descadastro realizado com sucesso!
               </h2>
               <p className="text-gray-600 mb-4">
-                Olá <strong>{leadInfo?.name}</strong>, você não receberá mais sugestões de imóveis da BS Imóveis DF.
+                Olá <strong>{leadInfo?.name}</strong>, você não receberá mais sugestões de imóveis da D Cruz Imóveis DF.
               </p>
               <p className="text-sm text-gray-500">
                 Se mudar de ideia, pode demonstrar interesse em nossos imóveis novamente no site.
