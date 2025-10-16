@@ -46,7 +46,7 @@ export default function Header() {
               className={`text-3xl font-bold transition-colors ${(isScrolled || isOnPageWithoutHero) ? '' : 'text-white'}`}
               style={{ color: (isScrolled || isOnPageWithoutHero) ? primaryColor : '' }}
             >
-              D Cruz Imóveis
+              BS Imóveis
             </span>
           </Link>
 
@@ -98,7 +98,7 @@ export default function Header() {
             </Link>
 
             <Link
-              href="/admin/login"
+              href="https://www.bsimoveisdf.com.br/admin/login"
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium transition-colors"
