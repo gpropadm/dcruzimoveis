@@ -15,45 +15,27 @@ export default function Header() {
   const pathname = usePathname()
   const { favoritesCount } = useFavorites()
   const { primaryColor } = useTheme()
-  const isAnimatingRef = useRef(false)
-  const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const lastScrollTimeRef = useRef(0)
 
   // Determinar se estamos numa página que não tem hero section (fundo escuro)
   const isOnPageWithoutHero = pathname !== '/'
 
   useEffect(() => {
-    let ticking = false
-
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrolled = window.scrollY > 50
-          setIsScrolled(scrolled)
+      const scrolled = window.scrollY > 50
+      const now = Date.now()
 
-          // Sempre mostrar animação quando rolar (após animação anterior terminar)
-          if (scrolled && !isAnimatingRef.current) {
-            isAnimatingRef.current = true
-            setShowBorderAnimation(true)
+      setIsScrolled(scrolled)
 
-            // Limpar timeout anterior se existir
-            if (animationTimeoutRef.current) {
-              clearTimeout(animationTimeoutRef.current)
-            }
+      // Mostrar animação se passou tempo suficiente desde a última animação (800ms)
+      if (scrolled && (now - lastScrollTimeRef.current) > 800) {
+        lastScrollTimeRef.current = now
+        setShowBorderAnimation(true)
 
-            // Desativar animação e permitir nova após 800ms
-            animationTimeoutRef.current = setTimeout(() => {
-              setShowBorderAnimation(false)
-              // Esperar um pouco antes de permitir nova animação
-              setTimeout(() => {
-                isAnimatingRef.current = false
-              }, 100)
-            }, 700)
-          }
-
-          ticking = false
-        })
-
-        ticking = true
+        // Remover animação após 700ms
+        setTimeout(() => {
+          setShowBorderAnimation(false)
+        }, 700)
       }
     }
 
@@ -62,9 +44,6 @@ export default function Header() {
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current)
-      }
     }
   }, [])
 
