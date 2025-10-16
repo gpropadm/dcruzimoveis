@@ -4,13 +4,11 @@ import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useSettings } from '@/hooks/useSettings'
 
 // Force dynamic rendering for admin pages
 export const dynamic = 'force-dynamic'
 
 export default function AdminLogin() {
-  const { settings } = useSettings()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
