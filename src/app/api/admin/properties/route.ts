@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
 import { geocodeCEPWithCache } from '@/lib/geocoding'
+import marketplaceAPI from '@/lib/marketplace-api'
 
 export async function GET(request: NextRequest) {
   try {
@@ -99,6 +100,7 @@ export async function POST(request: NextRequest) {
       area,
       video,
       featured,
+      compartilharMarketplace,
       images,
       // Coordenadas GPS
       latitude,
@@ -216,6 +218,7 @@ export async function POST(request: NextRequest) {
         area: area || null,
         video: video || null,
         featured: featured || false,
+        compartilharMarketplace: compartilharMarketplace || false,
         images: images || null,
         // Coordenadas GPS (podem ter sido geocodificadas automaticamente)
         latitude: finalLatitude || null,
@@ -301,6 +304,47 @@ export async function POST(request: NextRequest) {
       } catch (matchError) {
         console.error('⚠️ Falha no matching automático:', matchError)
         // Não falha a criação do imóvel se o matching falhar
+      }
+    }
+
+    // 🏪 MARKETPLACE: Se marcou para compartilhar, publicar no marketplace
+    if (compartilharMarketplace) {
+      try {
+        console.log('📢 Publicando imóvel no marketplace...')
+
+        const marketplaceData = {
+          imovelIdOriginal: property.id,
+          dados: {
+            titulo: property.title,
+            preco: property.price,
+            type: property.type,
+            category: property.category,
+            city: property.city,
+            state: property.state,
+            address: property.address || undefined,
+            bedrooms: property.bedrooms || undefined,
+            bathrooms: property.bathrooms || undefined,
+            area: property.area || undefined,
+            images: property.images ? JSON.parse(property.images) : undefined,
+            description: property.description || undefined
+          }
+        }
+
+        const marketplaceResult = await marketplaceAPI.publicarImovel(marketplaceData)
+
+        // Atualizar o imóvel com o ID do marketplace
+        await prisma.property.update({
+          where: { id: property.id },
+          data: {
+            marketplaceId: marketplaceResult.imovelFederado.id,
+            marketplaceSyncAt: new Date()
+          }
+        })
+
+        console.log('✅ Imóvel publicado no marketplace:', marketplaceResult.imovelFederado.id)
+      } catch (marketplaceError) {
+        console.error('⚠️ Erro ao publicar no marketplace:', marketplaceError)
+        // Não falha a criação do imóvel se o marketplace falhar
       }
     }
 
