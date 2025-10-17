@@ -40,6 +40,7 @@ export default function NewProperty() {
     bathrooms: '',
     parking: '',
     featured: false,
+    compartilharMarketplace: false,
     // Campos específicos para apartamento
     floor: '',
     condoFee: '',
@@ -508,6 +509,7 @@ export default function NewProperty() {
           bathrooms: parseNumber(formData.bathrooms) || null,
           parking: parseNumber(formData.parking) || null,
           featured: formData.featured,
+          compartilharMarketplace: formData.compartilharMarketplace,
           // Campos específicos para apartamento
           floor: formData.floor ? parseNumber(formData.floor) : null,
           condoFee: formData.condoFee ? parseCurrency(formData.condoFee) : null,
@@ -1801,6 +1803,19 @@ export default function NewProperty() {
                 />
                 <span className="ml-2 text-sm text-gray-700">
                   Imóvel em destaque (aparecerá na página inicial)
+                </span>
+              </label>
+
+              <label className="flex items-center mt-3">
+                <input
+                  type="checkbox"
+                  name="compartilharMarketplace"
+                  checked={formData.compartilharMarketplace}
+                  onChange={handleChange}
+                  className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                />
+                <span className="ml-2 text-sm text-gray-700">
+                  ☑️ Compartilhar no Marketplace Regional (outras imobiliárias do DF poderão ver)
                 </span>
               </label>
 
