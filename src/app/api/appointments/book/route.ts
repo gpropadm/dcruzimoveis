@@ -102,16 +102,15 @@ export async function POST(request: NextRequest) {
 
 🆔 Agendamento ID: ${appointment.id}`;
 
-      // Enviar via Twilio (com imagem se tiver)
-      const sent = await sendWhatsAppMessage(phoneAdmin, whatsappMessage, propertyImage || undefined);
+      // 1. Enviar notificação para o admin
+      const sentToAdmin = await sendWhatsAppMessage(phoneAdmin, whatsappMessage, propertyImage || undefined);
 
-      if (sent) {
-        console.log('✅ WhatsApp de agendamento enviado via Twilio');
+      if (sentToAdmin) {
+        console.log('✅ WhatsApp de agendamento enviado para admin via Twilio');
 
-        // Salvar mensagem no banco
         await prisma.whatsAppMessage.create({
           data: {
-            messageId: `appointment-${Date.now()}`,
+            messageId: `appointment-admin-${Date.now()}`,
             from: 'twilio',
             to: phoneAdmin,
             body: whatsappMessage,
@@ -119,13 +118,58 @@ export async function POST(request: NextRequest) {
             timestamp: new Date(),
             fromMe: true,
             status: 'sent',
-            source: 'twilio_api',
+            source: 'appointment_notification',
             propertyId: propertyId,
             contactName: clientName
           }
         });
       } else {
-        console.log('❌ Falha ao enviar WhatsApp de agendamento via Twilio');
+        console.log('❌ Falha ao enviar WhatsApp para admin');
+      }
+
+      // 2. Enviar confirmação para o cliente
+      const settings = await prisma.settings.findFirst();
+      const siteName = settings?.siteName || 'BS Imóveis DF';
+      const sitePhone = settings?.whatsappNumber || phoneAdmin;
+
+      const clientConfirmation = `✅ Visita Agendada com Sucesso!
+
+Olá ${clientName}!
+
+Sua visita foi confirmada:
+
+🏠 Imóvel: ${propertyTitle}
+📍 Local: ${propertyAddress || 'Endereço será informado'}
+📅 Data: ${formattedDate}
+⏰ Horário: ${time}
+
+📱 Contato: ${sitePhone}
+
+${siteName}
+Nos vemos lá! 😊`;
+
+      const sentToClient = await sendWhatsAppMessage(clientPhone, clientConfirmation);
+
+      if (sentToClient) {
+        console.log('✅ Confirmação enviada para cliente');
+
+        await prisma.whatsAppMessage.create({
+          data: {
+            messageId: `appointment-client-${Date.now()}`,
+            from: 'twilio',
+            to: clientPhone,
+            body: clientConfirmation,
+            type: 'text',
+            timestamp: new Date(),
+            fromMe: true,
+            status: 'sent',
+            source: 'appointment_confirmation',
+            propertyId: propertyId,
+            contactName: clientName
+          }
+        });
+      } else {
+        console.log('❌ Falha ao enviar confirmação para cliente');
       }
     } catch (whatsappError) {
       console.error('❌ Erro ao enviar notificação WhatsApp:', whatsappError);

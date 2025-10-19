@@ -132,16 +132,15 @@ export async function POST(request: NextRequest) {
 📅 Recebido: ${new Date().toLocaleString('pt-BR')}
 🆔 Lead ID: ${lead.id}`
 
-      // Enviar via Twilio (com imagem se tiver)
-      const sent = await sendWhatsAppMessage(phoneAdmin, whatsappMessage, propertyImage || undefined)
+      // 1. Enviar notificação para o admin
+      const sentToAdmin = await sendWhatsAppMessage(phoneAdmin, whatsappMessage, propertyImage || undefined)
 
-      if (sent) {
-        console.log('✅ WhatsApp enviado via Twilio')
+      if (sentToAdmin) {
+        console.log('✅ WhatsApp enviado para admin via Twilio')
 
-        // Salvar mensagem no banco
         await prisma.whatsAppMessage.create({
           data: {
-            messageId: `lead-${Date.now()}`,
+            messageId: `lead-admin-${Date.now()}`,
             from: 'twilio',
             to: phoneAdmin,
             body: whatsappMessage,
@@ -155,7 +154,50 @@ export async function POST(request: NextRequest) {
           }
         })
       } else {
-        console.log('⚠️ Falha ao enviar WhatsApp via Twilio')
+        console.log('⚠️ Falha ao enviar WhatsApp para admin')
+      }
+
+      // 2. Enviar confirmação para o cliente (se tiver telefone)
+      if (lead.phone) {
+        const settings = await prisma.settings.findFirst()
+        const siteName = settings?.siteName || 'BS Imóveis DF'
+        const sitePhone = settings?.whatsappNumber || phoneAdmin
+
+        const clientConfirmation = `✅ Olá ${lead.name}!
+
+Recebemos seu interesse no imóvel:
+🏠 ${lead.propertyTitle || 'Imóvel selecionado'}
+
+Em breve entraremos em contato para fornecer mais informações e agendar uma visita!
+
+📱 WhatsApp: ${sitePhone}
+
+${siteName}
+Obrigado pelo contato! 😊`
+
+        const sentToClient = await sendWhatsAppMessage(lead.phone, clientConfirmation)
+
+        if (sentToClient) {
+          console.log('✅ Confirmação enviada para cliente')
+
+          await prisma.whatsAppMessage.create({
+            data: {
+              messageId: `lead-client-${Date.now()}`,
+              from: 'twilio',
+              to: lead.phone,
+              body: clientConfirmation,
+              type: 'text',
+              timestamp: new Date(),
+              fromMe: true,
+              status: 'sent',
+              source: 'lead_confirmation',
+              contactName: lead.name,
+              propertyId: lead.propertyId
+            }
+          })
+        } else {
+          console.log('⚠️ Falha ao enviar confirmação para cliente')
+        }
       }
 
     } catch (whatsappError) {
