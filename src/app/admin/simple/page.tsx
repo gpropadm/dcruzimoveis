@@ -82,12 +82,6 @@ export default function SimpleAdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      {/* Background Effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#7360ee]/100 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse"></div>
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse animation-delay-2000"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse animation-delay-4000"></div>
-      </div>
 
       {/* Header */}
       <header className="relative z-10 bg-black/20 backdrop-blur-md border-b border-white/10">
@@ -183,49 +177,49 @@ export default function SimpleAdminDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-3 gap-3 md:gap-6 mb-8">
           <Link href="/admin/properties/new" className="group">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 group-hover:scale-105">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 group-hover:scale-105">
               <div className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#7360ee] to-purple-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-200">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-[#7360ee] to-purple-600 rounded-2xl mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-200">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="md:w-8 md:h-8">
                     <line x1="12" y1="5" x2="12" y2="19"/>
                     <line x1="5" y1="12" x2="19" y2="12"/>
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Novo Imóvel</h3>
-                <p className="text-gray-300">Cadastrar novo imóvel no sistema</p>
+                <h3 className="text-sm md:text-xl font-bold text-white mb-1 md:mb-2">Novo Imóvel</h3>
+                <p className="text-gray-300 text-xs md:text-base hidden md:block">Cadastrar novo imóvel no sistema</p>
               </div>
             </div>
           </Link>
 
           <Link href="/admin/properties" className="group">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 group-hover:scale-105">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 group-hover:scale-105">
               <div className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-200">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-200">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="md:w-8 md:h-8">
                     <path d="M9 11H5a2 2 0 00-2 2v7a2 2 0 002 2h6a2 2 0 002-2v-7a2 2 0 00-2-2z"/>
                     <path d="M13 11h6a2 2 0 012 2v7a2 2 0 01-2 2h-6a2 2 0 01-2-2v-7a2 2 0 012-2z"/>
                     <path d="M9 11V9a2 2 0 012-2h2a2 2 0 012 2v2"/>
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Gerenciar Imóveis</h3>
-                <p className="text-gray-300">Visualizar e editar imóveis</p>
+                <h3 className="text-sm md:text-xl font-bold text-white mb-1 md:mb-2">Gerenciar</h3>
+                <p className="text-gray-300 text-xs md:text-base hidden md:block">Visualizar e editar imóveis</p>
               </div>
             </div>
           </Link>
 
           <div className="group cursor-not-allowed">
-            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10 opacity-50">
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-4 md:p-8 border border-white/10 opacity-50">
               <div className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl mb-4">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl mb-2 md:mb-4">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="md:w-8 md:h-8">
                     <circle cx="12" cy="12" r="3"/>
                     <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Configurações</h3>
-                <p className="text-gray-300">Em breve...</p>
+                <h3 className="text-sm md:text-xl font-bold text-white mb-1 md:mb-2">Configurações</h3>
+                <p className="text-gray-300 text-xs md:text-base hidden md:block">Em breve...</p>
               </div>
             </div>
           </div>

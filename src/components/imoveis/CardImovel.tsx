@@ -184,7 +184,7 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
         </div>
 
         {/* Título */}
-        <h3 className="mb-2 line-clamp-2" style={{ fontSize: '15px', fontWeight: 600, color: '#333', lineHeight: '1.3' }}>
+        <h3 className="mb-2 line-clamp-2" style={{ fontSize: '15px', fontWeight: 600, color: '#e0e0e0', lineHeight: '1.3' }}>
           {imovel.title}
         </h3>
 
@@ -218,7 +218,7 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
                 flex: 1,
                 textAlign: 'center'
               }}>
-                <span style={{ fontSize: '13px', fontWeight: 400, color: '#333', lineHeight: 1 }}>{imovel.area} m²</span>
+                <span style={{ fontSize: '13px', fontWeight: 400, color: '#e0e0e0', lineHeight: 1 }}>{imovel.area} m²</span>
                 <span style={{ fontSize: '12px', fontWeight: 400, color: '#666', lineHeight: 1 }}></span>
               </li>
             )}
@@ -233,7 +233,7 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
                 flex: 1,
                 textAlign: 'center'
               }}>
-                <span style={{ fontSize: '13px', fontWeight: 400, color: '#333', lineHeight: 1 }}>{imovel.bedrooms}</span>
+                <span style={{ fontSize: '13px', fontWeight: 400, color: '#e0e0e0', lineHeight: 1 }}>{imovel.bedrooms}</span>
                 <span style={{ fontSize: '12px', fontWeight: 400, color: '#666', lineHeight: 1 }}>Quartos</span>
               </li>
             )}
@@ -248,7 +248,7 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
                 flex: 1,
                 textAlign: 'center'
               }}>
-                <span style={{ fontSize: '13px', fontWeight: 400, color: '#333', lineHeight: 1 }}>{imovel.bathrooms}</span>
+                <span style={{ fontSize: '13px', fontWeight: 400, color: '#e0e0e0', lineHeight: 1 }}>{imovel.bathrooms}</span>
                 <span style={{ fontSize: '12px', fontWeight: 400, color: '#666', lineHeight: 1 }}>Banheiros</span>
               </li>
             )}

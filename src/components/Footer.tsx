@@ -28,13 +28,13 @@ export default function Footer() {
   }, [])
 
   return (
-    <footer className="text-gray-800 border-t" style={{ backgroundColor: '#ffffff', borderColor: '#e5e7eb' }}>
+    <footer className="hidden lg:block text-gray-800 border-t" style={{ backgroundColor: '#ffffff', borderColor: '#e5e7eb' }}>
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
 
           {/* Logo e Endereço */}
           <div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">BS Imóveis</h3>
+            <h3 className="text-2xl font-bold mb-4" style={{ color: '#666666' }}>BS Imóveis</h3>
             <div className="flex items-start text-sm text-gray-600 mb-3">
               <i className="fas fa-map-marker-alt mr-2 mt-1" style={{ fontSize: '14px' }}></i>
               <span>
@@ -46,7 +46,7 @@ export default function Footer() {
 
           {/* Contato */}
           <div>
-            <h5 className="text-lg font-semibold mb-4 text-gray-800">Contato</h5>
+            <h5 className="text-lg font-semibold mb-4" style={{ color: '#666666' }}>Contato</h5>
             <div className="flex items-center text-sm">
               <i className="fab fa-whatsapp mr-2 text-gray-600" style={{ fontSize: '16px' }}></i>
               <span className="text-gray-600">{contactPhone}</span>
@@ -55,7 +55,7 @@ export default function Footer() {
 
           {/* Redes Sociais */}
           <div>
-            <h5 className="text-lg font-semibold mb-4 text-gray-800">Redes Sociais</h5>
+            <h5 className="text-lg font-semibold mb-4" style={{ color: '#666666' }}>Redes Sociais</h5>
             <div className="flex space-x-4">
               <a
                 href={socialLinks.facebook || '#'}
