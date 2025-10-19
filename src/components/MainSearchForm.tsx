@@ -19,8 +19,8 @@ export default function MainSearchForm() {
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [showTypeDropdown, setShowTypeDropdown] = useState(false)
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false)
-  const [headerTitle, setHeaderTitle] = useState('50 anos realizando sonhos e ótimos investimentos')
-  const [headerSubtitle, setHeaderSubtitle] = useState('Há mais de 20 anos a imobiliária mais lembrada da cidade')
+  const [headerTitle, setHeaderTitle] = useState('')
+  const [headerSubtitle, setHeaderSubtitle] = useState('')
 
   // Carregar configurações (título e subtítulo)
   useEffect(() => {
