@@ -1,0 +1,40 @@
+name: Enviar Follow-ups
+
+on:
+  schedule:
+    # Roda todo dia às 10h (horário UTC, ajuste conforme necessário)
+    # 10h Brasília = 13h UTC (UTC-3)
+    - cron: '0 13 * * *'
+
+  # Permite rodar manualmente
+  workflow_dispatch:
+
+jobs:
+  send-followups:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Criar arquivo .env
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }}" >> .env
+          echo "TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }}" >> .env
+          echo "TWILIO_WHATSAPP_NUMBER=${{ secrets.TWILIO_WHATSAPP_NUMBER }}" >> .env
+          echo "WHATSAPP_ADMIN_PHONE=${{ secrets.WHATSAPP_ADMIN_PHONE }}" >> .env
+
+      - name: Gerar Prisma Client
+        run: npx prisma generate
+
+      - name: Enviar follow-ups
+        run: node scripts/send-follow-ups.js
