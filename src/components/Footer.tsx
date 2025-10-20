@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react'
 
 export default function Footer() {
   const [contactPhone, setContactPhone] = useState('(61) 9999-9999')
+  const [address, setAddress] = useState('')
+  const [city, setCity] = useState('')
+  const [state, setState] = useState('')
   const [socialLinks, setSocialLinks] = useState({
     facebook: '',
     instagram: ''
@@ -16,6 +19,15 @@ export default function Footer() {
       .then(data => {
         if (data?.settings?.contactPhone) {
           setContactPhone(data.settings.contactPhone)
+        }
+        if (data?.settings?.address) {
+          setAddress(data.settings.address)
+        }
+        if (data?.settings?.city) {
+          setCity(data.settings.city)
+        }
+        if (data?.settings?.state) {
+          setState(data.settings.state)
         }
         if (data?.settings?.socialFacebook) {
           setSocialLinks(prev => ({ ...prev, facebook: data.settings.socialFacebook }))
@@ -35,13 +47,15 @@ export default function Footer() {
           {/* Logo e Endereço */}
           <div>
             <h3 className="text-2xl font-bold mb-4" style={{ color: '#666666' }}>BS Imóveis</h3>
-            <div className="flex items-start text-sm text-gray-600 mb-3">
-              <i className="fas fa-map-marker-alt mr-2 mt-1" style={{ fontSize: '14px' }}></i>
-              <span>
-                QR 218 Conj. O Lote 30<br />
-                Brasília - DF
-              </span>
-            </div>
+            {(address || city || state) && (
+              <div className="flex items-start text-sm text-gray-600 mb-3">
+                <i className="fas fa-map-marker-alt mr-2 mt-1" style={{ fontSize: '14px' }}></i>
+                <span>
+                  {address && <>{address}<br /></>}
+                  {city && state ? `${city} - ${state}` : city || state}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Contato */}
