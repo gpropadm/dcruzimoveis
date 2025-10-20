@@ -194,7 +194,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               <div className="bg-white rounded-xl shadow-sm p-6">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h1 className="text-2xl md:text-3xl font-bold text-black mb-1">
+                    <h1 className="text-2xl md:text-3xl font-bold mb-1" style={{ color: '#000000' }}>
                       {property.title}
                     </h1>
                     <div className="flex items-center" style={{ color: '#5a5a5a' }}>
@@ -225,7 +225,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
 
               {/* Características */}
               <div className="bg-white rounded-xl shadow-sm p-6">
-                <h2 className="text-lg md:text-xl font-bold text-black mb-4 flex items-center">
+                <h2 className="text-lg md:text-xl font-bold mb-4 flex items-center" style={{ color: '#000000' }}>
                   <BuildingOfficeIcon className="w-6 h-6 mr-2" />
                   Características
                 </h2>
@@ -353,7 +353,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               {/* Comodidades do Condomínio - Separado apenas para apartamentos */}
               {property.category === 'apartamento' && property.amenities && (
                 <div className="bg-white rounded-xl shadow-sm p-6">
-                  <h2 className="text-lg md:text-xl font-bold text-black mb-6">
+                  <h2 className="text-lg md:text-xl font-bold mb-6" style={{ color: '#000000' }}>
                     Comodidades do Condomínio
                   </h2>
 
