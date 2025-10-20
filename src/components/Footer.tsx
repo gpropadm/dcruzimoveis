@@ -46,7 +46,7 @@ export default function Footer() {
 
           {/* Logo e Endereço */}
           <div>
-            <h3 className="text-2xl font-bold mb-4" style={{ color: '#666666' }}>BS Imóveis</h3>
+            <h3 className="text-2xl font-bold mb-4" style={{ color: '#666666' }}>Dcruz Imóveis</h3>
             {(address || city || state) && (
               <div className="flex items-start text-sm text-gray-600 mb-3">
                 <i className="fas fa-map-marker-alt mr-2 mt-1" style={{ fontSize: '14px' }}></i>
@@ -98,7 +98,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="border-t pt-6" style={{ borderColor: '#dee2e6' }}>
           <div className="text-sm text-gray-600">
-            <span className="font-bold">© BS Imóveis.</span>
+            <span className="font-bold">© Dcruz Imóveis.</span>
             <span className="ml-1">Todos os direitos reservados.</span>
           </div>
         </div>

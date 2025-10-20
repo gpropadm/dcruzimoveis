@@ -39,7 +39,7 @@ export default function Header() {
               className={`hidden lg:block text-3xl font-semibold transition-colors ${(isScrolled || isOnPageWithoutHero) ? '' : 'text-white'}`}
               style={{ color: (isScrolled || isOnPageWithoutHero) ? primaryColor : '' }}
             >
-              BS Imóveis
+              Dcruz Imóveis
             </span>
 
             {/* Mobile: ícone + nome horizontal */}
@@ -52,7 +52,7 @@ export default function Header() {
                 className={`text-xl font-semibold transition-colors ${(isScrolled || isOnPageWithoutHero) ? '' : 'text-white'}`}
                 style={{ color: (isScrolled || isOnPageWithoutHero) ? primaryColor : '' }}
               >
-                BS Imóveis
+                Dcruz Imóveis
               </span>
             </div>
           </Link>
@@ -105,7 +105,7 @@ export default function Header() {
             </Link>
 
             <Link
-              href="https://www.bsimoveisdf.com.br/admin/login"
+              href="https://www.dcruzimoveis.com.br/admin/login"
               target="_blank"
               rel="noopener noreferrer"
               className="font-normal text-sm transition-colors"
