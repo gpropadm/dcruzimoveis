@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import MobileBottomNav from '@/components/MobileBottomNav'
 import Image from 'next/image'
 import { useFavorites } from '@/hooks/useFavorites'
 import { useTheme } from '@/contexts/ThemeContext'
@@ -383,7 +384,7 @@ function ArboPropertyCard({ property, onViewDetails, formatPrice }: {
 }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
       <Header />
 
       {/* Barra de título abaixo do header */}
@@ -433,6 +434,7 @@ function ArboPropertyCard({ property, onViewDetails, formatPrice }: {
       </div>
 
       <Footer />
+      <MobileBottomNav />
 
       <style jsx global>{`
         .scrollbar-hide {

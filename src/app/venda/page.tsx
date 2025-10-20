@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import MobileBottomNav from '@/components/MobileBottomNav'
 import FavoriteButton from '@/components/FavoriteButton'
 
 // Force dynamic rendering for pages that use useSearchParams
@@ -578,6 +579,7 @@ function VendaPageContent() {
       </div>
 
       <Footer />
+      <MobileBottomNav />
     </div>
   )
 }
