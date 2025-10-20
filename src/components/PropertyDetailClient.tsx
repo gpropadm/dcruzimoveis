@@ -61,7 +61,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
   const [relatedProperties, setRelatedProperties] = useState<any[]>([])
   const [loadingRelated, setLoadingRelated] = useState(true)
   const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false)
-  const [companyName, setCompanyName] = useState('Dcruz Imóveis')
+  const [companyName, setCompanyName] = useState('BS Imóveis')
   const [contactPhone, setContactPhone] = useState('(61) 9999-9999')
 
   // Breadcrumbs baseados na propriedade
