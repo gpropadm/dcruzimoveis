@@ -76,7 +76,7 @@ export default function Home() {
             minHeight: '450px',
             backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/header-bg.jpg')`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center center',
+            backgroundPosition: 'center 22%',
             backgroundRepeat: 'no-repeat',
             backgroundAttachment: 'scroll'
           }}
