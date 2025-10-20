@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import MobileBottomNav from '@/components/MobileBottomNav'
 import ArboGallery from '@/components/ArboGallery'
 import ArboBreadcrumbs from '@/components/ArboBreadcrumbs'
 import SmartCalculator from '@/components/SmartCalculator'
@@ -686,6 +687,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
         )}
 
         <Footer />
+        <MobileBottomNav />
 
         {/* Modal de Agendamento */}
         <AppointmentModal

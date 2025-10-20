@@ -3,6 +3,7 @@
 import { useSettings } from '@/hooks/useSettings'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import MobileBottomNav from '@/components/MobileBottomNav'
 import SellRentPropertySection from '@/components/SellRentPropertySection'
 
 export default function AnunciarPage() {
@@ -11,12 +12,13 @@ export default function AnunciarPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header settings={settings} />
-      
+
       <main className="pt-20">
         <SellRentPropertySection />
       </main>
 
       <Footer />
+      <MobileBottomNav />
     </div>
   )
 }
