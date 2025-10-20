@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import PropertyVideoModal from './PropertyVideoModal'
 import FavoriteButton from './FavoriteButton'
+import { getPropertyUrl } from '@/lib/propertyUrl'
 
 interface Property {
   id: string
@@ -32,9 +33,10 @@ interface Property {
 interface PropertyStoriesSectionProps {
   properties: Property[]
   loading: boolean
+  title?: string
 }
 
-export default function PropertyStoriesSection({ properties, loading }: PropertyStoriesSectionProps) {
+export default function PropertyStoriesSection({ properties, loading, title = 'Descubra seu novo Lar' }: PropertyStoriesSectionProps) {
   const router = useRouter()
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -249,8 +251,8 @@ export default function PropertyStoriesSection({ properties, loading }: Property
       <div className="max-w-6xl mx-auto">
 
         {/* Título da Seção */}
-        <h2 className="text-2xl md:text-3xl font-bold text-left mb-6 text-gray-800">
-          Descubra seu novo Lar
+        <h2 className="text-2xl md:text-3xl font-bold text-left mb-6" style={{ color: '#666666' }}>
+          {title}
         </h2>
 
         {/* Properties by City Grid */}
@@ -749,11 +751,19 @@ function ArboPropertyCard({ property, onViewDetails, onVideoClick, formatPrice }
   }
 
 
+  const propertyUrl = getPropertyUrl({
+    category: property.category || 'imovel',
+    type: property.type,
+    state: property.state,
+    city: property.city,
+    slug: property.slug
+  })
+
   return (
     <li className="CarouselDefault_card__I_nK6">
       <div className="ImovelCard_card__2FVbS">
         <a
-          href={`/imovel/${property.slug}`}
+          href={propertyUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="cursor-pointer"
@@ -902,7 +912,7 @@ function ArboPropertyCard({ property, onViewDetails, onVideoClick, formatPrice }
                       />
                     </div>
                     <span className="ImovelCardInfo_colorOfTitleCondominium__IfTu_ ImovelCardInfo_ellipsisOneLine__ryU_Q d-flex flex-row justify-content-start">
-                      {property.title}
+                      {property.title.length > 40 ? `${property.title.substring(0, 40)}...` : property.title}
                     </span>
                   </h2>
                   <p className="ImovelCardInfo_colorOfLocalization__frnmZ mb-0">

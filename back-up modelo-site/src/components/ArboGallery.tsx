@@ -244,7 +244,7 @@ export default function ArboGallery({ images, propertyTitle }: ArboGalleryProps)
           {/* Botão de Ver Todas as Fotos - Apenas Desktop */}
           <button
             onClick={() => openGridModal()}
-            className="absolute bottom-4 left-4 bg-white border-0 rounded-full px-3 py-2 flex items-center gap-2 shadow-sm hover:shadow-md transition-all text-sm font-medium text-gray-700"
+            className="absolute bottom-4 left-4 bg-black/60 hover:bg-black/80 border-0 rounded-full px-3 py-2 flex items-center gap-2 shadow-sm hover:shadow-md transition-all text-sm font-medium text-white"
           >
             <i className="far fa-images text-base"></i>
             Ver todas as {images.length} fotos
@@ -433,9 +433,12 @@ export default function ArboGallery({ images, propertyTitle }: ArboGalleryProps)
                     }
                   }
                 }}
-                className="absolute left-0 right-0 flex gap-1 overflow-x-auto justify-center px-0 py-6"
+                className="fixed left-0 right-0 flex gap-2 overflow-x-auto justify-center py-4"
                 style={{
-                  bottom: '0px',
+                  bottom: '60px',
+                  width: '100vw',
+                  paddingLeft: '16px',
+                  paddingRight: '16px',
                   background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 70%, transparent 100%)',
                   scrollbarWidth: 'none',
                   msOverflowStyle: 'none'
@@ -450,13 +453,14 @@ export default function ArboGallery({ images, propertyTitle }: ArboGalleryProps)
                   <button
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
-                    className="relative overflow-hidden transition-all"
+                    className="relative overflow-hidden transition-all rounded"
                     style={{
-                      width: `${100 / Math.min(images.length, 10)}%`,
-                      minWidth: '80px',
-                      height: '85px',
+                      width: '100px',
+                      minWidth: '100px',
+                      maxWidth: '100px',
+                      height: '70px',
                       opacity: index === currentImageIndex ? 1 : 0.6,
-                      flex: images.length < 10 ? '1' : 'none'
+                      border: index === currentImageIndex ? '2px solid white' : '2px solid transparent'
                     }}
                   >
                     <Image

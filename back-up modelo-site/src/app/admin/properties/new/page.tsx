@@ -19,9 +19,8 @@ import {
 } from '@/lib/maskUtils'
 import { toast } from 'react-toastify'
 import MapSelector from '@/components/MapSelector'
-
-// Importação dinâmica do editor para evitar problemas de SSR
-const RichTextEditor = dynamic(() => import('@/components/RichTextEditor'), { ssr: false })
+import SimpleTextEditor from '@/components/SimpleTextEditor'
+import { getAddressFromCEP } from '@/lib/geocoding'
 
 export default function NewProperty() {
   const router = useRouter()
@@ -70,7 +69,11 @@ export default function NewProperty() {
     commercialType: '',
     floor_commercial: '',
     businessCenter: '',
-    features: [] as string[]
+    features: [] as string[],
+    // Formas de pagamento
+    acceptsFinancing: false,
+    acceptsTrade: false,
+    acceptsCar: false
   })
   const [images, setImages] = useState<File[]>([])
   const [imagePreview, setImagePreview] = useState<string[]>([])
@@ -143,28 +146,28 @@ export default function NewProperty() {
   const fetchAddressByCep = async (cep: string) => {
     // Remove formatação do CEP
     const cleanCep = parseCEP(cep)
-    
+
     if (cleanCep.length !== 8) return
-    
+
     try {
-      const response = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`)
-      if (!response.ok) throw new Error('CEP not found')
-      
-      const data = await response.json()
-      
-      if (data.erro) {
+      // Usar a função que já corrige automaticamente as regiões do DF
+      const addressData = await getAddressFromCEP(cep)
+
+      if (!addressData) {
         toast.error('CEP não encontrado!')
         return
       }
-      
-      // Preenche os campos automaticamente
+
+      // Preenche os campos automaticamente com a cidade corrigida
       setFormData(prev => ({
         ...prev,
-        address: data.logradouro || '',
-        city: data.localidade || '',
-        state: data.uf || ''
+        address: addressData.logradouro || '',
+        city: addressData.localidade || '', // Já vem com a região administrativa correta (Santa Maria, Gama, etc)
+        state: addressData.uf || ''
       }))
-      
+
+      console.log(`✅ CEP ${cep} → Cidade: ${addressData.localidade}`)
+
     } catch (error) {
       console.error('Erro ao buscar CEP:', error)
       toast.error('Erro ao buscar CEP. Verifique se o CEP está correto.')
@@ -535,6 +538,10 @@ export default function NewProperty() {
           floor_commercial: formData.floor_commercial || null,
           businessCenter: formData.businessCenter || null,
           features: formData.features.length > 0 ? JSON.stringify(formData.features) : null,
+          // Formas de pagamento
+          acceptsFinancing: formData.acceptsFinancing,
+          acceptsTrade: formData.acceptsTrade,
+          acceptsCar: formData.acceptsCar,
           // Mídia
           images: JSON.stringify(imageUrls),
           video: videoUrls.length > 0 ? JSON.stringify(videoUrls) : null,
@@ -624,7 +631,7 @@ export default function NewProperty() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Descrição
                 </label>
-                <RichTextEditor
+                <SimpleTextEditor
                   value={formData.description}
                   onChange={(content) => setFormData({ ...formData, description: content })}
                   placeholder="Descreva as características do imóvel..."
@@ -1783,7 +1790,7 @@ export default function NewProperty() {
             <div className="px-6 py-4 border-b border-gray-200">
               <h3 className="text-lg font-medium text-gray-900">Configurações</h3>
             </div>
-            <div className="p-6">
+            <div className="p-6 space-y-4">
               <label className="flex items-center">
                 <input
                   type="checkbox"
@@ -1796,6 +1803,49 @@ export default function NewProperty() {
                   Imóvel em destaque (aparecerá na página inicial)
                 </span>
               </label>
+
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <p className="text-sm font-medium text-gray-700 mb-3">Formas de Pagamento Aceitas:</p>
+
+                <label className="flex items-center mb-2">
+                  <input
+                    type="checkbox"
+                    name="acceptsFinancing"
+                    checked={formData.acceptsFinancing}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">
+                    Aceita Financiamento Bancário
+                  </span>
+                </label>
+
+                <label className="flex items-center mb-2">
+                  <input
+                    type="checkbox"
+                    name="acceptsTrade"
+                    checked={formData.acceptsTrade}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">
+                    Aceita Permuta/Troca
+                  </span>
+                </label>
+
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="acceptsCar"
+                    checked={formData.acceptsCar}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">
+                    Aceita Carro como Parte do Pagamento
+                  </span>
+                </label>
+              </div>
             </div>
           </div>
 

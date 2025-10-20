@@ -25,6 +25,7 @@ interface SiteSettings {
   enableComments: boolean
   headerTitle: string
   headerSubtitle: string
+  anthropicApiKey: string
 }
 
 interface UserSettings {
@@ -57,7 +58,8 @@ export default function AdminSettings() {
     enableRegistrations: true,
     enableComments: false,
     headerTitle: 'Encontre o Imóvel Perfeito',
-    headerSubtitle: 'Casas, apartamentos e terrenos dos seus sonhos'
+    headerSubtitle: 'Casas, apartamentos e terrenos dos seus sonhos',
+    anthropicApiKey: ''
   })
 
   const [userSettings, setUserSettings] = useState<UserSettings>({
@@ -119,8 +121,11 @@ export default function AdminSettings() {
         [name]: parseInt(value) || 0
       }))
     } else {
-      // Se for o campo de URL da imagem, converter automaticamente
-      const finalValue = value
+      // Se for o campo WhatsApp, remover caracteres especiais
+      let finalValue = value
+      if (name === 'contactWhatsapp') {
+        finalValue = value.replace(/[\s\-()]/g, '')
+      }
 
       setSiteSettings(prev => ({
         ...prev,
@@ -275,21 +280,21 @@ export default function AdminSettings() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      📞 Telefone (Header)
+                      📞 Telefone Rodapé
                     </label>
                     <input
                       type="text"
                       name="contactPhone"
                       value={siteSettings.contactPhone}
                       onChange={handleSiteSettingsChange}
-                      placeholder="(48) 99864-5864"
+                      placeholder="(61) 98579-6033"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     />
                   </div>
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      📧 Email (Header)
+                      📧 Email
                     </label>
                     <input
                       type="email"
@@ -303,7 +308,7 @@ export default function AdminSettings() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      📱 WhatsApp (Header)
+                      📱 WhatsApp
                     </label>
                     <input
                       type="text"
@@ -319,7 +324,7 @@ export default function AdminSettings() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      📍 Cidade (Header)
+                      📍 Cidade
                     </label>
                     <input
                       type="text"
@@ -330,10 +335,10 @@ export default function AdminSettings() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      🏛️ Estado (Header)
+                      🏛️ Estado
                     </label>
                     <input
                       type="text"
@@ -385,6 +390,58 @@ export default function AdminSettings() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     />
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Configurações de IA (Chatbot) */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
+              <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-blue-50">
+                <h3 className="text-lg font-semibold text-gray-900">🤖 Inteligência Artificial</h3>
+                <p className="text-sm text-gray-600">Configure o chatbot inteligente powered by Anthropic Claude</p>
+              </div>
+
+              <div className="p-6 space-y-6">
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                  <p className="text-sm text-purple-900 mb-2">
+                    💳 <strong>Gerenciar Créditos e Faturamento:</strong>
+                  </p>
+                  <a
+                    href="https://console.anthropic.com/settings/billing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm font-medium"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+                      <polyline points="15 3 21 3 21 9"/>
+                      <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                    Acessar Console Anthropic
+                  </a>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    🔑 Chave da API Anthropic
+                  </label>
+                  <input
+                    type="password"
+                    name="anthropicApiKey"
+                    value={siteSettings.anthropicApiKey}
+                    onChange={handleSiteSettingsChange}
+                    placeholder="sk-ant-api03-..."
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 font-mono text-sm"
+                  />
+                  <p className="mt-2 text-xs text-gray-500">
+                    ℹ️ Obtenha sua chave em <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener noreferrer" className="text-purple-600 hover:underline">console.anthropic.com</a>
+                  </p>
+                </div>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <p className="text-sm text-blue-900">
+                    💡 <strong>Dica:</strong> Ao trocar a chave da API, o chatbot passará a usar os créditos da nova conta automaticamente.
+                  </p>
                 </div>
               </div>
             </div>

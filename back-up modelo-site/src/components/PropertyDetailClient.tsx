@@ -61,6 +61,8 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
   const [relatedProperties, setRelatedProperties] = useState<any[]>([])
   const [loadingRelated, setLoadingRelated] = useState(true)
   const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false)
+  const [companyName, setCompanyName] = useState('Dcruz Imóveis')
+  const [contactPhone, setContactPhone] = useState('(61) 9999-9999')
 
   // Breadcrumbs baseados na propriedade
   const breadcrumbItems = [
@@ -88,6 +90,37 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
   }
 
   const images = parseImages(property.images)
+
+  // Carregar configurações da imobiliária
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await fetch('/api/settings')
+        const data = await response.json()
+        if (data?.settings) {
+          if (data.settings.companyName) setCompanyName(data.settings.companyName)
+          if (data.settings.contactPhone) setContactPhone(data.settings.contactPhone)
+        }
+      } catch (error) {
+        console.error('Erro ao carregar configurações:', error)
+      }
+    }
+    fetchSettings()
+  }, [])
+
+  // Registrar visualização
+  useEffect(() => {
+    const registerView = async () => {
+      try {
+        await fetch(`/api/properties/${property.slug}/view`, {
+          method: 'POST',
+        })
+      } catch (error) {
+        console.error('Erro ao registrar visualização:', error)
+      }
+    }
+    registerView()
+  }, [property.slug])
 
   // Buscar imóveis relacionados
   useEffect(() => {
@@ -180,7 +213,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               <div className="bg-white rounded-xl shadow-sm p-6">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+                    <h1 className="text-2xl md:text-3xl font-bold mb-1" style={{ color: '#000000' }}>
                       {property.title}
                     </h1>
                     <div className="flex items-center" style={{ color: '#5a5a5a' }}>
@@ -211,7 +244,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
 
               {/* Características */}
               <div className="bg-white rounded-xl shadow-sm p-6">
-                <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 flex items-center">
+                <h2 className="text-lg md:text-xl font-bold mb-4 flex items-center" style={{ color: '#000000' }}>
                   <BuildingOfficeIcon className="w-6 h-6 mr-2" />
                   Características
                 </h2>
@@ -221,14 +254,14 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                       <HomeIcon className="w-4 h-4 text-gray-500 mr-2" />
                       <span className="text-sm text-gray-600">Tipo:</span>
                     </div>
-                    <span className="text-sm font-semibold text-gray-900">{property.category}</span>
+                    <span className="text-sm font-semibold text-black">{property.category}</span>
                   </div>
                   <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-50">
                     <div className="flex items-center">
                       <CurrencyDollarIcon className="w-4 h-4 text-gray-500 mr-2" />
                       <span className="text-sm text-gray-600">Finalidade:</span>
                     </div>
-                    <span className="text-sm font-semibold text-gray-900">{property.type === 'venda' ? 'Venda' : 'Aluguel'}</span>
+                    <span className="text-sm font-semibold text-black">{property.type === 'venda' ? 'Venda' : 'Aluguel'}</span>
                   </div>
                   {property.apartmentTotalArea && (
                     <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-50">
@@ -238,7 +271,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                         </svg>
                         <span className="text-sm text-gray-600">Área Total:</span>
                       </div>
-                      <span className="text-sm font-semibold text-gray-900">{property.apartmentTotalArea}m²</span>
+                      <span className="text-sm font-semibold text-black">{property.apartmentTotalArea}m²</span>
                     </div>
                   )}
                   {property.apartmentUsefulArea && (
@@ -249,7 +282,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                         </svg>
                         <span className="text-sm text-gray-600">Área Útil:</span>
                       </div>
-                      <span className="text-sm font-semibold text-gray-900">{property.apartmentUsefulArea}m²</span>
+                      <span className="text-sm font-semibold text-black">{property.apartmentUsefulArea}m²</span>
                     </div>
                   )}
 
@@ -262,7 +295,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             <BuildingOffice2Icon className="w-4 h-4 text-gray-500 mr-2" />
                             <span className="text-sm text-gray-600">Andar:</span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">{property.floor}º andar</span>
+                          <span className="text-sm font-semibold text-black">{property.floor}º andar</span>
                         </div>
                       )}
                       {property.suites && (
@@ -273,7 +306,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             </svg>
                             <span className="text-sm text-gray-600">Suítes:</span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">{property.suites}</span>
+                          <span className="text-sm font-semibold text-black">{property.suites}</span>
                         </div>
                       )}
                       {property.condoFee && (
@@ -284,7 +317,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             </svg>
                             <span className="text-sm text-gray-600">Condomínio:</span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">
+                          <span className="text-sm font-semibold text-black">
                             {new Intl.NumberFormat('pt-BR', {
                               style: 'currency',
                               currency: 'BRL'
@@ -298,7 +331,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             <DocumentTextIcon className="w-4 h-4 text-gray-500 mr-2" />
                             <span className="text-sm text-gray-600">IPTU:</span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">
+                          <span className="text-sm font-semibold text-black">
                             {new Intl.NumberFormat('pt-BR', {
                               style: 'currency',
                               currency: 'BRL'
@@ -339,7 +372,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               {/* Comodidades do Condomínio - Separado apenas para apartamentos */}
               {property.category === 'apartamento' && property.amenities && (
                 <div className="bg-white rounded-xl shadow-sm p-6">
-                  <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-6">
+                  <h2 className="text-lg md:text-xl font-bold mb-6" style={{ color: '#000000' }}>
                     Comodidades do Condomínio
                   </h2>
 
@@ -471,7 +504,8 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                         onClick={() => setIsAppointmentModalOpen(true)}
                         className="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2 py-3 font-sora fw-semibold"
                         style={{
-                          fontSize: '14px'
+                          fontSize: '14px',
+                          border: '1px solid #e0e0e0'
                         }}
                       >
                         <i className="fas fa-calendar" style={{ fontSize: '14px' }}></i>
@@ -489,33 +523,11 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                         WhatsApp
                       </button>
 
-                      <button
-                        className="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2 py-3 font-sora fw-semibold"
-                        style={{
-                          fontSize: '14px'
-                        }}
-                      >
-                        <i className="fas fa-phone" style={{ fontSize: '14px' }}></i>
-                        Ligar Agora
-                      </button>
-
-                      <button
-                        className="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2 py-3 font-sora fw-semibold"
-                        style={{
-                          fontSize: '14px'
-                        }}
-                      >
-                        <i className="fas fa-envelope" style={{ fontSize: '14px' }}></i>
-                        Enviar E-mail
-                      </button>
-
                       {/* Botão de Alerta de Preço */}
-                      <div className="mt-2">
-                        <PriceAlertButton
-                          propertyId={property.id}
-                          propertyTitle={property.title}
-                        />
-                      </div>
+                      <PriceAlertButton
+                        propertyId={property.id}
+                        propertyTitle={property.title}
+                      />
                     </div>
                   </div>
 
@@ -547,7 +559,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             color: '#212529'
                           }}
                         >
-                          All Imóveis
+                          {companyName}
                         </div>
                         <div
                           className="font-sora"
@@ -556,20 +568,9 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             color: '#6c757d'
                           }}
                         >
-                          Plataforma Imobiliária
+                          {contactPhone}
                         </div>
                       </div>
-                    </div>
-
-                    <div
-                      className="font-sora"
-                      style={{
-                        fontSize: '12px',
-                        color: '#6c757d'
-                      }}
-                    >
-                      <i className="fas fa-map-marker-alt me-1"></i>
-                      {property.address}, {property.city} - {property.state}
                     </div>
                   </div>
                 </div>
@@ -675,7 +676,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
         {relatedProperties.length > 0 && (
           <div className="pb-8">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6 mt-2 text-center">Imóveis que Poderá Gostar</h2>
+              <h2 className="text-3xl font-bold text-black mb-6 mt-2 text-center">Imóveis que Poderá Gostar</h2>
             </div>
             <PropertyStoriesSection
               properties={relatedProperties}

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { sendWhatsAppMessage } from '@/lib/whatsapp-twilio';
 
 export async function GET(request: NextRequest) {
   try {
@@ -174,6 +175,61 @@ export async function POST(request: NextRequest) {
         }
       }
     });
+
+    // Enviar notificação via WhatsApp usando Twilio (igual ao de leads)
+    try {
+      const phoneAdmin = process.env.WHATSAPP_ADMIN_PHONE || '5561996900444';
+
+      const formattedDate = new Intl.DateTimeFormat('pt-BR', {
+        dateStyle: 'full',
+        timeStyle: 'short'
+      }).format(appointmentDate);
+
+      const whatsappMessage = `🏠 *NOVA VISITA AGENDADA*
+
+📋 Imóvel: ${property.title}
+📍 Endereço: ${property.address}
+
+👤 Cliente: ${clientName}
+📞 Telefone: ${clientPhone}
+📧 Email: ${clientEmail}
+
+📅 Data/Hora: ${formattedDate}
+⏱️ Duração: ${duration} minutos
+
+🔗 Ver imóvel: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://imobiliaria-six-tau.vercel.app'}/imovel/${property.slug}
+
+🆔 Agendamento ID: ${appointment.id}`;
+
+      // Enviar via Twilio
+      const sent = await sendWhatsAppMessage(phoneAdmin, whatsappMessage);
+
+      if (sent) {
+        console.log('✅ WhatsApp de agendamento enviado via Twilio');
+
+        // Salvar mensagem no banco
+        await prisma.whatsAppMessage.create({
+          data: {
+            messageId: `appointment-${Date.now()}`,
+            from: 'twilio',
+            to: phoneAdmin,
+            body: whatsappMessage,
+            type: 'text',
+            timestamp: new Date(),
+            fromMe: true,
+            status: 'sent',
+            source: 'twilio_api',
+            propertyId: propertyId,
+            contactName: clientName
+          }
+        });
+      } else {
+        console.log('❌ Falha ao enviar WhatsApp de agendamento via Twilio');
+      }
+    } catch (whatsappError) {
+      console.error('❌ Erro ao enviar notificação WhatsApp:', whatsappError);
+      // Não falhar a requisição se o WhatsApp falhar
+    }
 
     return NextResponse.json(appointment, { status: 201 });
   } catch (error) {

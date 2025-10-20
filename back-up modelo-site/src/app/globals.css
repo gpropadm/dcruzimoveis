@@ -10,13 +10,13 @@
 body {
   font-family: var(--font-sora), system-ui, sans-serif;
   background-color: #ffffff;
-  color: #1a1a1a;
+  color: #e0e0e0;
   line-height: 1.6;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sora), system-ui, sans-serif;
-  color: #000000;
+  color: #e0e0e0;
   font-weight: 600;
   letter-spacing: -0.02em;
 }

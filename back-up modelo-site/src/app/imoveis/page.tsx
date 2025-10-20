@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import Header from '@/components/Header'
 import FilterBar from '@/components/imoveis/FilterBar'
 import ImoveisContent from '@/components/imoveis/ImoveisContent'
+import MobileBottomNav from '@/components/MobileBottomNav'
 import { MapProvider } from '@/contexts/MapContext'
 
 export default function ImoveisPage() {
@@ -21,6 +22,8 @@ export default function ImoveisPage() {
           </MapProvider>
         </Suspense>
       </main>
+
+      <MobileBottomNav />
     </div>
   )
 }

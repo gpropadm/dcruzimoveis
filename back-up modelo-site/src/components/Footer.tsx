@@ -1,106 +1,105 @@
 'use client'
 
-import Link from 'next/link'
+import { useState, useEffect } from 'react'
 
 export default function Footer() {
+  const [contactPhone, setContactPhone] = useState('(61) 9999-9999')
+  const [address, setAddress] = useState('')
+  const [city, setCity] = useState('')
+  const [state, setState] = useState('')
+  const [socialLinks, setSocialLinks] = useState({
+    facebook: '',
+    instagram: ''
+  })
+
+  useEffect(() => {
+    // Buscar configurações do site
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data?.settings?.contactPhone) {
+          setContactPhone(data.settings.contactPhone)
+        }
+        if (data?.settings?.address) {
+          setAddress(data.settings.address)
+        }
+        if (data?.settings?.city) {
+          setCity(data.settings.city)
+        }
+        if (data?.settings?.state) {
+          setState(data.settings.state)
+        }
+        if (data?.settings?.socialFacebook) {
+          setSocialLinks(prev => ({ ...prev, facebook: data.settings.socialFacebook }))
+        }
+        if (data?.settings?.socialInstagram) {
+          setSocialLinks(prev => ({ ...prev, instagram: data.settings.socialInstagram }))
+        }
+      })
+      .catch(err => console.error('Erro ao carregar configurações:', err))
+  }, [])
+
   return (
-    <footer className="text-gray-800 border-t border-gray-200" style={{ backgroundColor: '#f8f9fa' }}>
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 gap-8">
+    <footer className="hidden lg:block text-gray-800 border-t" style={{ backgroundColor: '#ffffff', borderColor: '#e5e7eb' }}>
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
 
-          {/* Logo */}
+          {/* Logo e Endereço */}
           <div>
-            <h3 className="text-2xl font-bold text-gray-800">All</h3>
-          </div>
-
-          {/* Conheça */}
-          <div>
-            <h5 className="text-lg font-semibold mb-4">Conheça</h5>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <span className="text-gray-500 cursor-default">Sobre Nós</span>
-              </li>
-              <li>
-                <span className="text-gray-500 cursor-default">Blog</span>
-              </li>
-              <li>
-                <span className="text-gray-500 cursor-default">Trabalhe Conosco</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Produtos */}
-          <div>
-            <h5 className="text-lg font-semibold mb-4">Produtos</h5>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <span className="text-gray-500 cursor-default">CRM Imobiliário</span>
-              </li>
-              <li>
-                <span className="text-gray-500 cursor-default">Site Imobiliário</span>
-              </li>
-              <li>
-                <span className="text-gray-500 cursor-default">Gestão de Imóveis</span>
-              </li>
-              <li>
-                <span className="text-gray-500 cursor-default">Portal do Cliente</span>
-              </li>
-              <li>
-                <span className="text-gray-500 cursor-default">Financiamento</span>
-              </li>
-            </ul>
+            <h3 className="text-2xl font-bold mb-4" style={{ color: '#666666' }}>Dcruz Imóveis</h3>
+            {(address || city || state) && (
+              <div className="flex items-start text-sm text-gray-600 mb-3">
+                <i className="fas fa-map-marker-alt mr-2 mt-1" style={{ fontSize: '14px' }}></i>
+                <span>
+                  {address && <>{address}<br /></>}
+                  {city && state ? `${city} - ${state}` : city || state}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Contato */}
           <div>
-            <h5 className="text-lg font-semibold mb-4">Contato</h5>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-center">
-                <i className="fab fa-whatsapp mr-2 text-gray-500" style={{ fontSize: '14px' }}></i>
-                <span className="text-gray-500 cursor-default">(61) 9999-9999</span>
-              </div>
-              <div>
-                <span className="text-gray-500 cursor-default">Fale Conosco</span>
-              </div>
-              <div>
-                <span className="text-gray-500 cursor-default">Central de Ajuda</span>
-              </div>
+            <h5 className="text-lg font-semibold mb-4" style={{ color: '#666666' }}>Contato</h5>
+            <div className="flex items-center text-sm">
+              <i className="fab fa-whatsapp mr-2 text-gray-600" style={{ fontSize: '16px' }}></i>
+              <span className="text-gray-600">{contactPhone}</span>
             </div>
+          </div>
 
-            {/* Redes Sociais */}
-            <div className="mt-6">
-              <h6 className="text-base font-semibold mb-3">Acompanhe nossas redes</h6>
-              <div className="flex space-x-3">
-                <span className="w-8 h-8 rounded-full flex items-center justify-center cursor-default" style={{ backgroundColor: '#e0e0e0' }}>
-                  <i className="fa-brands fa-facebook-f text-white" style={{ fontSize: '16px' }}></i>
-                </span>
-                <span className="w-8 h-8 rounded-full flex items-center justify-center cursor-default" style={{ backgroundColor: '#e0e0e0' }}>
-                  <i className="fa-brands fa-instagram text-white" style={{ fontSize: '16px' }}></i>
-                </span>
-                <span className="w-8 h-8 rounded-full flex items-center justify-center cursor-default" style={{ backgroundColor: '#e0e0e0' }}>
-                  <i className="fa-brands fa-linkedin-in text-white" style={{ fontSize: '16px' }}></i>
-                </span>
-              </div>
+          {/* Redes Sociais */}
+          <div>
+            <h5 className="text-lg font-semibold mb-4" style={{ color: '#666666' }}>Redes Sociais</h5>
+            <div className="flex space-x-4">
+              <a
+                href={socialLinks.facebook || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-gray-700 transition-colors"
+                aria-label="Facebook"
+                onClick={(e) => !socialLinks.facebook && e.preventDefault()}
+              >
+                <i className="fa-brands fa-facebook" style={{ fontSize: '24px' }}></i>
+              </a>
+              <a
+                href={socialLinks.instagram || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-gray-700 transition-colors"
+                aria-label="Instagram"
+                onClick={(e) => !socialLinks.instagram && e.preventDefault()}
+              >
+                <i className="fa-brands fa-instagram" style={{ fontSize: '24px' }}></i>
+              </a>
             </div>
           </div>
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-gray-700 mt-8 pt-6">
-          <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center">
-            <div className="text-sm mb-4 xl:mb-0">
-              <span className="font-bold">© All Imóveis.</span>
-              <span className="ml-2">Todos os direitos reservados.</span>
-            </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-gray-400">
-              <span className="cursor-default">Termos de Uso</span>
-              <span>·</span>
-              <span className="cursor-default">Política de Privacidade</span>
-              <span>·</span>
-              <span className="cursor-default">Código de Conduta</span>
-              <span>·</span>
-              <span className="cursor-default">Canal de Denúncia</span>
-            </div>
+        <div className="border-t pt-6" style={{ borderColor: '#dee2e6' }}>
+          <div className="text-sm text-gray-600">
+            <span className="font-bold">© Dcruz Imóveis.</span>
+            <span className="ml-1">Todos os direitos reservados.</span>
           </div>
         </div>
       </div>

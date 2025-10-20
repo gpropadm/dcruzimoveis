@@ -20,12 +20,13 @@ import {
 } from '@/lib/maskUtils'
 import MapSelector from '@/components/MapSelector'
 import { toast } from 'react-toastify'
+import { getAddressFromCEP } from '@/lib/geocoding'
 
 // Force dynamic rendering for admin pages
 export const dynamic = 'force-dynamic'
 
 // Importação dinâmica do editor para evitar problemas de SSR
-const RichTextEditor = dynamicImport(() => import('@/components/RichTextEditor'), { ssr: false })
+const SimpleEditor = dynamicImport(() => import('@/components/SimpleEditor'), { ssr: false })
 
 interface Property {
   id: string
@@ -110,6 +111,10 @@ export default function EditProperty() {
     floor_commercial: '',
     businessCenter: '',
     features: [] as string[],
+    // Formas de pagamento
+    acceptsFinancing: false,
+    acceptsTrade: false,
+    acceptsCar: false,
     // Coordenadas GPS
     latitude: '',
     longitude: '',
@@ -221,6 +226,10 @@ export default function EditProperty() {
         floor_commercial: data.floor_commercial || '',
         businessCenter: data.businessCenter || '',
         features: data.features ? (Array.isArray(data.features) ? data.features : JSON.parse(data.features || '[]')) : [],
+        // Formas de pagamento
+        acceptsFinancing: data.acceptsFinancing || false,
+        acceptsTrade: data.acceptsTrade || false,
+        acceptsCar: data.acceptsCar || false,
         // Coordenadas GPS
         latitude: data.latitude !== null && data.latitude !== undefined ? data.latitude.toString() : '',
         longitude: data.longitude !== null && data.longitude !== undefined ? data.longitude.toString() : '',
@@ -252,8 +261,17 @@ export default function EditProperty() {
     console.log('📸 Imagens mudaram:', imagesChanged)
     console.log('🎬 Vídeos mudaram:', videosChanged)
 
+    console.log('📦 Formas de pagamento antes de salvar:', {
+      acceptsFinancing: formData.acceptsFinancing,
+      acceptsTrade: formData.acceptsTrade,
+      acceptsCar: formData.acceptsCar
+    })
+
     const updateData: any = {
       ...formData,
+      acceptsFinancing: formData.acceptsFinancing,
+      acceptsTrade: formData.acceptsTrade,
+      acceptsCar: formData.acceptsCar,
       cep: formData.zipcode ? parseCEP(formData.zipcode) : null,
       price: parseCurrency(formData.price),
       bedrooms: parseNumber(formData.bedrooms),
@@ -293,6 +311,11 @@ export default function EditProperty() {
     }
 
     console.log('📦 Tamanho do payload:', JSON.stringify(updateData).length, 'bytes')
+    console.log('📤 DADOS COMPLETOS SENDO ENVIADOS:', JSON.stringify({
+      acceptsFinancing: updateData.acceptsFinancing,
+      acceptsTrade: updateData.acceptsTrade,
+      acceptsCar: updateData.acceptsCar
+    }))
 
     try {
       const response = await fetch(`/api/admin/properties/${propertyId}`, {
@@ -361,23 +384,23 @@ export default function EditProperty() {
     if (cleanCep.length !== 8) return
 
     try {
-      const response = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`)
-      if (!response.ok) throw new Error('CEP not found')
+      // Usar a função que já corrige automaticamente as regiões do DF
+      const addressData = await getAddressFromCEP(cep)
 
-      const data = await response.json()
-
-      if (data.erro) {
+      if (!addressData) {
         toast.error('CEP não encontrado!')
         return
       }
 
-      // Preenche os campos automaticamente
+      // Preenche os campos automaticamente com a cidade corrigida
       setFormData(prev => ({
         ...prev,
-        address: data.logradouro || '',
-        city: data.localidade || '',
-        state: data.uf || ''
+        address: addressData.logradouro || '',
+        city: addressData.localidade || '', // Já vem com a região administrativa correta (Santa Maria, Gama, etc)
+        state: addressData.uf || ''
       }))
+
+      console.log(`✅ CEP ${cep} → Cidade: ${addressData.localidade}`)
 
     } catch (error) {
       console.error('Erro ao buscar CEP:', error)
@@ -389,10 +412,17 @@ export default function EditProperty() {
     const { name, value, type } = e.target
 
     if (type === 'checkbox') {
-      setFormData(prev => ({
-        ...prev,
-        [name]: (e.target as HTMLInputElement).checked
-      }))
+      const checked = (e.target as HTMLInputElement).checked
+      console.log(`✅ Checkbox ${name} alterado para:`, checked)
+      console.log('📋 FormData antes:', formData[name as keyof typeof formData])
+      setFormData(prev => {
+        const newData = {
+          ...prev,
+          [name]: checked
+        }
+        console.log('📋 FormData depois:', newData[name as keyof typeof newData])
+        return newData
+      })
     } else if (name === 'price' || name === 'condoFee' || name === 'iptu') {
       // Aplicar máscara de dinheiro no campo preço, condomínio e IPTU
       const formattedValue = formatCurrency(value)
@@ -821,10 +851,14 @@ export default function EditProperty() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Descrição *
                   </label>
-                  <RichTextEditor
+                  <textarea
+                    name="description"
                     value={formData.description}
-                    onChange={(content) => setFormData({ ...formData, description: content })}
+                    onChange={handleChange}
+                    rows={6}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#7360ee] focus:border-[#7360ee]"
                     placeholder="Descreva as características do imóvel..."
+                    required
                   />
                 </div>
 
@@ -889,6 +923,55 @@ export default function EditProperty() {
                       <span className="text-sm font-medium text-gray-700">Imóvel em destaque</span>
                     </label>
                   </div>
+
+                </div>
+
+                <div className="col-span-3 mt-6 pt-6 border-t border-gray-200">
+                  <p className="text-sm font-medium text-gray-700 mb-4">Formas de Pagamento Aceitas:</p>
+
+                  <div className="space-y-3">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="acceptsFinancing"
+                        checked={formData.acceptsFinancing}
+                        onChange={handleChange}
+                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">
+                        Aceita Financiamento Bancário
+                      </span>
+                    </label>
+
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="acceptsTrade"
+                        checked={formData.acceptsTrade}
+                        onChange={handleChange}
+                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">
+                        Aceita Permuta/Troca
+                      </span>
+                    </label>
+
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="acceptsCar"
+                        checked={formData.acceptsCar}
+                        onChange={handleChange}
+                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">
+                        Aceita Carro como Parte do Pagamento
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="hidden">
                 </div>
               </div>
             </div>
