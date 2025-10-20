@@ -106,7 +106,7 @@ export default function LeadForm({ propertyId, propertyTitle, propertyPrice, pro
   return (
     <form onSubmit={handleSubmit} className="my-2" style={{ width: '100%' }}>
       {/* Nome */}
-      <label className="p-0 mb-2 text-muted position-relative" style={{ fontSize: '0.7rem', width: '100%', display: 'block' }}>
+      <label className="p-0 mb-2 text-black position-relative" style={{ fontSize: '0.7rem', width: '100%', display: 'block' }}>
         <b className="position-absolute px-3" style={{ fontSize: '0.7rem', fontWeight: 600, top: '6px' }}>
           Nome
         </b>
@@ -133,7 +133,7 @@ export default function LeadForm({ propertyId, propertyTitle, propertyPrice, pro
       </label>
 
       {/* Telefone */}
-      <label className="p-0 mb-2 text-muted position-relative" style={{ fontSize: '0.7rem', width: '100%', display: 'block' }}>
+      <label className="p-0 mb-2 text-black position-relative" style={{ fontSize: '0.7rem', width: '100%', display: 'block' }}>
         <b className="position-absolute px-3" style={{ fontSize: '0.7rem', fontWeight: 600, top: '6px' }}>
           Telefone
         </b>
@@ -159,7 +159,7 @@ export default function LeadForm({ propertyId, propertyTitle, propertyPrice, pro
       </label>
 
       {/* E-mail */}
-      <label className="p-0 mb-2 text-muted position-relative" style={{ fontSize: '0.7rem', width: '100%', display: 'block' }}>
+      <label className="p-0 mb-2 text-black position-relative" style={{ fontSize: '0.7rem', width: '100%', display: 'block' }}>
         <b className="position-absolute px-3" style={{ fontSize: '0.7rem', fontWeight: 600, top: '6px' }}>
           E-mail
         </b>
@@ -185,7 +185,7 @@ export default function LeadForm({ propertyId, propertyTitle, propertyPrice, pro
       </label>
 
       {/* Mensagem */}
-      <label className="p-0 mb-2 text-muted position-relative" style={{ fontSize: '0.7rem', width: '100%', display: 'block' }}>
+      <label className="p-0 mb-2 text-black position-relative" style={{ fontSize: '0.7rem', width: '100%', display: 'block' }}>
         <b className="position-absolute px-3" style={{ fontSize: '0.7rem', fontWeight: 600, top: '6px' }}>
           Mensagem <span style={{ opacity: 0.6 }}>(opcional)</span>
         </b>

@@ -194,7 +194,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               <div className="bg-white rounded-xl shadow-sm p-6">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+                    <h1 className="text-2xl md:text-3xl font-bold text-black mb-1">
                       {property.title}
                     </h1>
                     <div className="flex items-center" style={{ color: '#5a5a5a' }}>
@@ -225,7 +225,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
 
               {/* Características */}
               <div className="bg-white rounded-xl shadow-sm p-6">
-                <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 flex items-center">
+                <h2 className="text-lg md:text-xl font-bold text-black mb-4 flex items-center">
                   <BuildingOfficeIcon className="w-6 h-6 mr-2" />
                   Características
                 </h2>
@@ -235,14 +235,14 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                       <HomeIcon className="w-4 h-4 text-gray-500 mr-2" />
                       <span className="text-sm text-gray-600">Tipo:</span>
                     </div>
-                    <span className="text-sm font-semibold text-gray-900">{property.category}</span>
+                    <span className="text-sm font-semibold text-black">{property.category}</span>
                   </div>
                   <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-50">
                     <div className="flex items-center">
                       <CurrencyDollarIcon className="w-4 h-4 text-gray-500 mr-2" />
                       <span className="text-sm text-gray-600">Finalidade:</span>
                     </div>
-                    <span className="text-sm font-semibold text-gray-900">{property.type === 'venda' ? 'Venda' : 'Aluguel'}</span>
+                    <span className="text-sm font-semibold text-black">{property.type === 'venda' ? 'Venda' : 'Aluguel'}</span>
                   </div>
                   {property.apartmentTotalArea && (
                     <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-50">
@@ -252,7 +252,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                         </svg>
                         <span className="text-sm text-gray-600">Área Total:</span>
                       </div>
-                      <span className="text-sm font-semibold text-gray-900">{property.apartmentTotalArea}m²</span>
+                      <span className="text-sm font-semibold text-black">{property.apartmentTotalArea}m²</span>
                     </div>
                   )}
                   {property.apartmentUsefulArea && (
@@ -263,7 +263,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                         </svg>
                         <span className="text-sm text-gray-600">Área Útil:</span>
                       </div>
-                      <span className="text-sm font-semibold text-gray-900">{property.apartmentUsefulArea}m²</span>
+                      <span className="text-sm font-semibold text-black">{property.apartmentUsefulArea}m²</span>
                     </div>
                   )}
 
@@ -276,7 +276,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             <BuildingOffice2Icon className="w-4 h-4 text-gray-500 mr-2" />
                             <span className="text-sm text-gray-600">Andar:</span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">{property.floor}º andar</span>
+                          <span className="text-sm font-semibold text-black">{property.floor}º andar</span>
                         </div>
                       )}
                       {property.suites && (
@@ -287,7 +287,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             </svg>
                             <span className="text-sm text-gray-600">Suítes:</span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">{property.suites}</span>
+                          <span className="text-sm font-semibold text-black">{property.suites}</span>
                         </div>
                       )}
                       {property.condoFee && (
@@ -298,7 +298,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             </svg>
                             <span className="text-sm text-gray-600">Condomínio:</span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">
+                          <span className="text-sm font-semibold text-black">
                             {new Intl.NumberFormat('pt-BR', {
                               style: 'currency',
                               currency: 'BRL'
@@ -312,7 +312,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             <DocumentTextIcon className="w-4 h-4 text-gray-500 mr-2" />
                             <span className="text-sm text-gray-600">IPTU:</span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">
+                          <span className="text-sm font-semibold text-black">
                             {new Intl.NumberFormat('pt-BR', {
                               style: 'currency',
                               currency: 'BRL'
@@ -353,7 +353,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               {/* Comodidades do Condomínio - Separado apenas para apartamentos */}
               {property.category === 'apartamento' && property.amenities && (
                 <div className="bg-white rounded-xl shadow-sm p-6">
-                  <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-6">
+                  <h2 className="text-lg md:text-xl font-bold text-black mb-6">
                     Comodidades do Condomínio
                   </h2>
 
@@ -656,7 +656,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
         {relatedProperties.length > 0 && (
           <div className="pb-8">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6 mt-2 text-center">Imóveis que Poderá Gostar</h2>
+              <h2 className="text-3xl font-bold text-black mb-6 mt-2 text-center">Imóveis que Poderá Gostar</h2>
             </div>
             <PropertyStoriesSection
               properties={relatedProperties}
