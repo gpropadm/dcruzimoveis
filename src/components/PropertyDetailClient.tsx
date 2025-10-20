@@ -504,7 +504,8 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                         onClick={() => setIsAppointmentModalOpen(true)}
                         className="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2 py-3 font-sora fw-semibold"
                         style={{
-                          fontSize: '14px'
+                          fontSize: '14px',
+                          border: '1px solid #e0e0e0'
                         }}
                       >
                         <i className="fas fa-calendar" style={{ fontSize: '14px' }}></i>

@@ -218,7 +218,8 @@ export default function LeadForm({ propertyId, propertyTitle, propertyPrice, pro
         disabled={loading}
         style={{
           fontSize: '14px',
-          padding: '0.75rem 1rem'
+          padding: '0.75rem 1rem',
+          border: '1px solid #e0e0e0'
         }}
       >
         {loading ? 'Enviando...' : 'Enviar Interesse'}
