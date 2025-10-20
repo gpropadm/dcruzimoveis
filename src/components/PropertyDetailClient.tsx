@@ -61,6 +61,8 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
   const [relatedProperties, setRelatedProperties] = useState<any[]>([])
   const [loadingRelated, setLoadingRelated] = useState(true)
   const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false)
+  const [companyName, setCompanyName] = useState('Dcruz Imóveis')
+  const [contactPhone, setContactPhone] = useState('(61) 9999-9999')
 
   // Breadcrumbs baseados na propriedade
   const breadcrumbItems = [
@@ -88,6 +90,23 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
   }
 
   const images = parseImages(property.images)
+
+  // Carregar configurações da imobiliária
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await fetch('/api/settings')
+        const data = await response.json()
+        if (data?.settings) {
+          if (data.settings.companyName) setCompanyName(data.settings.companyName)
+          if (data.settings.contactPhone) setContactPhone(data.settings.contactPhone)
+        }
+      } catch (error) {
+        console.error('Erro ao carregar configurações:', error)
+      }
+    }
+    fetchSettings()
+  }, [])
 
   // Registrar visualização
   useEffect(() => {
@@ -539,7 +558,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             color: '#212529'
                           }}
                         >
-                          BS Imóveis
+                          {companyName}
                         </div>
                         <div
                           className="font-sora"
@@ -548,7 +567,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             color: '#6c757d'
                           }}
                         >
-                          61 98579-6033
+                          {contactPhone}
                         </div>
                       </div>
                     </div>
