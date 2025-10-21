@@ -1,0 +1,16 @@
+# Ambientes virtuais Python
+agents/
+*_env/
+venv/
+env/
+
+# Node modules
+node_modules/
+
+# Arquivos temporários
+*.log
+.DS_Store
+.env.local
+
+# Cache
+.next/cache/
