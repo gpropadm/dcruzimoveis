@@ -609,7 +609,7 @@ export default function NewProperty() {
           {/* Informações Básicas */}
           <div className="bg-white shadow rounded-lg">
             <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Informações Básicas</h3>
+              <h3 className="text-lg font-medium text-black-900">Informações Básicas</h3>
             </div>
             <div className="p-6 space-y-6">
               <div>
