@@ -109,10 +109,10 @@ export default function AdminLogin() {
           </div>
 
           <div>
-            <h2 className="text-3xl font-bold text-gray-600">
+            <h2 className="text-3xl font-bold text-black-900">
               Fazer Login
             </h2>
-            <p className="mt-2 text-sm text-gray-200">
+            <p className="mt-2 text-sm text-gray-600">
               Entre com suas credenciais para acessar o painel administrativo
             </p>
           </div>
