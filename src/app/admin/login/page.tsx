@@ -109,7 +109,7 @@ export default function AdminLogin() {
           </div>
 
           <div>
-            <h2 className="text-3xl">
+            <h2 className="mt-2 text-sm text-gray-600">
               Fazer Login
             </h2>
             <p className="mt-2 text-sm text-gray-600">
