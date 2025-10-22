@@ -46,7 +46,7 @@ export default function Footer() {
 
           {/* Logo e Endereço */}
           <div>
-            <h3 className="text-2xl font-bold mb-4" style={{ color: '#666666' }}>BS Imóveis</h3>
+            <h3 className="text-2xl font-bold mb-4" style={{ color: '#000000' }}>BS Imóveis</h3>
             {(address || city || state) && (
               <div className="flex items-start text-sm text-gray-600 mb-3">
                 <i className="fas fa-map-marker-alt mr-2 mt-1" style={{ fontSize: '14px' }}></i>
@@ -60,7 +60,7 @@ export default function Footer() {
 
           {/* Contato */}
           <div>
-            <h5 className="text-lg font-semibold mb-4" style={{ color: '#666666' }}>Contato</h5>
+            <h5 className="text-lg font-semibold mb-4" style={{ color: '#000000' }}>Contato</h5>
             <div className="flex items-center text-sm">
               <i className="fab fa-whatsapp mr-2 text-gray-600" style={{ fontSize: '16px' }}></i>
               <span className="text-gray-600">{contactPhone}</span>
@@ -69,7 +69,7 @@ export default function Footer() {
 
           {/* Redes Sociais */}
           <div>
-            <h5 className="text-lg font-semibold mb-4" style={{ color: '#666666' }}>Redes Sociais</h5>
+            <h5 className="text-lg font-semibold mb-4" style={{ color: '#000000' }}>Redes Sociais</h5>
             <div className="flex space-x-4">
               <a
                 href={socialLinks.facebook || '#'}
