@@ -22,7 +22,7 @@ function PropertyImage({ images, title }: { images?: string; title: string }) {
   }
 
   return (
-    <div className="w-24 h-24 bg-gray-200 rounded-sm overflow-hidden">
+    <div className="w-24 h-20 bg-gray-200 rounded-sm overflow-hidden">
       {!showPlaceholder ? (
         <img
           src={firstImage}
@@ -39,9 +39,9 @@ function PropertyImage({ images, title }: { images?: string; title: string }) {
 
 function PlaceholderIcon() {
   return (
-    <div className="w-24 h-24 bg-gray-200 rounded-sm overflow-hidden">
+    <div className="w-24 h-20 bg-gray-200 rounded-sm overflow-hidden">
       <div className="w-full h-full flex items-center justify-center text-gray-800">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
           <circle cx="8.5" cy="8.5" r="1.5"/>
           <polyline points="21,15 16,10 5,21"/>
@@ -101,7 +101,6 @@ interface Property {
   address: string
   images: string
   featured: boolean
-  views: number
   createdAt: string
 }
 
@@ -380,9 +379,6 @@ export default function AdminPropertiesPage() {
                     Status
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Visualizações
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Ações
                   </th>
                 </tr>
@@ -435,15 +431,6 @@ export default function AdminPropertiesPage() {
                             ⭐ Destaque
                           </span>
                         )}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center space-x-2">
-                        <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                        <span className="text-sm text-gray-900 font-medium">{property.views || 0}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
