@@ -37,7 +37,7 @@ interface Property {
   state: string
   zipcode: string
   price: number
-  type: 'venda' | 'aluguel'
+  type: 'venda' | 'aluguel' | 'lancamento' | 'empreendimento'
   category: string
   bedrooms: number
   bathrooms: number
@@ -74,7 +74,7 @@ export default function EditProperty() {
     state: '',
     zipcode: '',
     price: '',
-    type: 'venda' as 'venda' | 'aluguel',
+    type: 'venda' as 'venda' | 'aluguel' | 'lancamento' | 'empreendimento',
     status: 'disponivel',
     category: '',
     bedrooms: '',
@@ -872,6 +872,8 @@ export default function EditProperty() {
                     >
                       <option value="venda">Venda</option>
                       <option value="aluguel">Aluguel</option>
+                      <option value="lancamento">Lançamento</option>
+                      <option value="empreendimento">Empreendimento</option>
                     </select>
                   </div>
 

@@ -670,6 +670,8 @@ export default function NewProperty() {
                   >
                     <option value="venda">Venda</option>
                     <option value="aluguel">Aluguel</option>
+                    <option value="lancamento">Lançamento</option>
+                    <option value="empreendimento">Empreendimento</option>
                   </select>
                 </div>
               </div>
