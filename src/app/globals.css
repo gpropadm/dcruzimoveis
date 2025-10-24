@@ -484,3 +484,11 @@ textarea {
   color: #000000 !important;
   font-weight: 500;
 }
+
+/* Escurecer títulos de seção no admin */
+h3.text-gray-900,
+h3.font-semibold,
+h4.text-gray-900,
+h4.font-medium {
+  color: #000000 !important;
+}
