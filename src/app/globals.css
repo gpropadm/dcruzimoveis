@@ -489,6 +489,10 @@ textarea {
 h3.text-gray-900,
 h3.font-semibold,
 h4.text-gray-900,
-h4.font-medium {
+h4.font-medium,
+h5.text-blue-800,
+h5.text-gray-700,
+h5.font-medium,
+h5.font-semibold {
   color: #000000 !important;
 }
