@@ -107,9 +107,9 @@ export default function LeadForm({ propertyId, propertyTitle, propertyPrice, pro
     <form onSubmit={handleSubmit} className="my-2" style={{ width: '100%' }}>
       {/* Nome */}
       <label className="p-0 mb-2 text-black position-relative" style={{ fontSize: '0.7rem', width: '100%', display: 'block' }}>
-        <b className="position-absolute px-3" style={{ fontSize: '0.7rem', fontWeight: 600, top: '6px' }}>
+        <span className="position-absolute px-3" style={{ fontSize: '0.7rem', fontWeight: 400, top: '6px' }}>
           Nome
-        </b>
+        </span>
         <input
           type="text"
           name="name"
@@ -134,9 +134,9 @@ export default function LeadForm({ propertyId, propertyTitle, propertyPrice, pro
 
       {/* Telefone */}
       <label className="p-0 mb-2 text-black position-relative" style={{ fontSize: '0.7rem', width: '100%', display: 'block' }}>
-        <b className="position-absolute px-3" style={{ fontSize: '0.7rem', fontWeight: 600, top: '6px' }}>
+        <span className="position-absolute px-3" style={{ fontSize: '0.7rem', fontWeight: 400, top: '6px' }}>
           Telefone
-        </b>
+        </span>
         <input
           type="tel"
           name="phone"
@@ -160,9 +160,9 @@ export default function LeadForm({ propertyId, propertyTitle, propertyPrice, pro
 
       {/* E-mail */}
       <label className="p-0 mb-2 text-black position-relative" style={{ fontSize: '0.7rem', width: '100%', display: 'block' }}>
-        <b className="position-absolute px-3" style={{ fontSize: '0.7rem', fontWeight: 600, top: '6px' }}>
+        <span className="position-absolute px-3" style={{ fontSize: '0.7rem', fontWeight: 400, top: '6px' }}>
           E-mail
-        </b>
+        </span>
         <input
           type="email"
           name="email"
@@ -186,9 +186,9 @@ export default function LeadForm({ propertyId, propertyTitle, propertyPrice, pro
 
       {/* Mensagem */}
       <label className="p-0 mb-2 text-black position-relative" style={{ fontSize: '0.7rem', width: '100%', display: 'block' }}>
-        <b className="position-absolute px-3" style={{ fontSize: '0.7rem', fontWeight: 600, top: '6px' }}>
+        <span className="position-absolute px-3" style={{ fontSize: '0.7rem', fontWeight: 400, top: '6px' }}>
           Mensagem <span style={{ opacity: 0.6 }}>(opcional)</span>
-        </b>
+        </span>
         <textarea
           name="message"
           className="form-control lead-form-input"
@@ -237,7 +237,7 @@ export default function LeadForm({ propertyId, propertyTitle, propertyPrice, pro
           box-shadow: none !important;
           outline: none !important;
         }
-        label b {
+        label span {
           z-index: 1;
           background: transparent;
         }
