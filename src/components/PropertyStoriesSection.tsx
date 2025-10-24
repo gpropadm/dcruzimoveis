@@ -783,8 +783,9 @@ function ArboPropertyCard({ property, onViewDetails, onVideoClick, formatPrice }
                           <div
                             className="d-flex justify-content-center align-items-center c-pointer rounded-circle bg-white"
                             onClick={prevImage}
+                            style={{ width: '32px', height: '32px' }}
                           >
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                               <polyline points="15,18 9,12 15,6"></polyline>
                             </svg>
                           </div>
@@ -841,8 +842,9 @@ function ArboPropertyCard({ property, onViewDetails, onVideoClick, formatPrice }
                           <div
                             className="d-flex justify-content-center align-items-center c-pointer rounded-circle bg-white"
                             onClick={nextImage}
+                            style={{ width: '32px', height: '32px' }}
                           >
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                               <polyline points="9,18 15,12 9,6"></polyline>
                             </svg>
                           </div>
