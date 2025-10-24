@@ -3,6 +3,7 @@
 import { SessionProvider } from 'next-auth/react'
 import { ToastProvider } from '@/contexts/ToastContext'
 import { ThemeProvider } from '@/contexts/ThemeContext'
+import { ChatbotProvider } from '@/contexts/ChatbotContext'
 
 export default function Providers({
   children,
@@ -13,7 +14,9 @@ export default function Providers({
     <SessionProvider>
       <ThemeProvider>
         <ToastProvider>
-          {children}
+          <ChatbotProvider>
+            {children}
+          </ChatbotProvider>
         </ToastProvider>
       </ThemeProvider>
     </SessionProvider>

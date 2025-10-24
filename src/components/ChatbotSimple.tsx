@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { FiMessageCircle, FiX, FiSend } from 'react-icons/fi'
+import { useChatbot } from '@/contexts/ChatbotContext'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -9,6 +10,7 @@ interface Message {
 }
 
 export default function ChatbotSimple() {
+  const { setSelectedPropertySlugs } = useChatbot()
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -56,15 +58,19 @@ export default function ChatbotSimple() {
       if (response.ok) {
         setMessages(data.conversationHistory)
 
-        // Detectar URLs de imóveis na resposta do assistente e abrir em nova aba
+        // Detectar URLs de imóveis na resposta do assistente e atualizar página
         const lastAssistantMessage = data.conversationHistory[data.conversationHistory.length - 1]
         if (lastAssistantMessage && lastAssistantMessage.role === 'assistant') {
           const urlRegex = /https:\/\/www\.bsimoveisdf\.com\.br\/imovel\/([^\s]+)/g
-          const urls = lastAssistantMessage.content.match(urlRegex)
+          const matches = [...lastAssistantMessage.content.matchAll(urlRegex)]
 
-          if (urls && urls.length > 0) {
-            // Abrir primeira URL em nova aba
-            window.open(urls[0], '_blank')
+          if (matches.length > 0) {
+            // Extrair slugs dos imóveis
+            const slugs = matches.map(match => match[1])
+            setSelectedPropertySlugs(slugs)
+
+            // Scroll suave para o topo da página para ver os imóveis
+            window.scrollTo({ top: 0, behavior: 'smooth' })
           }
         }
       } else {
@@ -231,14 +237,33 @@ export default function ChatbotSimple() {
                     borderBottomLeftRadius: msg.role === 'assistant' ? '4px' : '16px'
                   }}
                 >
-                  <p style={{
+                  <div style={{
                     fontSize: '14px',
                     whiteSpace: 'pre-wrap',
                     lineHeight: '1.6',
                     margin: 0
                   }}>
-                    {msg.content}
-                  </p>
+                    {msg.content.split(/(https:\/\/www\.bsimoveisdf\.com\.br\/[^\s]+)/g).map((part, i) => {
+                      if (part.match(/^https:\/\/www\.bsimoveisdf\.com\.br\//)) {
+                        return (
+                          <a
+                            key={i}
+                            href={part}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              color: msg.role === 'user' ? 'white' : '#7162f0',
+                              textDecoration: 'underline',
+                              fontWeight: 600
+                            }}
+                          >
+                            Ver imóvel
+                          </a>
+                        )
+                      }
+                      return part
+                    })}
+                  </div>
                 </div>
               </div>
             ))}

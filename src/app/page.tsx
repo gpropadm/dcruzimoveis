@@ -8,12 +8,15 @@ import SearchForm from '@/components/MainSearchForm'
 import AIRecommendations from '@/components/AIRecommendations'
 import MobileBottomNav from '@/components/MobileBottomNav'
 import { useTheme } from '@/contexts/ThemeContext'
+import { useChatbot } from '@/contexts/ChatbotContext'
 
 export default function Home() {
   const { primaryColor } = useTheme()
+  const { selectedPropertySlugs } = useChatbot()
   const [properties, setProperties] = useState<any[]>([])
   const [filteredProperties, setFilteredProperties] = useState<any[]>([])
   const [propertiesLoading, setPropertiesLoading] = useState(true)
+  const [chatbotProperties, setChatbotProperties] = useState<any[]>([])
   const [headerSettings, setHeaderSettings] = useState({
     headerTitle: '',
     headerSubtitle: ''
@@ -63,6 +66,27 @@ export default function Home() {
     loadSettings()
   }, [])
 
+  // Carregar imóveis selecionados pelo chatbot
+  useEffect(() => {
+    if (selectedPropertySlugs.length > 0) {
+      const loadChatbotProperties = async () => {
+        try {
+          const slugsParam = selectedPropertySlugs.join(',')
+          const response = await fetch(`/api/properties?slugs=${slugsParam}`)
+          if (response.ok) {
+            const data = await response.json()
+            setChatbotProperties(data || [])
+          }
+        } catch (error) {
+          console.error('❌ Erro ao carregar imóveis do chatbot:', error)
+        }
+      }
+      loadChatbotProperties()
+    } else {
+      setChatbotProperties([])
+    }
+  }, [selectedPropertySlugs])
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -89,6 +113,15 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Imóveis sugeridos pelo chatbot */}
+        {chatbotProperties.length > 0 && (
+          <PropertyStoriesSection
+            properties={chatbotProperties}
+            loading={false}
+            title="🤖 Imóveis encontrados para você"
+          />
+        )}
 
         {/* Propriedades para venda */}
         <PropertyStoriesSection

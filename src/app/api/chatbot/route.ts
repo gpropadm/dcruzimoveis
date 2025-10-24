@@ -119,9 +119,11 @@ ${i + 1}. ${p.title}
       : 'Desculpe, não consegui processar sua mensagem.'
 
     // Detectar se há link de imóvel na resposta e adicionar aviso
-    const urlRegex = /https:\/\/www\.bsimoveisdf\.com\.br\/imovel\/([^\s]+)/
-    if (urlRegex.test(assistantMessage)) {
-      assistantMessage += '\n\n✨ Abrindo o imóvel em nova aba para você visualizar!'
+    const urlRegex = /https:\/\/www\.bsimoveisdf\.com\.br\/imovel\/([^\s]+)/g
+    const matches = assistantMessage.match(urlRegex)
+    if (matches && matches.length > 0) {
+      const count = matches.length
+      assistantMessage += `\n\n✨ ${count > 1 ? `Atualizei a página com ${count} imóveis` : 'Atualizei a página com o imóvel'} que você procura!${count === 1 ? ' Você também pode clicar no link para ver mais detalhes.' : ''}`
     }
 
     // Calcular custo estimado (Claude Sonnet 4.5)
