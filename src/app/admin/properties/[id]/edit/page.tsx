@@ -26,7 +26,7 @@ import { getAddressFromCEP } from '@/lib/geocoding'
 export const dynamic = 'force-dynamic'
 
 // Importação dinâmica do editor para evitar problemas de SSR
-const SimpleEditor = dynamicImport(() => import('@/components/SimpleEditor'), { ssr: false })
+const RichTextEditor = dynamicImport(() => import('@/components/RichTextEditor'), { ssr: false })
 
 interface Property {
   id: string

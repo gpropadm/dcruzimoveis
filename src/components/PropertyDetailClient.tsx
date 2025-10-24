@@ -213,7 +213,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               <div className="bg-white rounded-xl shadow-sm p-6">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h1 className="text-2xl md:text-3xl font-bold mb-1" style={{ color: '#000000' }}>
+                    <h1 className="text-xl md:text-2xl font-bold mb-1" style={{ color: '#000000' }}>
                       {property.title}
                     </h1>
                     <div className="flex items-center" style={{ color: '#5a5a5a' }}>
@@ -399,14 +399,26 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                 {/* Card de Contato Principal - Estilo Arbo */}
                 <div className="bg-white rounded-3 border p-4 mb-4" style={{ borderColor: '#e9ecef' }}>
                   <div className="mb-4">
-                    <div
-                      className="fw-bold mb-2 font-sora text-lg md:text-xl"
-                      style={{
-                        color: '#212529',
-                        lineHeight: '1.2'
-                      }}
-                    >
-                      {formatPrice(property.price)}
+                    {/* Tipo de Negócio e Preço na mesma linha */}
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <div
+                        className="fw-bold font-sora"
+                        style={{
+                          fontSize: '17px',
+                          color: '#212529'
+                        }}
+                      >
+                        {property.type === 'venda' ? 'Venda' : 'Aluguel'}
+                      </div>
+                      <div
+                        className="fw-bold font-sora"
+                        style={{
+                          fontSize: '17px',
+                          color: '#212529'
+                        }}
+                      >
+                        {formatPrice(property.price)}
+                      </div>
                     </div>
 
                     {/* Badge de Preço Reduzido */}
@@ -421,16 +433,18 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                       </div>
                     )}
 
-                    <div
-                      className="font-sora"
-                      style={{
-                        fontSize: '14px',
-                        color: '#6c757d'
-                      }}
-                    >
-                      {property.type === 'venda' ? 'À venda' : 'Para alugar'}
-                      {property.area && ` • ${formatPrice(property.price / property.area)}/m²`}
-                    </div>
+                    {/* Preço por m² */}
+                    {property.area && (
+                      <div
+                        className="font-sora text-end"
+                        style={{
+                          fontSize: '12px',
+                          color: '#6c757d'
+                        }}
+                      >
+                        {formatPrice(property.price / property.area)}/m²
+                      </div>
+                    )}
 
                     {/* Condomínio e IPTU */}
                     {(property.condoFee || property.iptu) && (

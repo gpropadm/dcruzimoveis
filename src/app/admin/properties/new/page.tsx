@@ -19,7 +19,7 @@ import {
 } from '@/lib/maskUtils'
 import { toast } from 'react-toastify'
 import MapSelector from '@/components/MapSelector'
-import SimpleTextEditor from '@/components/SimpleTextEditor'
+import RichTextEditor from '@/components/RichTextEditor'
 import { getAddressFromCEP } from '@/lib/geocoding'
 
 export default function NewProperty() {
@@ -631,7 +631,7 @@ export default function NewProperty() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Descrição
                 </label>
-                <SimpleTextEditor
+                <RichTextEditor
                   value={formData.description}
                   onChange={(content) => setFormData({ ...formData, description: content })}
                   placeholder="Descreva as características do imóvel..."
