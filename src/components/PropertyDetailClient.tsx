@@ -357,26 +357,26 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   <div className="flex flex-wrap gap-3">
                     {property.acceptsFinancing && (
                       <div className="flex items-center">
-                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
                         </svg>
-                        <span className="text-sm font-semibold text-black">Aceita Financiamento Bancário</span>
+                        <span className="text-sm text-gray-700">Aceita Financiamento Bancário</span>
                       </div>
                     )}
                     {property.acceptsTrade && (
                       <div className="flex items-center">
-                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
                         </svg>
-                        <span className="text-sm font-semibold text-black">Aceita Permuta/Troca</span>
+                        <span className="text-sm text-gray-700">Aceita Permuta/Troca</span>
                       </div>
                     )}
                     {property.acceptsCar && (
                       <div className="flex items-center">
-                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
                         </svg>
-                        <span className="text-sm font-semibold text-black">Aceita Carro como Parte do Pagamento</span>
+                        <span className="text-sm text-gray-700">Aceita Carro como Parte do Pagamento</span>
                       </div>
                     )}
                   </div>
