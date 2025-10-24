@@ -344,6 +344,36 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                 </div>
               </div>
 
+              {/* Formas de Pagamento Aceitas */}
+              {(property.acceptsFinancing || property.acceptsTrade || property.acceptsCar) && (
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                  <h2 className="text-lg md:text-xl font-bold mb-4 flex items-center" style={{ color: '#000000' }}>
+                    <CurrencyDollarIcon className="w-6 h-6 mr-2" />
+                    Formas de Pagamento Aceitas
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {property.acceptsFinancing && (
+                      <div className="flex items-center py-2 px-3 rounded-lg bg-gray-50">
+                        <span className="text-2xl mr-3">👍</span>
+                        <span className="text-sm font-semibold text-black">Aceita Financiamento Bancário</span>
+                      </div>
+                    )}
+                    {property.acceptsTrade && (
+                      <div className="flex items-center py-2 px-3 rounded-lg bg-gray-50">
+                        <span className="text-2xl mr-3">👍</span>
+                        <span className="text-sm font-semibold text-black">Aceita Permuta/Troca</span>
+                      </div>
+                    )}
+                    {property.acceptsCar && (
+                      <div className="flex items-center py-2 px-3 rounded-lg bg-gray-50">
+                        <span className="text-2xl mr-3">👍</span>
+                        <span className="text-sm font-semibold text-black">Aceita Carro como Parte do Pagamento</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {/* Sobre o Imóvel - Estilo Arbo */}
               {property.description && (
                 <div className="bg-white rounded-3 border p-4 p-md-5" style={{ borderColor: '#e9ecef' }}>
