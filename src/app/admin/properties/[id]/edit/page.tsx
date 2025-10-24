@@ -828,13 +828,13 @@ export default function EditProperty() {
         <form onSubmit={handleSubmit} className="space-y-8">
             <div className="bg-white shadow rounded-lg">
               {/* Informações Básicas */}
-              <div className="px-6 py-4 border-b border-gray-200">
+              <div className="px-6 py-4 border-b border-gray-300">
                 <h3 className="text-lg font-semibold text-gray-900">Informações Básicas</h3>
               </div>
               
               <div className="p-6 space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Título *
                   </label>
                   <input
@@ -843,12 +843,12 @@ export default function EditProperty() {
                     value={formData.title}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Descrição *
                   </label>
                   <RichTextEditor
@@ -860,7 +860,7 @@ export default function EditProperty() {
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Tipo *
                     </label>
                     <select
@@ -868,7 +868,7 @@ export default function EditProperty() {
                       value={formData.type}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     >
                       <option value="venda">Venda</option>
                       <option value="aluguel">Aluguel</option>
@@ -876,7 +876,7 @@ export default function EditProperty() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Status *
                     </label>
                     <select
@@ -884,7 +884,7 @@ export default function EditProperty() {
                       value={formData.status}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     >
                       <option value="disponivel">Disponível</option>
                       <option value="vendido">Vendido</option>
@@ -893,7 +893,7 @@ export default function EditProperty() {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Preço (R$) *
                     </label>
                     <input
@@ -902,7 +902,7 @@ export default function EditProperty() {
                       value={formData.price}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       placeholder="0,00"
                     />
                   </div>
@@ -914,7 +914,7 @@ export default function EditProperty() {
                         name="featured"
                         checked={formData.featured}
                         onChange={handleChange}
-                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded"
+                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded"
                       />
                       <span className="text-sm font-medium text-gray-700">Imóvel em destaque</span>
                     </label>
@@ -922,7 +922,7 @@ export default function EditProperty() {
 
                 </div>
 
-                <div className="col-span-3 mt-6 pt-6 border-t border-gray-200">
+                <div className="col-span-3 mt-6 pt-6 border-t border-gray-300">
                   <p className="text-sm font-medium text-gray-700 mb-4">Formas de Pagamento Aceitas:</p>
 
                   <div className="space-y-3">
@@ -932,7 +932,7 @@ export default function EditProperty() {
                         name="acceptsFinancing"
                         checked={formData.acceptsFinancing}
                         onChange={handleChange}
-                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded"
+                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded"
                       />
                       <span className="ml-2 text-sm text-gray-700">
                         Aceita Financiamento Bancário
@@ -945,7 +945,7 @@ export default function EditProperty() {
                         name="acceptsTrade"
                         checked={formData.acceptsTrade}
                         onChange={handleChange}
-                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded"
+                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded"
                       />
                       <span className="ml-2 text-sm text-gray-700">
                         Aceita Permuta/Troca
@@ -958,7 +958,7 @@ export default function EditProperty() {
                         name="acceptsCar"
                         checked={formData.acceptsCar}
                         onChange={handleChange}
-                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded"
+                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded"
                       />
                       <span className="ml-2 text-sm text-gray-700">
                         Aceita Carro como Parte do Pagamento
@@ -974,14 +974,14 @@ export default function EditProperty() {
 
             {/* Localização */}
             <div className="bg-white shadow rounded-lg mt-6">
-              <div className="px-6 py-4 border-b border-gray-200">
+              <div className="px-6 py-4 border-b border-gray-300">
                 <h3 className="text-lg font-semibold text-gray-900">Localização</h3>
               </div>
               
               <div className="p-6 space-y-6">
                 {/* Campo CEP */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     CEP
                   </label>
                   <input
@@ -990,7 +990,7 @@ export default function EditProperty() {
                     value={formData.zipcode}
                     onChange={handleCepChange}
                     maxLength={9}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     placeholder="00000-000"
                   />
                   <p className="text-xs text-gray-500 mt-1">
@@ -999,7 +999,7 @@ export default function EditProperty() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Endereço *
                   </label>
                   <input
@@ -1008,13 +1008,13 @@ export default function EditProperty() {
                     value={formData.address}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Cidade *
                     </label>
                     <input
@@ -1023,12 +1023,12 @@ export default function EditProperty() {
                       value={formData.city}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Estado *
                     </label>
                     <input
@@ -1038,7 +1038,7 @@ export default function EditProperty() {
                       onChange={handleChange}
                       required
                       maxLength={2}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     />
                   </div>
                 </div>
@@ -1062,14 +1062,14 @@ export default function EditProperty() {
 
             {/* Categoria do Imóvel */}
             <div className="bg-white shadow rounded-lg mt-6">
-              <div className="px-6 py-4 border-b border-gray-200">
+              <div className="px-6 py-4 border-b border-gray-300">
                 <h3 className="text-lg font-semibold text-gray-900">Categoria do Imóvel</h3>
                 <p className="text-sm text-gray-600 mt-1">Selecione o tipo de imóvel para mostrar campos específicos</p>
               </div>
 
               <div className="p-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Categoria *
                   </label>
                   <select
@@ -1077,7 +1077,7 @@ export default function EditProperty() {
                     value={formData.category}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                   >
                     <option value="">Selecione uma categoria</option>
                     <option value="casa">Casa</option>
@@ -1093,7 +1093,7 @@ export default function EditProperty() {
                 {/* Área geral - Para todos os tipos que não são apartamento */}
                 {formData.category && !['apartamento', 'cobertura'].includes(formData.category) && (
                   <div className="mt-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Área Total (m²)
                     </label>
                     <input
@@ -1103,7 +1103,7 @@ export default function EditProperty() {
                       onChange={handleChange}
                       min="0"
                       step="0.01"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       placeholder="Ex: 250.50"
                     />
                   </div>
@@ -1114,7 +1114,7 @@ export default function EditProperty() {
             {/* Características Básicas - Para apartamento, casa, sobrado, cobertura e comercial */}
             {(formData.category === 'apartamento' || formData.category === 'casa' || formData.category === 'sobrado' || formData.category === 'cobertura' || formData.category === 'comercial') && (
               <div className="bg-white shadow rounded-lg mt-6">
-                <div className="px-6 py-4 border-b border-gray-200">
+                <div className="px-6 py-4 border-b border-gray-300">
                   <h3 className="text-lg font-semibold text-gray-900">Características Básicas</h3>
                   <p className="text-sm text-gray-600 mt-1">Informações gerais do imóvel</p>
                 </div>
@@ -1122,7 +1122,7 @@ export default function EditProperty() {
                 <div className="p-4 sm:p-6">
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Quartos *
                       </label>
                       <input
@@ -1132,12 +1132,12 @@ export default function EditProperty() {
                         onChange={handleChange}
                         required
                         min="0"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Banheiros *
                       </label>
                       <input
@@ -1147,12 +1147,12 @@ export default function EditProperty() {
                         onChange={handleChange}
                         required
                         min="0"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Vagas de Garagem *
                       </label>
                       <input
@@ -1162,7 +1162,7 @@ export default function EditProperty() {
                         onChange={handleChange}
                         required
                         min="0"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       />
                     </div>
                   </div>
@@ -1175,21 +1175,21 @@ export default function EditProperty() {
             {/* Casa */}
             {formData.category === 'casa' && (
               <div className="bg-white shadow rounded-lg mt-6">
-                <div className="px-6 py-4 border-b border-gray-200">
+                <div className="px-6 py-4 border-b border-gray-300">
                   <h3 className="text-lg font-semibold text-gray-900">Características da Casa</h3>
                   <p className="text-sm text-gray-600 mt-1">Informações específicas para casas</p>
                 </div>
                 <div className="p-6 space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Tipo de Casa
                       </label>
                       <select
                         name="houseType"
                         value={formData.houseType || ''}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       >
                         <option value="">Selecione</option>
                         <option value="terrea">Térrea</option>
@@ -1202,7 +1202,7 @@ export default function EditProperty() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Garagem
                       </label>
                       <input
@@ -1210,7 +1210,7 @@ export default function EditProperty() {
                         name="garage"
                         value={formData.garage || ''}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="Ex: Coberta para 2 carros"
                       />
                     </div>
@@ -1222,7 +1222,7 @@ export default function EditProperty() {
                       name="yard"
                       checked={formData.yard || false}
                       onChange={handleChange}
-                      className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded"
+                      className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded"
                     />
                     <label className="ml-2 text-sm text-gray-700">
                       Possui quintal
@@ -1235,7 +1235,7 @@ export default function EditProperty() {
             {/* Apartamento */}
             {(formData.category === 'apartamento' || formData.category === 'cobertura') && (
               <div className="bg-white shadow rounded-lg mt-6">
-                <div className="px-6 py-4 border-b border-gray-200">
+                <div className="px-6 py-4 border-b border-gray-300">
                   <h3 className="text-lg font-semibold text-gray-900">Informações do Apartamento</h3>
                   <p className="text-sm text-gray-600 mt-1">Dados específicos para apartamentos e coberturas</p>
                 </div>
@@ -1243,7 +1243,7 @@ export default function EditProperty() {
                   {/* Primeira linha - Andar e Suítes */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Andar
                       </label>
                       <input
@@ -1252,13 +1252,13 @@ export default function EditProperty() {
                         value={formData.floor || ''}
                         onChange={handleChange}
                         min="0"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="Ex: 5"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Suítes
                       </label>
                       <input
@@ -1267,7 +1267,7 @@ export default function EditProperty() {
                         value={formData.suites || ''}
                         onChange={handleChange}
                         min="0"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="Ex: 2"
                       />
                     </div>
@@ -1276,7 +1276,7 @@ export default function EditProperty() {
                   {/* Segunda linha - Áreas */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Área Total (m²)
                       </label>
                       <input
@@ -1284,13 +1284,13 @@ export default function EditProperty() {
                         name="apartmentTotalArea"
                         value={formData.apartmentTotalArea || ''}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="Ex: 120,50"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Área Útil (m²)
                       </label>
                       <input
@@ -1298,7 +1298,7 @@ export default function EditProperty() {
                         name="apartmentUsefulArea"
                         value={formData.apartmentUsefulArea || ''}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="Ex: 95,00"
                       />
                     </div>
@@ -1307,7 +1307,7 @@ export default function EditProperty() {
                   {/* Terceira linha - Valores */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Valor do Condomínio (R$)
                       </label>
                       <div className="relative">
@@ -1317,14 +1317,14 @@ export default function EditProperty() {
                           name="condoFee"
                           value={formData.condoFee || ''}
                           onChange={handleChange}
-                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                          className="w-full pl-10 pr-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                           placeholder="500,00"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         IPTU (R$)
                       </label>
                       <div className="relative">
@@ -1334,7 +1334,7 @@ export default function EditProperty() {
                           name="iptu"
                           value={formData.iptu || ''}
                           onChange={handleChange}
-                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                          className="w-full pl-10 pr-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                           placeholder="150,00"
                         />
                       </div>
@@ -1342,7 +1342,7 @@ export default function EditProperty() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Comodidades do Condomínio
                     </label>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -1374,7 +1374,7 @@ export default function EditProperty() {
                                 }))
                               }
                             }}
-                            className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded mr-2"
+                            className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded mr-2"
                           />
                           <span className="text-sm text-gray-700">{amenity}</span>
                         </label>
@@ -1388,21 +1388,21 @@ export default function EditProperty() {
             {/* Terreno */}
             {formData.category === 'terreno' && (
               <div className="bg-white shadow rounded-lg mt-6">
-                <div className="px-6 py-4 border-b border-gray-200">
+                <div className="px-6 py-4 border-b border-gray-300">
                   <h3 className="text-lg font-semibold text-gray-900">Informações do Terreno</h3>
                   <p className="text-sm text-gray-600 mt-1">Dados específicos para terrenos</p>
                 </div>
                 <div className="p-6 space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Zoneamento
                       </label>
                       <select
                         name="zoning"
                         value={formData.zoning || ''}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       >
                         <option value="">Selecione</option>
                         <option value="residencial">Residencial</option>
@@ -1414,14 +1414,14 @@ export default function EditProperty() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Topografia
                       </label>
                       <select
                         name="slope"
                         value={formData.slope || ''}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       >
                         <option value="">Selecione</option>
                         <option value="plano">Plano</option>
@@ -1432,7 +1432,7 @@ export default function EditProperty() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Frente do Terreno (metros)
                       </label>
                       <input
@@ -1442,7 +1442,7 @@ export default function EditProperty() {
                         onChange={handleChange}
                         min="0"
                         step="0.01"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="Ex: 12.5"
                       />
                     </div>
@@ -1454,21 +1454,21 @@ export default function EditProperty() {
             {/* Fazenda */}
             {formData.category === 'fazenda' && (
               <div className="bg-white shadow rounded-lg mt-6">
-                <div className="px-6 py-4 border-b border-gray-200">
+                <div className="px-6 py-4 border-b border-gray-300">
                   <h3 className="text-lg font-semibold text-gray-900">Informações da Fazenda</h3>
                   <p className="text-sm text-gray-600 mt-1">Dados específicos para fazendas e sítios</p>
                 </div>
                 <div className="p-6 space-y-6">
                   {/* Seletor de Unidade de Medida */}
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Unidade de Medida para Área
                     </label>
                     <select
                       name="areaUnit"
                       value={formData.areaUnit || 'hectares'}
                       onChange={handleChange}
-                      className="w-full md:w-64 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full md:w-64 px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     >
                       <option value="hectares">Hectares (ha)</option>
                       <option value="alqueires-sp">Alqueires Paulista (24.200 m²)</option>
@@ -1488,7 +1488,7 @@ export default function EditProperty() {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Área Total ({formData.areaUnit === 'metros' ? 'm²' :
                                     formData.areaUnit === 'quilometros' ? 'km²' :
                                     formData.areaUnit === 'hectares' ? 'ha' :
@@ -1504,13 +1504,13 @@ export default function EditProperty() {
                         onChange={handleChange}
                         min="0"
                         step="0.01"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="Ex: 50.5"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Área Cultivada ({formData.areaUnit === 'metros' ? 'm²' :
                                         formData.areaUnit === 'quilometros' ? 'km²' :
                                         formData.areaUnit === 'hectares' ? 'ha' :
@@ -1526,13 +1526,13 @@ export default function EditProperty() {
                         onChange={handleChange}
                         min="0"
                         step="0.01"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="Ex: 30.0"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Pastos ({formData.areaUnit === 'metros' ? 'm²' :
                                 formData.areaUnit === 'quilometros' ? 'km²' :
                                 formData.areaUnit === 'hectares' ? 'ha' :
@@ -1548,7 +1548,7 @@ export default function EditProperty() {
                         onChange={handleChange}
                         min="0"
                         step="0.01"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="Ex: 15.0"
                       />
                     </div>
@@ -1556,7 +1556,7 @@ export default function EditProperty() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Fontes de Água
                       </label>
                       <input
@@ -1564,13 +1564,13 @@ export default function EditProperty() {
                         name="waterSources"
                         value={formData.waterSources || ''}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="Ex: Poço artesiano, rio, nascente"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Benfeitorias da Fazenda
                       </label>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -1612,7 +1612,7 @@ export default function EditProperty() {
                                   }))
                                 }
                               }}
-                              className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded mr-2"
+                              className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded mr-2"
                             />
                             <span className="text-sm text-gray-700">{building}</span>
                           </label>
@@ -1627,21 +1627,21 @@ export default function EditProperty() {
             {/* Comercial */}
             {formData.category === 'comercial' && (
               <div className="bg-white shadow rounded-lg mt-6">
-                <div className="px-6 py-4 border-b border-gray-200">
+                <div className="px-6 py-4 border-b border-gray-300">
                   <h3 className="text-lg font-semibold text-gray-900">Informações Comerciais</h3>
                   <p className="text-sm text-gray-600 mt-1">Dados específicos para imóveis comerciais</p>
                 </div>
                 <div className="p-6 space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Tipo Comercial
                       </label>
                       <select
                         name="commercialType"
                         value={formData.commercialType || ''}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       >
                         <option value="">Selecione</option>
                         <option value="loja">Loja</option>
@@ -1658,7 +1658,7 @@ export default function EditProperty() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Andar
                       </label>
                       <input
@@ -1666,13 +1666,13 @@ export default function EditProperty() {
                         name="floor_commercial"
                         value={formData.floor_commercial || ''}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="Ex: Térreo, 1º, 2º"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-2">
                         Centro Empresarial
                       </label>
                       <input
@@ -1680,14 +1680,14 @@ export default function EditProperty() {
                         name="businessCenter"
                         value={formData.businessCenter || ''}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="Nome do edifício/centro"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Características e Facilidades
                     </label>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -1717,7 +1717,7 @@ export default function EditProperty() {
                                 }))
                               }
                             }}
-                            className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded mr-2"
+                            className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded mr-2"
                           />
                           <span className="text-sm text-gray-700">{feature}</span>
                         </label>
@@ -1730,7 +1730,7 @@ export default function EditProperty() {
 
             {/* Imagens */}
             <div className="bg-white shadow rounded-lg mt-6">
-              <div className="px-6 py-4 border-b border-gray-200">
+              <div className="px-6 py-4 border-b border-gray-300">
                 <h3 className="text-lg font-semibold text-gray-900">Imagens do Imóvel</h3>
                 <p className="text-sm text-gray-600 mt-1">Arraste e solte imagens ou clique para selecionar</p>
               </div>
@@ -1741,7 +1741,7 @@ export default function EditProperty() {
                   className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
                     dragActive 
                       ? 'border-[#7360ee] bg-[#7360ee]/10' 
-                      : 'border-gray-300 hover:border-gray-400'
+                      : 'border-gray-400 hover:border-gray-400'
                   }`}
                   onDrop={handleDrop}
                   onDragOver={handleDrag}
@@ -1874,7 +1874,7 @@ export default function EditProperty() {
 
             {/* Vídeos */}
             <div className="bg-white shadow rounded-lg mt-6">
-              <div className="px-6 py-4 border-b border-gray-200">
+              <div className="px-6 py-4 border-b border-gray-300">
                 <h3 className="text-lg font-semibold text-gray-900">Vídeos do Imóvel</h3>
                 <p className="text-sm text-gray-600 mt-1">Adicione vídeos para criar stories do imóvel</p>
               </div>
@@ -1882,7 +1882,7 @@ export default function EditProperty() {
               <div className="p-4 sm:p-6">
                 <div className="space-y-4">
                   {videos.map((video, index) => (
-                    <div key={index} className="border border-gray-200 rounded-lg p-4">
+                    <div key={index} className="border border-gray-300 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-3">
                         <label className="block text-sm font-medium text-gray-700">
                           Vídeo {index + 1} {index === 0 && <span className="text-[#7360ee]">(Principal)</span>}
@@ -1932,7 +1932,7 @@ export default function EditProperty() {
                           value={video}
                           onChange={(e) => updateVideo(index, e.target.value)}
                           placeholder="Cole a URL do vídeo aqui (YouTube, MP4, etc.)"
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                          className="flex-1 px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         />
                         <div className="relative">
                           <input
@@ -1945,7 +1945,7 @@ export default function EditProperty() {
                           />
                           <label
                             htmlFor={`video-upload-${index}`}
-                            className={`cursor-pointer inline-flex items-center justify-center w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7360ee] ${
+                            className={`cursor-pointer inline-flex items-center justify-center w-full sm:w-auto px-3 py-2 border border-gray-400 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7360ee] ${
                               uploadingVideo === index ? 'opacity-50 cursor-not-allowed' : ''
                             }`}
                             title="Upload de arquivo de vídeo"
@@ -2024,7 +2024,7 @@ export default function EditProperty() {
                   <button
                     type="button"
                     onClick={addVideo}
-                    className="w-full border-2 border-dashed border-gray-300 hover:border-blue-400 rounded-lg p-4 text-center text-gray-600 hover:text-[#7360ee] transition-colors"
+                    className="w-full border-2 border-dashed border-gray-400 hover:border-blue-400 rounded-lg p-4 text-center text-gray-600 hover:text-[#7360ee] transition-colors"
                   >
                     <div className="flex items-center justify-center space-x-2">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -2058,7 +2058,7 @@ export default function EditProperty() {
           <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6">
             <Link
               href="/admin/properties"
-              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-center"
+              className="px-6 py-2 border border-gray-400 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-center"
             >
               Cancelar
             </Link>

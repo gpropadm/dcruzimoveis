@@ -36,9 +36,9 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
   }
 
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden bg-white">
+    <div className="border border-gray-400 rounded-lg overflow-hidden bg-white">
       {/* Toolbar */}
-      <div className="bg-gray-50 border-b border-gray-300 p-2 flex gap-1 flex-wrap">
+      <div className="bg-gray-100 border-b border-gray-400 p-2 flex gap-1 flex-wrap">
         <button
           type="button"
           onClick={() => execCommand('bold')}
@@ -157,7 +157,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
       `}</style>
 
       {/* Hint */}
-      <div className="bg-gray-50 border-t border-gray-300 px-4 py-2 text-xs text-gray-500">
+      <div className="bg-gray-100 border-t border-gray-400 px-4 py-2 text-xs text-gray-600">
         Dica: Use os botões da barra de ferramentas para formatar o texto. Enter cria novo parágrafo.
       </div>
     </div>
