@@ -151,7 +151,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
       <style jsx>{`
         [contenteditable]:empty:before {
           content: attr(data-placeholder);
-          color: #9ca3af;
+          color: #6b7280;
           pointer-events: none;
         }
       `}</style>

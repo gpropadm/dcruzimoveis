@@ -455,3 +455,11 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 1;
   }
 }
+
+/* Escurecer placeholders dos inputs no admin */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #6b7280 !important; /* gray-500 mais escuro */
+  opacity: 1 !important;
+}
