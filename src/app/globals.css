@@ -463,3 +463,13 @@ select::placeholder {
   color: #6b7280 !important; /* gray-500 mais escuro */
   opacity: 1 !important;
 }
+
+/* Escurecer texto dos selects */
+select {
+  color: #000000 !important;
+  font-weight: 500;
+}
+
+select option {
+  color: #000000 !important;
+}
