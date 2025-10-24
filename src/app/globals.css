@@ -473,3 +473,14 @@ select {
 select option {
   color: #000000 !important;
 }
+
+/* Escurecer texto dos inputs no admin */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+textarea {
+  color: #000000 !important;
+  font-weight: 500;
+}
