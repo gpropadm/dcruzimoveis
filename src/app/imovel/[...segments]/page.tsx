@@ -37,6 +37,9 @@ interface Property {
   iptu: number | null
   apartmentTotalArea: number | null
   apartmentUsefulArea: number | null
+  acceptsFinancing: boolean
+  acceptsTrade: boolean
+  acceptsCar: boolean
   createdAt: string
   updatedAt: string
 }
@@ -88,6 +91,9 @@ async function getProperty(segments: string[]): Promise<Property | null> {
         iptu: true,
         apartmentTotalArea: true,
         apartmentUsefulArea: true,
+        acceptsFinancing: true,
+        acceptsTrade: true,
+        acceptsCar: true,
         createdAt: true,
         updatedAt: true
       }
