@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "./globals.css";
 import Providers from '@/components/Providers';
-import WhatsAppButton from '@/components/WhatsAppButton';
-import ChatbotSimple from '@/components/ChatbotSimple';
-import MobileBottomNav from '@/components/MobileBottomNav';
+import ConditionalSiteComponents from '@/components/ConditionalSiteComponents';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'leaflet/dist/leaflet.css';
@@ -92,9 +90,7 @@ export default function RootLayout({
       >
         <Providers>
           {children}
-          <WhatsAppButton />
-          <ChatbotSimple />
-          <MobileBottomNav />
+          <ConditionalSiteComponents />
           <ToastContainer
             position="top-right"
             autoClose={3000}
