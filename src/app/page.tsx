@@ -119,7 +119,7 @@ export default function Home() {
           <PropertyStoriesSection
             properties={chatbotProperties}
             loading={false}
-            title="🤖 Imóveis encontrados para você"
+            title="Imóveis encontrados para você"
           />
         )}
 
