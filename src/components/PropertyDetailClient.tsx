@@ -356,24 +356,24 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   </h2>
                   <div className="flex flex-wrap gap-3">
                     {property.acceptsFinancing && (
-                      <div className="flex items-center py-2 px-4 rounded-lg bg-gray-50">
-                        <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" style={{ color: '#065f46' }}>
+                      <div className="flex items-center">
+                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
                         </svg>
                         <span className="text-sm font-semibold text-black">Aceita Financiamento Bancário</span>
                       </div>
                     )}
                     {property.acceptsTrade && (
-                      <div className="flex items-center py-2 px-4 rounded-lg bg-gray-50">
-                        <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" style={{ color: '#065f46' }}>
+                      <div className="flex items-center">
+                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
                         </svg>
                         <span className="text-sm font-semibold text-black">Aceita Permuta/Troca</span>
                       </div>
                     )}
                     {property.acceptsCar && (
-                      <div className="flex items-center py-2 px-4 rounded-lg bg-gray-50">
-                        <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" style={{ color: '#065f46' }}>
+                      <div className="flex items-center">
+                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
                         </svg>
                         <span className="text-sm font-semibold text-black">Aceita Carro como Parte do Pagamento</span>
