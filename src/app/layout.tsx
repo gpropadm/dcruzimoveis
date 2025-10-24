@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Sora } from "next/font/google";
+import { Public_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from '@/components/Providers';
 import ConditionalSiteComponents from '@/components/ConditionalSiteComponents';
@@ -7,10 +7,11 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'leaflet/dist/leaflet.css';
 
-const sora = Sora({
+const publicSans = Public_Sans({
   variable: "--font-sora",
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -85,7 +86,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${sora.variable} antialiased`}
+        className={`${publicSans.variable} antialiased`}
         suppressHydrationWarning={true}
       >
         <Providers>

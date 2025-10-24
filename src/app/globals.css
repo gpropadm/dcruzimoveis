@@ -12,18 +12,22 @@ body {
   background-color: #ffffff;
   color: #e0e0e0;
   line-height: 1.6;
+  font-style: italic;
+  font-weight: 500;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sora), system-ui, sans-serif;
   color: #e0e0e0;
   font-weight: 600;
+  font-style: italic;
   letter-spacing: -0.02em;
 }
 
 /* Font family utilities */
 .font-sora {
   font-family: var(--font-sora), system-ui, sans-serif;
+  font-style: italic;
 }
 
 /* Custom Bootstrap-like classes for compatibility */
