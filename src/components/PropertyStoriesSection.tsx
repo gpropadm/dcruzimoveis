@@ -462,6 +462,9 @@ export default function PropertyStoriesSection({ properties, loading, title = 'D
           background: rgba(255,255,255,0.9);
           box-shadow: 0 2px 8px rgba(0,0,0,0.15);
           transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .ImovelCard_leftArrow__SY2Vj > div:hover,
