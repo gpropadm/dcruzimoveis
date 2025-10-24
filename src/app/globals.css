@@ -497,3 +497,19 @@ h5.font-medium,
 h5.font-semibold {
   color: #000000 !important;
 }
+
+/* Remover cantos redondos dos campos de formulário no admin */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="search"],
+select,
+textarea {
+  border-radius: 0 !important;
+}
