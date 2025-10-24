@@ -127,7 +127,7 @@ export default function AdminLayout({ children, title = 'Admin', subtitle, curre
           <header className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b p-4`}>
             <div className="flex items-center justify-between">
               <div>
-                <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>
                   {title}
                 </h1>
                 {subtitle && (

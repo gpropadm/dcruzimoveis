@@ -609,7 +609,7 @@ export default function NewProperty() {
           {/* Informações Básicas */}
           <div className="bg-white shadow rounded-lg">
             <div className="px-6 py-4 border-b border-gray-300">
-              <h3 className="text-lg font-medium text-gray-900">Informações Básicas</h3>
+              <h3 className="text-lg font-medium text-black">Informações Básicas</h3>
             </div>
             <div className="p-6 space-y-6">
               <div>
@@ -718,7 +718,7 @@ export default function NewProperty() {
           {/* Localização */}
           <div className="bg-white shadow rounded-lg">
             <div className="px-6 py-4 border-b border-gray-300">
-              <h3 className="text-lg font-medium text-gray-900">Localização</h3>
+              <h3 className="text-lg font-medium text-black">Localização</h3>
             </div>
             <div className="p-6 space-y-6">
 
@@ -877,7 +877,7 @@ export default function NewProperty() {
           {(formData.category === 'apartamento' || formData.category === 'casa' || formData.category === 'cobertura' || formData.category === 'comercial') && (
             <div className="bg-white shadow rounded-lg">
               <div className="px-6 py-4 border-b border-gray-300">
-                <h3 className="text-lg font-medium text-gray-900">Características Básicas</h3>
+                <h3 className="text-lg font-medium text-black">Características Básicas</h3>
                 <p className="text-sm text-gray-500 mt-1">Informações gerais do imóvel</p>
               </div>
               <div className="p-6 space-y-6">
@@ -932,7 +932,7 @@ export default function NewProperty() {
           {formData.category === 'casa' && (
             <div className="bg-white shadow rounded-lg">
               <div className="px-6 py-4 border-b border-gray-300">
-                <h3 className="text-lg font-medium text-gray-900">Características da Casa</h3>
+                <h3 className="text-lg font-medium text-black">Características da Casa</h3>
                 <p className="text-sm text-gray-500 mt-1">Informações específicas para casas</p>
               </div>
               <div className="p-6 space-y-6">
@@ -1029,7 +1029,7 @@ export default function NewProperty() {
           {(formData.category === 'apartamento' || formData.category === 'cobertura') && (
             <div className="bg-white shadow rounded-lg">
               <div className="px-6 py-4 border-b border-gray-300">
-                <h3 className="text-lg font-medium text-gray-900">Informações do Apartamento</h3>
+                <h3 className="text-lg font-medium text-black">Informações do Apartamento</h3>
                 <p className="text-sm text-gray-500 mt-1">Dados específicos para apartamentos e coberturas</p>
               </div>
               <div className="p-6 space-y-6">
@@ -1268,7 +1268,7 @@ export default function NewProperty() {
           {formData.category === 'terreno' && (
             <div className="bg-white shadow rounded-lg">
               <div className="px-6 py-4 border-b border-gray-300">
-                <h3 className="text-lg font-medium text-gray-900">Informações do Terreno</h3>
+                <h3 className="text-lg font-medium text-black">Informações do Terreno</h3>
                 <p className="text-sm text-gray-500 mt-1">Dados específicos para terrenos</p>
               </div>
               <div className="p-6 space-y-6">
@@ -1334,7 +1334,7 @@ export default function NewProperty() {
           {formData.category === 'fazenda' && (
             <div className="bg-white shadow rounded-lg">
               <div className="px-6 py-4 border-b border-gray-300">
-                <h3 className="text-lg font-medium text-gray-900">Informações da Fazenda</h3>
+                <h3 className="text-lg font-medium text-black">Informações da Fazenda</h3>
                 <p className="text-sm text-gray-500 mt-1">Dados específicos para propriedades rurais</p>
               </div>
               <div className="p-6 space-y-6">
@@ -1504,7 +1504,7 @@ export default function NewProperty() {
           {formData.category === 'comercial' && (
             <div className="bg-white shadow rounded-lg">
               <div className="px-6 py-4 border-b border-gray-300">
-                <h3 className="text-lg font-medium text-gray-900">Características Comerciais</h3>
+                <h3 className="text-lg font-medium text-black">Características Comerciais</h3>
                 <p className="text-sm text-gray-500 mt-1">Informações específicas para imóveis comerciais</p>
               </div>
               <div className="p-6 space-y-6">
@@ -1628,7 +1628,7 @@ export default function NewProperty() {
           {/* Upload de Imagens */}
           <div className="bg-white shadow rounded-lg">
             <div className="px-6 py-4 border-b border-gray-300">
-              <h3 className="text-lg font-medium text-gray-900">Imagens do Imóvel</h3>
+              <h3 className="text-lg font-medium text-black">Imagens do Imóvel</h3>
               <p className="text-sm text-gray-500 mt-1">Adicione quantas imagens quiser (JPEG, PNG - máx 5MB cada)</p>
             </div>
             <div className="p-6">
@@ -1718,7 +1718,7 @@ export default function NewProperty() {
           {/* Upload de Vídeo */}
           <div className="bg-white shadow rounded-lg">
             <div className="px-6 py-4 border-b border-gray-300">
-              <h3 className="text-lg font-medium text-gray-900">Vídeo Shorts do Imóvel</h3>
+              <h3 className="text-lg font-medium text-black">Vídeo Shorts do Imóvel</h3>
               <p className="text-sm text-gray-500 mt-1">Adicione um vídeo vertical de até 60 segundos (formato shorts - máx 100MB)</p>
             </div>
             <div className="p-6">
@@ -1788,7 +1788,7 @@ export default function NewProperty() {
           {/* Configurações */}
           <div className="bg-white shadow rounded-lg">
             <div className="px-6 py-4 border-b border-gray-300">
-              <h3 className="text-lg font-medium text-gray-900">Configurações</h3>
+              <h3 className="text-lg font-medium text-black">Configurações</h3>
             </div>
             <div className="p-6 space-y-4">
               <label className="flex items-center">
