@@ -438,6 +438,8 @@ export default function PropertyStoriesSection({ properties, loading, title = 'D
           cursor: pointer;
           opacity: 0;
           transition: opacity 0.3s ease;
+          display: flex;
+          align-items: center;
         }
 
         .ImovelCard_card__2FVbS:hover .ImovelCard_leftArrow__SY2Vj,
@@ -446,11 +448,11 @@ export default function PropertyStoriesSection({ properties, loading, title = 'D
         }
 
         .ImovelCard_leftArrow__SY2Vj {
-          left: 10px;
+          left: 8px;
         }
 
         .ImovelCard_rightArrow__wzdqx {
-          right: 10px;
+          right: 8px;
         }
 
         .ImovelCard_leftArrow__SY2Vj > div,
