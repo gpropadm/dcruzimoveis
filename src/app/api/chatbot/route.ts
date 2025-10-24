@@ -114,9 +114,15 @@ ${i + 1}. ${p.title}
       messages: messages as any,
     })
 
-    const assistantMessage = response.content[0].type === 'text'
+    let assistantMessage = response.content[0].type === 'text'
       ? response.content[0].text
       : 'Desculpe, não consegui processar sua mensagem.'
+
+    // Detectar se há link de imóvel na resposta e adicionar aviso
+    const urlRegex = /https:\/\/www\.bsimoveisdf\.com\.br\/imovel\/([^\s]+)/
+    if (urlRegex.test(assistantMessage)) {
+      assistantMessage += '\n\n✨ Abrindo o imóvel em nova aba para você visualizar!'
+    }
 
     // Calcular custo estimado (Claude Sonnet 4.5)
     // Input: $3 por 1M tokens | Output: $15 por 1M tokens

@@ -55,6 +55,18 @@ export default function ChatbotSimple() {
 
       if (response.ok) {
         setMessages(data.conversationHistory)
+
+        // Detectar URLs de imóveis na resposta do assistente e abrir em nova aba
+        const lastAssistantMessage = data.conversationHistory[data.conversationHistory.length - 1]
+        if (lastAssistantMessage && lastAssistantMessage.role === 'assistant') {
+          const urlRegex = /https:\/\/www\.bsimoveisdf\.com\.br\/imovel\/([^\s]+)/g
+          const urls = lastAssistantMessage.content.match(urlRegex)
+
+          if (urls && urls.length > 0) {
+            // Abrir primeira URL em nova aba
+            window.open(urls[0], '_blank')
+          }
+        }
       } else {
         setMessages([
           ...newMessages,
