@@ -72,7 +72,7 @@ ${i + 1}. ${p.title}
    - Área: ${p.area || 'N/A'} m²
    - Localização: ${p.address}, ${p.city} - ${p.state}
    ${paymentOptions.length > 0 ? `- Formas de pagamento aceitas: ${paymentOptions.join(', ')}` : '- Formas de pagamento: À vista'}
-   - Link: https://imobiliaria-six-tau.vercel.app/imovel/${p.slug}
+   - Link: https://www.bsimoveisdf.com.br/imovel/${p.slug}
 `;
 }).join('\n')}
 
@@ -95,7 +95,7 @@ ${i + 1}. ${p.title}
 
 ✅ FORMATO DE RESPOSTA:
 - Máximo 5-6 linhas
-- Links apenas no formato: https://imobiliaria-six-tau.vercel.app/imovel/[slug-do-imovel]
+- Links apenas no formato: https://www.bsimoveisdf.com.br/imovel/[slug-do-imovel]
 - Seja direto, honesto e preciso
 - SEMPRE mencione o VALOR do imóvel quando mostrar
 `
