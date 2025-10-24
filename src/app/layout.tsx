@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Public_Sans } from "next/font/google";
+import { Figtree } from "next/font/google";
 import "./globals.css";
 import Providers from '@/components/Providers';
 import ConditionalSiteComponents from '@/components/ConditionalSiteComponents';
@@ -7,11 +7,10 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'leaflet/dist/leaflet.css';
 
-const publicSans = Public_Sans({
+const figtree = Figtree({
   variable: "--font-sora",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -86,7 +85,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${publicSans.variable} antialiased`}
+        className={`${figtree.variable} antialiased`}
         suppressHydrationWarning={true}
       >
         <Providers>
