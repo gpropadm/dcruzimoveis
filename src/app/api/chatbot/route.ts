@@ -51,9 +51,22 @@ export async function POST(request: NextRequest) {
       take: 50 // Limitar para não sobrecarregar o contexto
     })
 
+    // Informações de contato da imobiliária (do banco de dados)
+    const contactInfo = settings ? `
+=== INFORMAÇÕES DE CONTATO DA IMOBILIÁRIA ===
+${settings.contactWhatsapp ? `📱 WhatsApp: ${settings.contactWhatsapp}` : ''}
+${settings.contactPhone ? `📞 Telefone: ${settings.contactPhone}` : ''}
+${settings.contactEmail ? `📧 E-mail: ${settings.contactEmail}` : ''}
+${settings.address ? `📍 Endereço: ${settings.address}, ${settings.city} - ${settings.state}` : ''}
+
+**IMPORTANTE**: Use APENAS estas informações de contato. NUNCA invente telefones ou emails.
+` : ''
+
     // Criar contexto sobre os imóveis disponíveis
     const propertyContext = `
 Você é um assistente virtual de uma imobiliária no Distrito Federal.
+
+${contactInfo}
 
 === BANCO DE DADOS DE IMÓVEIS DISPONÍVEIS ===
 ${properties.length === 0 ? 'NENHUM IMÓVEL CADASTRADO NO MOMENTO' : properties.map((p, i) => {
