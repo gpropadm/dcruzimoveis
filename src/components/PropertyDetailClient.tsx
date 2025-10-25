@@ -729,11 +729,12 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
         {relatedProperties.length > 0 && (
           <div className="pb-8">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-black mb-6 mt-2 text-center">Imóveis que Poderá Gostar</h2>
+              <h2 className="text-3xl font-bold mb-6 mt-2 text-center" style={{ color: '#000000' }}>Imóveis que Poderá Gostar</h2>
             </div>
             <PropertyStoriesSection
               properties={relatedProperties}
               loading={loadingRelated}
+              title=""
             />
           </div>
         )}
