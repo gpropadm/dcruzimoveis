@@ -347,6 +347,60 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                 </div>
               </div>
 
+              {/* Informações Principais do Imóvel */}
+              <div className="bg-white rounded-xl shadow-sm p-6">
+                <h2 className="text-lg md:text-xl font-bold mb-4 flex items-center" style={{ color: '#000000' }}>
+                  <BuildingOfficeIcon className="w-6 h-6 mr-2" />
+                  Informações do Imóvel
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                  {property.bedrooms && (
+                    <div className="flex flex-col items-center py-3 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-bed mb-2" style={{ fontSize: '24px', color: '#6c757d' }}></i>
+                      <div className="font-bold text-lg" style={{ color: '#212529' }}>
+                        {property.bedrooms}
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Quartos
+                      </div>
+                    </div>
+                  )}
+                  {property.bathrooms && (
+                    <div className="flex flex-col items-center py-3 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-bath mb-2" style={{ fontSize: '24px', color: '#6c757d' }}></i>
+                      <div className="font-bold text-lg" style={{ color: '#212529' }}>
+                        {property.bathrooms}
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Banheiros
+                      </div>
+                    </div>
+                  )}
+                  {property.area && (
+                    <div className="flex flex-col items-center py-3 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-ruler-combined mb-2" style={{ fontSize: '24px', color: '#6c757d' }}></i>
+                      <div className="font-bold text-lg" style={{ color: '#212529' }}>
+                        {property.area}m²
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Área
+                      </div>
+                    </div>
+                  )}
+                  {property.parking && (
+                    <div className="flex flex-col items-center py-3 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-car mb-2" style={{ fontSize: '24px', color: '#6c757d' }}></i>
+                      <div className="font-bold text-lg" style={{ color: '#212529' }}>
+                        {property.parking}
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Vagas
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {/* Formas de Pagamento Aceitas */}
               {(property.acceptsFinancing || property.acceptsTrade || property.acceptsCar) && (
                 <div className="bg-white rounded-xl shadow-sm p-6">
@@ -634,92 +688,6 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   propertyType={property.type}
                 />
 
-                {/* Card de Características Rápidas */}
-                <div className="bg-white rounded-3 border p-4" style={{ borderColor: '#e9ecef' }}>
-                  <h4
-                    className="fw-bold mb-3 font-sora"
-                    style={{
-                      fontSize: '16px',
-                      color: '#212529'
-                    }}
-                  >
-                    Características
-                  </h4>
-
-                  <div className="d-flex justify-content-between text-center">
-                    {property.bedrooms && (
-                      <div>
-                        <i className="fas fa-bed" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.bedrooms}
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Quartos
-                        </div>
-                      </div>
-                    )}
-
-                    {property.bathrooms && (
-                      <div>
-                        <i className="fas fa-bath" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.bathrooms}
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Banheiros
-                        </div>
-                      </div>
-                    )}
-
-                    {property.area && (
-                      <div>
-                        <i className="fas fa-ruler-combined" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.area}m²
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Área
-                        </div>
-                      </div>
-                    )}
-
-                    {property.parking && (
-                      <div>
-                        <i className="fas fa-car" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.parking}
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Vagas
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
               </div>
             </div>
           </div>
