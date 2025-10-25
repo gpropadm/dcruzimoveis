@@ -634,92 +634,53 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   propertyType={property.type}
                 />
 
-                {/* Card de Características Rápidas */}
-                <div className="bg-white rounded-3 border p-4" style={{ borderColor: '#e9ecef' }}>
-                  <h4
-                    className="fw-bold mb-3 font-sora"
-                    style={{
-                      fontSize: '16px',
-                      color: '#212529'
-                    }}
-                  >
-                    Características
-                  </h4>
+                {/* Card de Formas de Pagamento */}
+                {(property.acceptsFinancing || property.acceptsTrade || property.acceptsCar) && (
+                  <div className="bg-white rounded-3 border p-4" style={{ borderColor: '#e9ecef' }}>
+                    <h4
+                      className="fw-bold mb-3 font-sora"
+                      style={{
+                        fontSize: '16px',
+                        color: '#212529'
+                      }}
+                    >
+                      Formas de Pagamento Aceitas
+                    </h4>
 
-                  <div className="d-flex justify-content-between text-center">
-                    {property.bedrooms && (
-                      <div>
-                        <i className="fas fa-bed" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.bedrooms}
+                    <div className="d-flex flex-column gap-2">
+                      {property.acceptsFinancing && (
+                        <div className="d-flex align-items-center">
+                          <svg className="flex-shrink-0 me-2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6c757d" strokeWidth="2">
+                            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                          </svg>
+                          <span className="font-sora" style={{ fontSize: '13px', color: '#6c757d' }}>
+                            Aceita Financiamento Bancário
+                          </span>
                         </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Quartos
+                      )}
+                      {property.acceptsTrade && (
+                        <div className="d-flex align-items-center">
+                          <svg className="flex-shrink-0 me-2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6c757d" strokeWidth="2">
+                            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                          </svg>
+                          <span className="font-sora" style={{ fontSize: '13px', color: '#6c757d' }}>
+                            Aceita Permuta/Troca
+                          </span>
                         </div>
-                      </div>
-                    )}
-
-                    {property.bathrooms && (
-                      <div>
-                        <i className="fas fa-bath" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.bathrooms}
+                      )}
+                      {property.acceptsCar && (
+                        <div className="d-flex align-items-center">
+                          <svg className="flex-shrink-0 me-2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6c757d" strokeWidth="2">
+                            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                          </svg>
+                          <span className="font-sora" style={{ fontSize: '13px', color: '#6c757d' }}>
+                            Aceita Carro como Parte do Pagamento
+                          </span>
                         </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Banheiros
-                        </div>
-                      </div>
-                    )}
-
-                    {property.area && (
-                      <div>
-                        <i className="fas fa-ruler-combined" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.area}m²
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Área
-                        </div>
-                      </div>
-                    )}
-
-                    {property.parking && (
-                      <div>
-                        <i className="fas fa-car" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.parking}
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Vagas
-                        </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
