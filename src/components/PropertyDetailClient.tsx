@@ -376,6 +376,17 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                       </div>
                     </div>
                   )}
+                  {property.suites && (
+                    <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-door-open" style={{ fontSize: '18px', color: '#6c757d' }}></i>
+                      <div className="font-bold" style={{ fontSize: '16px', color: '#212529' }}>
+                        {property.suites}
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Suítes
+                      </div>
+                    </div>
+                  )}
                   {property.area && (
                     <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-gray-50">
                       <i className="fas fa-ruler-combined" style={{ fontSize: '18px', color: '#6c757d' }}></i>
