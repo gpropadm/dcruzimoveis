@@ -350,13 +350,13 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               {/* Informações Principais do Imóvel */}
               <div className="bg-white rounded-xl shadow-sm p-6">
                 <h2 className="text-lg md:text-xl font-bold mb-4 flex items-center" style={{ color: '#000000' }}>
-                  <BuildingOfficeIcon className="w-6 h-6 mr-2" />
+                  <HomeIcon className="w-6 h-6 mr-2" />
                   Informações do Imóvel
                 </h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                   {property.bedrooms && (
                     <div className="flex flex-col items-center py-3 px-3 rounded-lg bg-gray-50">
-                      <i className="fas fa-bed mb-2" style={{ fontSize: '24px', color: '#6c757d' }}></i>
+                      <i className="fas fa-bed mb-2" style={{ fontSize: '18px', color: '#6c757d' }}></i>
                       <div className="font-bold text-lg" style={{ color: '#212529' }}>
                         {property.bedrooms}
                       </div>
@@ -367,7 +367,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   )}
                   {property.bathrooms && (
                     <div className="flex flex-col items-center py-3 px-3 rounded-lg bg-gray-50">
-                      <i className="fas fa-bath mb-2" style={{ fontSize: '24px', color: '#6c757d' }}></i>
+                      <i className="fas fa-bath mb-2" style={{ fontSize: '18px', color: '#6c757d' }}></i>
                       <div className="font-bold text-lg" style={{ color: '#212529' }}>
                         {property.bathrooms}
                       </div>
@@ -378,7 +378,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   )}
                   {property.area && (
                     <div className="flex flex-col items-center py-3 px-3 rounded-lg bg-gray-50">
-                      <i className="fas fa-ruler-combined mb-2" style={{ fontSize: '24px', color: '#6c757d' }}></i>
+                      <i className="fas fa-ruler-combined mb-2" style={{ fontSize: '18px', color: '#6c757d' }}></i>
                       <div className="font-bold text-lg" style={{ color: '#212529' }}>
                         {property.area}m²
                       </div>
@@ -389,7 +389,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   )}
                   {property.parking && (
                     <div className="flex flex-col items-center py-3 px-3 rounded-lg bg-gray-50">
-                      <i className="fas fa-car mb-2" style={{ fontSize: '24px', color: '#6c757d' }}></i>
+                      <i className="fas fa-car mb-2" style={{ fontSize: '18px', color: '#6c757d' }}></i>
                       <div className="font-bold text-lg" style={{ color: '#212529' }}>
                         {property.parking}
                       </div>
