@@ -42,6 +42,19 @@ export default function ImovelMapboxPage() {
   const [priceFilter, setPriceFilter] = useState({ min: 0, max: 10000000 });
   const [searchRadius, setSearchRadius] = useState(2000);
   const [searchCenter, setSearchCenter] = useState<[number, number] | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Detectar se é desktop
+  useEffect(() => {
+    const checkIfDesktop = () => {
+      setIsDesktop(window.innerWidth >= 1024); // lg breakpoint = 1024px
+    };
+
+    checkIfDesktop();
+    window.addEventListener('resize', checkIfDesktop);
+
+    return () => window.removeEventListener('resize', checkIfDesktop);
+  }, []);
 
   // Buscar propriedades
   useEffect(() => {
@@ -784,9 +797,9 @@ export default function ImovelMapboxPage() {
             </div>
           </div>
 
-          {/* Mapa Mapbox - Lado Direito */}
-          {showMap && (
-            <div className="hidden lg:block lg:w-1/2 relative sticky top-0 h-[calc(100vh-120px)] bg-gray-200 transition-all duration-300">
+          {/* Mapa Mapbox - Lado Direito - Só renderiza no desktop */}
+          {showMap && isDesktop && (
+            <div className="lg:w-1/2 relative sticky top-0 h-[calc(100vh-120px)] bg-gray-200 transition-all duration-300">
               {loading ? (
                 <div className="flex items-center justify-center h-full">
                   <div className="text-center">
