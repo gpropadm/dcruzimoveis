@@ -169,15 +169,10 @@ export default function ImoveisContent() {
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh-140px)]">
-        <div className="w-1/2 p-6 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Carregando imóveis...</p>
-          </div>
-        </div>
-        <div className="w-1/2 bg-gray-200 flex items-center justify-center">
-          <p className="text-gray-500">Carregando mapa...</p>
+      <div className="flex items-center justify-center h-[calc(100vh-140px)] bg-white">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 text-lg">Carregando imóveis...</p>
         </div>
       </div>
     )
