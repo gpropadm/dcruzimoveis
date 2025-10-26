@@ -47,7 +47,9 @@ export default function ImovelMapboxPage() {
   // Detectar se é desktop
   useEffect(() => {
     const checkIfDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1024); // lg breakpoint = 1024px
+      const desktop = window.innerWidth >= 1024; // lg breakpoint = 1024px
+      console.log('🖥️ Desktop check:', desktop, 'Width:', window.innerWidth);
+      setIsDesktop(desktop);
     };
 
     checkIfDesktop();
