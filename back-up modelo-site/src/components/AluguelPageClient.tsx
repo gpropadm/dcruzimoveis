@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import MobileBottomNav from '@/components/MobileBottomNav'
 import FavoriteButton from '@/components/FavoriteButton'
 
 interface Property {
@@ -564,6 +565,7 @@ function AluguelPageContent() {
       </div>
 
       <Footer />
+      <MobileBottomNav />
     </div>
   )
 }

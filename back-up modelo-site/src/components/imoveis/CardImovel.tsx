@@ -97,7 +97,19 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
           <>
             <button
               onClick={prevImage}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all"
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                color: '#1f2937'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(31, 41, 55, 0.9)'
+                e.currentTarget.style.color = '#ffffff'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.8)'
+                e.currentTarget.style.color = '#1f2937'
+              }}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -105,7 +117,19 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
             </button>
             <button
               onClick={nextImage}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all"
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                color: '#1f2937'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(31, 41, 55, 0.9)'
+                e.currentTarget.style.color = '#ffffff'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.8)'
+                e.currentTarget.style.color = '#1f2937'
+              }}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -160,7 +184,7 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
         </div>
 
         {/* Título */}
-        <h3 className="mb-2 line-clamp-2" style={{ fontSize: '15px', fontWeight: 600, color: '#333', lineHeight: '1.3' }}>
+        <h3 className="mb-2 line-clamp-2" style={{ fontSize: '15px', fontWeight: 600, color: '#e0e0e0', lineHeight: '1.3' }}>
           {imovel.title}
         </h3>
 
@@ -194,7 +218,7 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
                 flex: 1,
                 textAlign: 'center'
               }}>
-                <span style={{ fontSize: '13px', fontWeight: 400, color: '#333', lineHeight: 1 }}>{imovel.area} m²</span>
+                <span style={{ fontSize: '13px', fontWeight: 400, color: '#e0e0e0', lineHeight: 1 }}>{imovel.area} m²</span>
                 <span style={{ fontSize: '12px', fontWeight: 400, color: '#666', lineHeight: 1 }}></span>
               </li>
             )}
@@ -209,7 +233,7 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
                 flex: 1,
                 textAlign: 'center'
               }}>
-                <span style={{ fontSize: '13px', fontWeight: 400, color: '#333', lineHeight: 1 }}>{imovel.bedrooms}</span>
+                <span style={{ fontSize: '13px', fontWeight: 400, color: '#e0e0e0', lineHeight: 1 }}>{imovel.bedrooms}</span>
                 <span style={{ fontSize: '12px', fontWeight: 400, color: '#666', lineHeight: 1 }}>Quartos</span>
               </li>
             )}
@@ -224,7 +248,7 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
                 flex: 1,
                 textAlign: 'center'
               }}>
-                <span style={{ fontSize: '13px', fontWeight: 400, color: '#333', lineHeight: 1 }}>{imovel.bathrooms}</span>
+                <span style={{ fontSize: '13px', fontWeight: 400, color: '#e0e0e0', lineHeight: 1 }}>{imovel.bathrooms}</span>
                 <span style={{ fontSize: '12px', fontWeight: 400, color: '#666', lineHeight: 1 }}>Banheiros</span>
               </li>
             )}

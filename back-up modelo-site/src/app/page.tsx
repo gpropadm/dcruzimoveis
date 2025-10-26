@@ -4,15 +4,19 @@ import { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import PropertyStoriesSection from '@/components/PropertyStoriesSection'
 import Footer from '@/components/Footer'
-import SearchForm from '@/components/SearchFormMinimalista'
+import SearchForm from '@/components/MainSearchForm'
 import AIRecommendations from '@/components/AIRecommendations'
+import MobileBottomNav from '@/components/MobileBottomNav'
 import { useTheme } from '@/contexts/ThemeContext'
+import { useChatbot } from '@/contexts/ChatbotContext'
 
 export default function Home() {
   const { primaryColor } = useTheme()
+  const { selectedPropertySlugs } = useChatbot()
   const [properties, setProperties] = useState<any[]>([])
   const [filteredProperties, setFilteredProperties] = useState<any[]>([])
   const [propertiesLoading, setPropertiesLoading] = useState(true)
+  const [chatbotProperties, setChatbotProperties] = useState<any[]>([])
   const [headerSettings, setHeaderSettings] = useState({
     headerTitle: '',
     headerSubtitle: ''
@@ -62,6 +66,27 @@ export default function Home() {
     loadSettings()
   }, [])
 
+  // Carregar imóveis selecionados pelo chatbot
+  useEffect(() => {
+    if (selectedPropertySlugs.length > 0) {
+      const loadChatbotProperties = async () => {
+        try {
+          const slugsParam = selectedPropertySlugs.join(',')
+          const response = await fetch(`/api/properties?slugs=${slugsParam}`)
+          if (response.ok) {
+            const data = await response.json()
+            setChatbotProperties(data || [])
+          }
+        } catch (error) {
+          console.error('❌ Erro ao carregar imóveis do chatbot:', error)
+        }
+      }
+      loadChatbotProperties()
+    } else {
+      setChatbotProperties([])
+    }
+  }, [selectedPropertySlugs])
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -69,43 +94,59 @@ export default function Home() {
       <main>
         {/* Hero Section com imagem */}
         <section
-          className="relative py-12 md:py-20 text-white overflow-hidden"
+          className="relative py-12 md:py-20 text-white"
           style={{
             height: '60vh',
             minHeight: '450px',
             backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/header-bg.jpg')`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center center',
-            backgroundRepeat: 'no-repeat'
+            backgroundPosition: 'center 22%',
+            backgroundRepeat: 'no-repeat',
+            backgroundAttachment: 'scroll'
           }}
         >
           {/* Conteúdo */}
           <div className="relative z-10 flex items-center justify-center h-full pt-24">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-              <h1 className="hidden md:block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4 leading-tight drop-shadow-lg text-white" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
-                {headerSettings.headerTitle}
-              </h1>
-              <p className="hidden md:block text-base sm:text-lg md:text-xl lg:text-2xl mb-8 md:mb-12 px-4 text-white drop-shadow-lg" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
-                {headerSettings.headerSubtitle}
-              </p>
-
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
               {/* Search Form */}
               <SearchForm />
             </div>
           </div>
         </section>
 
-        {/* Propriedades principais - OTIMIZADO (máximo 6) */}
+        {/* Imóveis sugeridos pelo chatbot */}
+        {chatbotProperties.length > 0 && (
+          <PropertyStoriesSection
+            properties={chatbotProperties}
+            loading={false}
+            title="Imóveis encontrados para você"
+          />
+        )}
+
+        {/* Propriedades para venda */}
         <PropertyStoriesSection
-          properties={filteredProperties}
+          properties={filteredProperties.filter(p => p.type === 'venda')}
           loading={propertiesLoading}
+          title="Imóveis recentes à venda"
         />
+
+        {/* Propriedades para alugar - só mostra se tiver */}
+        {filteredProperties.filter(p => p.type === 'aluguel').length > 0 && (
+          <PropertyStoriesSection
+            properties={filteredProperties.filter(p => p.type === 'aluguel')}
+            loading={false}
+            title="Imóveis recentes para alugar"
+          />
+        )}
 
         {/* IA Recommendations - DESABILITADO temporariamente para performance */}
         {/* {!propertiesLoading && <AIRecommendations />} */}
       </main>
 
       <Footer />
+
+      {/* Bottom Navigation para Mobile */}
+      <MobileBottomNav />
     </div>
   )
 }

@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import MobileBottomNav from '@/components/MobileBottomNav'
 import Image from 'next/image'
 import { useFavorites } from '@/hooks/useFavorites'
+import { useTheme } from '@/contexts/ThemeContext'
 import HeartIcon from '@/components/HeartIcon'
 import FavoriteButton from '@/components/FavoriteButton'
 
@@ -34,6 +36,7 @@ interface Property {
 
 export default function MeusFavoritosPage() {
   const router = useRouter()
+  const { primaryColor } = useTheme()
   const [favoriteProperties, setFavoriteProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
   const { favorites } = useFavorites()
@@ -284,7 +287,7 @@ function ArboPropertyCard({ property, onViewDetails, formatPrice }: {
                       />
                     </div>
                     <span className="ImovelCardInfo_colorOfTitleCondominium__IfTu_ ImovelCardInfo_ellipsisOneLine__ryU_Q d-flex flex-row justify-content-start">
-                      {property.title}
+                      {property.title.length > 40 ? `${property.title.substring(0, 40)}...` : property.title}
                     </span>
                   </h2>
                   <p className="ImovelCardInfo_colorOfLocalization__frnmZ mb-0">
@@ -381,16 +384,16 @@ function ArboPropertyCard({ property, onViewDetails, formatPrice }: {
 }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
       <Header />
 
       {/* Barra de título abaixo do header */}
-      <div className="py-8 pt-24" style={{ backgroundColor: '#7162f0' }}>
+      <div className="py-8 pt-24" style={{ backgroundColor: primaryColor }}>
         <div className="max-w-6xl mx-auto px-4 text-left">
           <h4 className="title col-12 my-0 text-xl md:text-2xl font-bold text-white">
             Favoritos
           </h4>
-          <p className="col-12 my-0 text-purple-100">
+          <p className="col-12 my-0 text-white opacity-90">
             Aqui estão os seus imóveis favoritos
           </p>
         </div>
@@ -405,11 +408,11 @@ function ArboPropertyCard({ property, onViewDetails, formatPrice }: {
             // Estado vazio
             <div className="nenhum_imovel d-flex flex-column p-4 text-center py-16">
               <h1 className="text-4xl text-gray-900 mb-4">
-                <span style={{ fontWeight: 100 }}>Salve seus imóveis</span> <span className="font-bold" style={{ color: '#7162f0' }}>favoritos</span>
+                <span style={{ fontWeight: 100 }}>Salve seus imóveis</span> <span className="font-bold" style={{ color: primaryColor }}>favoritos</span>
                 <HeartIcon
                   size={64}
                   filled={false}
-                  color="#7162f0"
+                  color={primaryColor}
                   strokeWidth={1.5}
                   className="ml-2"
                 />
@@ -431,6 +434,7 @@ function ArboPropertyCard({ property, onViewDetails, formatPrice }: {
       </div>
 
       <Footer />
+      <MobileBottomNav />
 
       <style jsx global>{`
         .scrollbar-hide {

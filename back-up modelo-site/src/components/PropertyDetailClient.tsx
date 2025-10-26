@@ -51,6 +51,9 @@ interface Property {
   iptu: number | null
   apartmentTotalArea: number | null
   apartmentUsefulArea: number | null
+  acceptsFinancing: boolean
+  acceptsTrade: boolean
+  acceptsCar: boolean
 }
 
 interface PropertyDetailClientProps {
@@ -61,6 +64,8 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
   const [relatedProperties, setRelatedProperties] = useState<any[]>([])
   const [loadingRelated, setLoadingRelated] = useState(true)
   const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false)
+  const [companyName, setCompanyName] = useState('BS Imóveis')
+  const [contactPhone, setContactPhone] = useState('(61) 9999-9999')
 
   // Breadcrumbs baseados na propriedade
   const breadcrumbItems = [
@@ -88,6 +93,37 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
   }
 
   const images = parseImages(property.images)
+
+  // Carregar configurações da imobiliária
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await fetch('/api/settings')
+        const data = await response.json()
+        if (data?.settings) {
+          if (data.settings.companyName) setCompanyName(data.settings.companyName)
+          if (data.settings.contactPhone) setContactPhone(data.settings.contactPhone)
+        }
+      } catch (error) {
+        console.error('Erro ao carregar configurações:', error)
+      }
+    }
+    fetchSettings()
+  }, [])
+
+  // Registrar visualização
+  useEffect(() => {
+    const registerView = async () => {
+      try {
+        await fetch(`/api/properties/${property.slug}/view`, {
+          method: 'POST',
+        })
+      } catch (error) {
+        console.error('Erro ao registrar visualização:', error)
+      }
+    }
+    registerView()
+  }, [property.slug])
 
   // Buscar imóveis relacionados
   useEffect(() => {
@@ -180,7 +216,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               <div className="bg-white rounded-xl shadow-sm p-6">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+                    <h1 className="text-xl md:text-2xl font-bold mb-1" style={{ color: '#000000' }}>
                       {property.title}
                     </h1>
                     <div className="flex items-center" style={{ color: '#5a5a5a' }}>
@@ -211,7 +247,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
 
               {/* Características */}
               <div className="bg-white rounded-xl shadow-sm p-6">
-                <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 flex items-center">
+                <h2 className="text-lg md:text-xl font-bold mb-4 flex items-center" style={{ color: '#000000' }}>
                   <BuildingOfficeIcon className="w-6 h-6 mr-2" />
                   Características
                 </h2>
@@ -221,14 +257,14 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                       <HomeIcon className="w-4 h-4 text-gray-500 mr-2" />
                       <span className="text-sm text-gray-600">Tipo:</span>
                     </div>
-                    <span className="text-sm font-semibold text-gray-900">{property.category}</span>
+                    <span className="text-sm font-semibold text-black">{property.category}</span>
                   </div>
                   <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-50">
                     <div className="flex items-center">
                       <CurrencyDollarIcon className="w-4 h-4 text-gray-500 mr-2" />
                       <span className="text-sm text-gray-600">Finalidade:</span>
                     </div>
-                    <span className="text-sm font-semibold text-gray-900">{property.type === 'venda' ? 'Venda' : 'Aluguel'}</span>
+                    <span className="text-sm font-semibold text-black">{property.type === 'venda' ? 'Venda' : 'Aluguel'}</span>
                   </div>
                   {property.apartmentTotalArea && (
                     <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-50">
@@ -238,7 +274,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                         </svg>
                         <span className="text-sm text-gray-600">Área Total:</span>
                       </div>
-                      <span className="text-sm font-semibold text-gray-900">{property.apartmentTotalArea}m²</span>
+                      <span className="text-sm font-semibold text-black">{property.apartmentTotalArea}m²</span>
                     </div>
                   )}
                   {property.apartmentUsefulArea && (
@@ -249,7 +285,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                         </svg>
                         <span className="text-sm text-gray-600">Área Útil:</span>
                       </div>
-                      <span className="text-sm font-semibold text-gray-900">{property.apartmentUsefulArea}m²</span>
+                      <span className="text-sm font-semibold text-black">{property.apartmentUsefulArea}m²</span>
                     </div>
                   )}
 
@@ -262,7 +298,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             <BuildingOffice2Icon className="w-4 h-4 text-gray-500 mr-2" />
                             <span className="text-sm text-gray-600">Andar:</span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">{property.floor}º andar</span>
+                          <span className="text-sm font-semibold text-black">{property.floor}º andar</span>
                         </div>
                       )}
                       {property.suites && (
@@ -273,7 +309,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             </svg>
                             <span className="text-sm text-gray-600">Suítes:</span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">{property.suites}</span>
+                          <span className="text-sm font-semibold text-black">{property.suites}</span>
                         </div>
                       )}
                       {property.condoFee && (
@@ -284,7 +320,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             </svg>
                             <span className="text-sm text-gray-600">Condomínio:</span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">
+                          <span className="text-sm font-semibold text-black">
                             {new Intl.NumberFormat('pt-BR', {
                               style: 'currency',
                               currency: 'BRL'
@@ -298,7 +334,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             <DocumentTextIcon className="w-4 h-4 text-gray-500 mr-2" />
                             <span className="text-sm text-gray-600">IPTU:</span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">
+                          <span className="text-sm font-semibold text-black">
                             {new Intl.NumberFormat('pt-BR', {
                               style: 'currency',
                               currency: 'BRL'
@@ -310,6 +346,107 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   )}
                 </div>
               </div>
+
+              {/* Informações Principais do Imóvel */}
+              <div className="bg-white rounded-xl shadow-sm p-6">
+                <h2 className="text-lg md:text-xl font-bold mb-4 flex items-center" style={{ color: '#000000' }}>
+                  <HomeIcon className="w-6 h-6 mr-2" />
+                  Informações do Imóvel
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {property.bedrooms && (
+                    <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-bed" style={{ fontSize: '18px', color: '#6c757d' }}></i>
+                      <div className="font-bold" style={{ fontSize: '16px', color: '#212529' }}>
+                        {property.bedrooms}
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Quartos
+                      </div>
+                    </div>
+                  )}
+                  {property.bathrooms && (
+                    <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-bath" style={{ fontSize: '18px', color: '#6c757d' }}></i>
+                      <div className="font-bold" style={{ fontSize: '16px', color: '#212529' }}>
+                        {property.bathrooms}
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Banheiros
+                      </div>
+                    </div>
+                  )}
+                  {property.suites && (
+                    <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-door-open" style={{ fontSize: '18px', color: '#6c757d' }}></i>
+                      <div className="font-bold" style={{ fontSize: '16px', color: '#212529' }}>
+                        {property.suites}
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Suítes
+                      </div>
+                    </div>
+                  )}
+                  {property.area && (
+                    <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-ruler-combined" style={{ fontSize: '18px', color: '#6c757d' }}></i>
+                      <div className="font-bold" style={{ fontSize: '16px', color: '#212529' }}>
+                        {property.area}m²
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Área
+                      </div>
+                    </div>
+                  )}
+                  {property.parking && (
+                    <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-car" style={{ fontSize: '18px', color: '#6c757d' }}></i>
+                      <div className="font-bold" style={{ fontSize: '16px', color: '#212529' }}>
+                        {property.parking}
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Vagas
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Formas de Pagamento Aceitas */}
+              {(property.acceptsFinancing || property.acceptsTrade || property.acceptsCar) && (
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                  <h2 className="text-lg md:text-xl font-bold mb-4 flex items-center" style={{ color: '#000000' }}>
+                    <CurrencyDollarIcon className="w-6 h-6 mr-2" />
+                    Formas de Pagamento Aceitas
+                  </h2>
+                  <div className="flex flex-wrap gap-3">
+                    {property.acceptsFinancing && (
+                      <div className="flex items-center">
+                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                        </svg>
+                        <span className="text-sm text-gray-700">Aceita Financiamento Bancário</span>
+                      </div>
+                    )}
+                    {property.acceptsTrade && (
+                      <div className="flex items-center">
+                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                        </svg>
+                        <span className="text-sm text-gray-700">Aceita Permuta/Troca</span>
+                      </div>
+                    )}
+                    {property.acceptsCar && (
+                      <div className="flex items-center">
+                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                        </svg>
+                        <span className="text-sm text-gray-700">Aceita Carro como Parte do Pagamento</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Sobre o Imóvel - Estilo Arbo */}
               {property.description && (
@@ -339,7 +476,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               {/* Comodidades do Condomínio - Separado apenas para apartamentos */}
               {property.category === 'apartamento' && property.amenities && (
                 <div className="bg-white rounded-xl shadow-sm p-6">
-                  <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-6">
+                  <h2 className="text-lg md:text-xl font-bold mb-6" style={{ color: '#000000' }}>
                     Comodidades do Condomínio
                   </h2>
 
@@ -366,14 +503,26 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                 {/* Card de Contato Principal - Estilo Arbo */}
                 <div className="bg-white rounded-3 border p-4 mb-4" style={{ borderColor: '#e9ecef' }}>
                   <div className="mb-4">
-                    <div
-                      className="fw-bold mb-2 font-sora text-lg md:text-xl"
-                      style={{
-                        color: '#212529',
-                        lineHeight: '1.2'
-                      }}
-                    >
-                      {formatPrice(property.price)}
+                    {/* Tipo de Negócio e Preço na mesma linha */}
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <div
+                        className="fw-bold font-sora"
+                        style={{
+                          fontSize: '17px',
+                          color: '#212529'
+                        }}
+                      >
+                        {property.type === 'venda' ? 'Venda' : 'Aluguel'}
+                      </div>
+                      <div
+                        className="fw-bold font-sora"
+                        style={{
+                          fontSize: '17px',
+                          color: '#212529'
+                        }}
+                      >
+                        {formatPrice(property.price)}
+                      </div>
                     </div>
 
                     {/* Badge de Preço Reduzido */}
@@ -388,16 +537,18 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                       </div>
                     )}
 
-                    <div
-                      className="font-sora"
-                      style={{
-                        fontSize: '14px',
-                        color: '#6c757d'
-                      }}
-                    >
-                      {property.type === 'venda' ? 'À venda' : 'Para alugar'}
-                      {property.area && ` • ${formatPrice(property.price / property.area)}/m²`}
-                    </div>
+                    {/* Preço por m² */}
+                    {property.area && (
+                      <div
+                        className="font-sora text-end"
+                        style={{
+                          fontSize: '12px',
+                          color: '#6c757d'
+                        }}
+                      >
+                        {formatPrice(property.price / property.area)}/m²
+                      </div>
+                    )}
 
                     {/* Condomínio e IPTU */}
                     {(property.condoFee || property.iptu) && (
@@ -471,7 +622,8 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                         onClick={() => setIsAppointmentModalOpen(true)}
                         className="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2 py-3 font-sora fw-semibold"
                         style={{
-                          fontSize: '14px'
+                          fontSize: '14px',
+                          border: '1px solid #e0e0e0'
                         }}
                       >
                         <i className="fas fa-calendar" style={{ fontSize: '14px' }}></i>
@@ -489,33 +641,11 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                         WhatsApp
                       </button>
 
-                      <button
-                        className="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2 py-3 font-sora fw-semibold"
-                        style={{
-                          fontSize: '14px'
-                        }}
-                      >
-                        <i className="fas fa-phone" style={{ fontSize: '14px' }}></i>
-                        Ligar Agora
-                      </button>
-
-                      <button
-                        className="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2 py-3 font-sora fw-semibold"
-                        style={{
-                          fontSize: '14px'
-                        }}
-                      >
-                        <i className="fas fa-envelope" style={{ fontSize: '14px' }}></i>
-                        Enviar E-mail
-                      </button>
-
                       {/* Botão de Alerta de Preço */}
-                      <div className="mt-2">
-                        <PriceAlertButton
-                          propertyId={property.id}
-                          propertyTitle={property.title}
-                        />
-                      </div>
+                      <PriceAlertButton
+                        propertyId={property.id}
+                        propertyTitle={property.title}
+                      />
                     </div>
                   </div>
 
@@ -547,7 +677,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             color: '#212529'
                           }}
                         >
-                          All Imóveis
+                          {companyName}
                         </div>
                         <div
                           className="font-sora"
@@ -556,20 +686,9 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                             color: '#6c757d'
                           }}
                         >
-                          Plataforma Imobiliária
+                          {contactPhone}
                         </div>
                       </div>
-                    </div>
-
-                    <div
-                      className="font-sora"
-                      style={{
-                        fontSize: '12px',
-                        color: '#6c757d'
-                      }}
-                    >
-                      <i className="fas fa-map-marker-alt me-1"></i>
-                      {property.address}, {property.city} - {property.state}
                     </div>
                   </div>
                 </div>
@@ -580,92 +699,6 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   propertyType={property.type}
                 />
 
-                {/* Card de Características Rápidas */}
-                <div className="bg-white rounded-3 border p-4" style={{ borderColor: '#e9ecef' }}>
-                  <h4
-                    className="fw-bold mb-3 font-sora"
-                    style={{
-                      fontSize: '16px',
-                      color: '#212529'
-                    }}
-                  >
-                    Características
-                  </h4>
-
-                  <div className="d-flex justify-content-between text-center">
-                    {property.bedrooms && (
-                      <div>
-                        <i className="fas fa-bed" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.bedrooms}
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Quartos
-                        </div>
-                      </div>
-                    )}
-
-                    {property.bathrooms && (
-                      <div>
-                        <i className="fas fa-bath" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.bathrooms}
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Banheiros
-                        </div>
-                      </div>
-                    )}
-
-                    {property.area && (
-                      <div>
-                        <i className="fas fa-ruler-combined" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.area}m²
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Área
-                        </div>
-                      </div>
-                    )}
-
-                    {property.parking && (
-                      <div>
-                        <i className="fas fa-car" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.parking}
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Vagas
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -675,11 +708,12 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
         {relatedProperties.length > 0 && (
           <div className="pb-8">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6 mt-2 text-center">Imóveis que Poderá Gostar</h2>
+              <h2 className="text-3xl font-bold mb-6 mt-2 text-center" style={{ color: '#000000' }}>Imóveis que Poderá Gostar</h2>
             </div>
             <PropertyStoriesSection
               properties={relatedProperties}
               loading={loadingRelated}
+              title=""
             />
           </div>
         )}

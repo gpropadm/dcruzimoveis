@@ -583,7 +583,7 @@ export default function ImovelMapboxPage() {
       <main className="pt-24">
         <div className="flex h-[calc(100vh-120px)]">
           {/* Lista de Imóveis - Lado Esquerdo */}
-          <div className={`${showMap ? 'w-1/2' : 'w-full'} overflow-y-auto bg-white transition-all duration-300`}>
+          <div className={`${showMap ? 'w-full lg:w-1/2' : 'w-full'} overflow-y-auto bg-white transition-all duration-300`}>
             <div className="p-6">
               <div className="mb-6 flex justify-between items-center">
                 <h1 className="text-2xl font-bold" style={{ color: '#333333' }}>
@@ -783,7 +783,7 @@ export default function ImovelMapboxPage() {
 
           {/* Mapa Mapbox - Lado Direito */}
           {showMap && (
-            <div className="w-1/2 relative sticky top-0 h-[calc(100vh-120px)] bg-gray-200 transition-all duration-300">
+            <div className="hidden lg:block lg:w-1/2 relative sticky top-0 h-[calc(100vh-120px)] bg-gray-200 transition-all duration-300">
               {loading ? (
                 <div className="flex items-center justify-center h-full">
                   <div className="text-center">

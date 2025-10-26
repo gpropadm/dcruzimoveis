@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getWhatsAppInstance } from '@/lib/whatsapp-baileys';
+import { sendWhatsAppMessage } from '@/lib/whatsapp-twilio';
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,32 +26,8 @@ export async function POST(request: NextRequest) {
 
     console.log(`📱 [WhatsApp API] Enviando mensagem via ${source || 'unknown'} para ${to}`);
 
-    // Get WhatsApp instance
-    const whatsapp = getWhatsAppInstance();
-
-    // Check if connected
-    if (!whatsapp.isConnected()) {
-      console.log('❌ [WhatsApp API] WhatsApp não conectado, tentando conectar...');
-
-      // Try to initialize if not connected
-      await whatsapp.initialize();
-
-      // Wait a bit for connection
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      if (!whatsapp.isConnected()) {
-        return NextResponse.json(
-          {
-            success: false,
-            error: 'WhatsApp não conectado. Verifique o QR Code no terminal.'
-          },
-          { status: 503 }
-        );
-      }
-    }
-
-    // Send message
-    const success = await whatsapp.sendMessage(to, message);
+    // Send message via CallMeBot
+    const success = await sendWhatsAppMessage(to, message);
 
     if (success) {
       console.log(`✅ [WhatsApp API] Mensagem enviada com sucesso para ${to}${lead_id ? ` (Lead: ${lead_id})` : ''}`);
@@ -68,7 +44,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Falha ao enviar mensagem',
+          error: 'Falha ao enviar mensagem via Twilio',
           lead_id: lead_id || null
         },
         { status: 500 }

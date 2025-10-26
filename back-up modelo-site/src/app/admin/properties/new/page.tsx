@@ -19,9 +19,8 @@ import {
 } from '@/lib/maskUtils'
 import { toast } from 'react-toastify'
 import MapSelector from '@/components/MapSelector'
-
-// Importação dinâmica do editor para evitar problemas de SSR
-const RichTextEditor = dynamic(() => import('@/components/RichTextEditor'), { ssr: false })
+import RichTextEditor from '@/components/RichTextEditor'
+import { getAddressFromCEP } from '@/lib/geocoding'
 
 export default function NewProperty() {
   const router = useRouter()
@@ -70,7 +69,11 @@ export default function NewProperty() {
     commercialType: '',
     floor_commercial: '',
     businessCenter: '',
-    features: [] as string[]
+    features: [] as string[],
+    // Formas de pagamento
+    acceptsFinancing: false,
+    acceptsTrade: false,
+    acceptsCar: false
   })
   const [images, setImages] = useState<File[]>([])
   const [imagePreview, setImagePreview] = useState<string[]>([])
@@ -143,28 +146,28 @@ export default function NewProperty() {
   const fetchAddressByCep = async (cep: string) => {
     // Remove formatação do CEP
     const cleanCep = parseCEP(cep)
-    
+
     if (cleanCep.length !== 8) return
-    
+
     try {
-      const response = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`)
-      if (!response.ok) throw new Error('CEP not found')
-      
-      const data = await response.json()
-      
-      if (data.erro) {
+      // Usar a função que já corrige automaticamente as regiões do DF
+      const addressData = await getAddressFromCEP(cep)
+
+      if (!addressData) {
         toast.error('CEP não encontrado!')
         return
       }
-      
-      // Preenche os campos automaticamente
+
+      // Preenche os campos automaticamente com a cidade corrigida
       setFormData(prev => ({
         ...prev,
-        address: data.logradouro || '',
-        city: data.localidade || '',
-        state: data.uf || ''
+        address: addressData.logradouro || '',
+        city: addressData.localidade || '', // Já vem com a região administrativa correta (Santa Maria, Gama, etc)
+        state: addressData.uf || ''
       }))
-      
+
+      console.log(`✅ CEP ${cep} → Cidade: ${addressData.localidade}`)
+
     } catch (error) {
       console.error('Erro ao buscar CEP:', error)
       toast.error('Erro ao buscar CEP. Verifique se o CEP está correto.')
@@ -535,6 +538,10 @@ export default function NewProperty() {
           floor_commercial: formData.floor_commercial || null,
           businessCenter: formData.businessCenter || null,
           features: formData.features.length > 0 ? JSON.stringify(formData.features) : null,
+          // Formas de pagamento
+          acceptsFinancing: formData.acceptsFinancing,
+          acceptsTrade: formData.acceptsTrade,
+          acceptsCar: formData.acceptsCar,
           // Mídia
           images: JSON.stringify(imageUrls),
           video: videoUrls.length > 0 ? JSON.stringify(videoUrls) : null,
@@ -601,12 +608,12 @@ export default function NewProperty() {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Informações Básicas */}
           <div className="bg-white shadow rounded-lg">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Informações Básicas</h3>
+            <div className="px-6 py-4 border-b border-gray-300">
+              <h3 className="text-lg font-medium text-black" style={{ color: '#000000' }}>Informações Básicas</h3>
             </div>
             <div className="p-6 space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-900">
                   Título *
                 </label>
                 <input
@@ -615,13 +622,13 @@ export default function NewProperty() {
                   value={formData.title}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                  className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                   placeholder="Ex: Apartamento 3 quartos no Centro"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
                   Descrição
                 </label>
                 <RichTextEditor
@@ -633,7 +640,7 @@ export default function NewProperty() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Preço (R$) *
                   </label>
                   <div className="relative">
@@ -644,14 +651,14 @@ export default function NewProperty() {
                       value={formData.price}
                       onChange={handleChange}
                       required
-                      className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full pl-10 pr-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       placeholder="500.000,00"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Tipo *
                   </label>
                   <select
@@ -659,17 +666,19 @@ export default function NewProperty() {
                     value={formData.type}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                   >
                     <option value="venda">Venda</option>
                     <option value="aluguel">Aluguel</option>
+                    <option value="lancamento">Lançamento</option>
+                    <option value="empreendimento">Empreendimento</option>
                   </select>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Status *
                   </label>
                   <select
@@ -677,7 +686,7 @@ export default function NewProperty() {
                     value={formData.status}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                   >
                     <option value="disponivel">Disponível</option>
                     <option value="vendido">Vendido</option>
@@ -686,7 +695,7 @@ export default function NewProperty() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Categoria *
                   </label>
                   <select
@@ -694,7 +703,7 @@ export default function NewProperty() {
                     value={formData.category}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                   >
                     <option value="apartamento">Apartamento</option>
                     <option value="casa">Casa</option>
@@ -710,14 +719,14 @@ export default function NewProperty() {
 
           {/* Localização */}
           <div className="bg-white shadow rounded-lg">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Localização</h3>
+            <div className="px-6 py-4 border-b border-gray-300">
+              <h3 className="text-lg font-medium text-black" style={{ color: '#000000' }}>Localização</h3>
             </div>
             <div className="p-6 space-y-6">
 
               {/* Campo CEP */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
                   CEP
                 </label>
                 <input
@@ -726,13 +735,13 @@ export default function NewProperty() {
                   value={formData.cep}
                   onChange={handleCepChange}
                   maxLength={9}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                  className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                   placeholder="00000-000"
                 />
               </div>
 
               {/* Alternativas para localização */}
-              <div className="border-t border-gray-200 pt-6">
+              <div className="border-t border-gray-300 pt-6">
                 <h4 className="text-sm font-medium text-gray-700 mb-4">
                   Ou use uma dessas opções para propriedades rurais/sem CEP:
                 </h4>
@@ -816,7 +825,7 @@ export default function NewProperty() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
                   Endereço *
                 </label>
                 <input
@@ -825,14 +834,14 @@ export default function NewProperty() {
                   value={formData.address}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                  className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                   placeholder="Rua das Flores, 123"
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Cidade *
                   </label>
                   <input
@@ -841,13 +850,13 @@ export default function NewProperty() {
                     value={formData.city}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     placeholder="Florianópolis"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Estado *
                   </label>
                   <input
@@ -857,7 +866,7 @@ export default function NewProperty() {
                     onChange={handleChange}
                     required
                     maxLength={2}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     placeholder="SC"
                   />
                 </div>
@@ -869,14 +878,14 @@ export default function NewProperty() {
           {/* Características Básicas - Para apartamento, casa, cobertura e comercial */}
           {(formData.category === 'apartamento' || formData.category === 'casa' || formData.category === 'cobertura' || formData.category === 'comercial') && (
             <div className="bg-white shadow rounded-lg">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900">Características Básicas</h3>
+              <div className="px-6 py-4 border-b border-gray-300">
+                <h3 className="text-lg font-medium text-black" style={{ color: '#000000' }}>Características Básicas</h3>
                 <p className="text-sm text-gray-500 mt-1">Informações gerais do imóvel</p>
               </div>
               <div className="p-6 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Quartos
                     </label>
                     <input
@@ -885,12 +894,12 @@ export default function NewProperty() {
                       value={formData.bedrooms}
                       onChange={handleChange}
                       min="0"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Banheiros
                     </label>
                     <input
@@ -899,12 +908,12 @@ export default function NewProperty() {
                       value={formData.bathrooms}
                       onChange={handleChange}
                       min="0"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Vagas de Garagem
                     </label>
                     <input
@@ -913,7 +922,7 @@ export default function NewProperty() {
                       value={formData.parking}
                       onChange={handleChange}
                       min="0"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     />
                   </div>
                 </div>
@@ -924,22 +933,22 @@ export default function NewProperty() {
           {/* Campos específicos para casa */}
           {formData.category === 'casa' && (
             <div className="bg-white shadow rounded-lg">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900">Características da Casa</h3>
+              <div className="px-6 py-4 border-b border-gray-300">
+                <h3 className="text-lg font-medium text-black" style={{ color: '#000000' }}>Características da Casa</h3>
                 <p className="text-sm text-gray-500 mt-1">Informações específicas para casas</p>
               </div>
               <div className="p-6 space-y-6">
                 {/* Características específicas da casa */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Tipo de Casa
                     </label>
                     <select
                       name="houseType"
                       value={formData.houseType}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     >
                       <option value="">Selecione o tipo</option>
                       <option value="terrea">Térrea</option>
@@ -951,14 +960,14 @@ export default function NewProperty() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Tipo de Garagem
                     </label>
                     <select
                       name="garage"
                       value={formData.garage}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     >
                       <option value="">Selecione o tipo</option>
                       <option value="coberta">Coberta</option>
@@ -975,7 +984,7 @@ export default function NewProperty() {
                         name="yard"
                         checked={formData.yard}
                         onChange={handleChange}
-                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded mr-2"
+                        className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded mr-2"
                       />
                       <span className="text-sm text-gray-700">
                         Possui quintal
@@ -987,7 +996,7 @@ export default function NewProperty() {
                 {/* Áreas da Casa */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Área do Lote (m²)
                     </label>
                     <input
@@ -995,13 +1004,13 @@ export default function NewProperty() {
                       name="lotArea"
                       value={formData.lotArea}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       placeholder="Ex: 300,00"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Área Construída (m²)
                     </label>
                     <input
@@ -1009,7 +1018,7 @@ export default function NewProperty() {
                       name="builtArea"
                       value={formData.builtArea}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       placeholder="Ex: 180,50"
                     />
                   </div>
@@ -1021,15 +1030,15 @@ export default function NewProperty() {
           {/* Campos específicos para apartamento/cobertura */}
           {(formData.category === 'apartamento' || formData.category === 'cobertura') && (
             <div className="bg-white shadow rounded-lg">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900">Informações do Apartamento</h3>
+              <div className="px-6 py-4 border-b border-gray-300">
+                <h3 className="text-lg font-medium text-black" style={{ color: '#000000' }}>Informações do Apartamento</h3>
                 <p className="text-sm text-gray-500 mt-1">Dados específicos para apartamentos e coberturas</p>
               </div>
               <div className="p-6 space-y-6">
                 {/* Primeira linha - Andar e Suítes */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Andar
                     </label>
                     <input
@@ -1038,13 +1047,13 @@ export default function NewProperty() {
                       value={formData.floor}
                       onChange={handleChange}
                       min="0"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       placeholder="Ex: 5"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Suítes
                     </label>
                     <input
@@ -1053,7 +1062,7 @@ export default function NewProperty() {
                       value={formData.suites}
                       onChange={handleChange}
                       min="0"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       placeholder="Ex: 2"
                     />
                   </div>
@@ -1062,7 +1071,7 @@ export default function NewProperty() {
                 {/* Segunda linha - Áreas */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Área Total (m²)
                     </label>
                     <input
@@ -1070,13 +1079,13 @@ export default function NewProperty() {
                       name="apartmentTotalArea"
                       value={formData.apartmentTotalArea}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       placeholder="Ex: 120,50"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Área Útil (m²)
                     </label>
                     <input
@@ -1084,7 +1093,7 @@ export default function NewProperty() {
                       name="apartmentUsefulArea"
                       value={formData.apartmentUsefulArea}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       placeholder="Ex: 95,00"
                     />
                   </div>
@@ -1093,7 +1102,7 @@ export default function NewProperty() {
                 {/* Terceira linha - Valores */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Valor do Condomínio (R$)
                     </label>
                     <div className="relative">
@@ -1103,14 +1112,14 @@ export default function NewProperty() {
                         name="condoFee"
                         value={formData.condoFee}
                         onChange={handleChange}
-                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full pl-10 pr-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="500,00"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       IPTU (R$)
                     </label>
                     <div className="relative">
@@ -1120,7 +1129,7 @@ export default function NewProperty() {
                         name="iptu"
                         value={formData.iptu}
                         onChange={handleChange}
-                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                        className="w-full pl-10 pr-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                         placeholder="150,00"
                       />
                     </div>
@@ -1128,7 +1137,7 @@ export default function NewProperty() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Comodidades do Condomínio
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -1246,7 +1255,7 @@ export default function NewProperty() {
                                 : (prev.amenities || []).filter(a => a !== amenity)
                             }))
                           }}
-                          className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded mr-2"
+                          className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded mr-2"
                         />
                         <span className="text-sm text-gray-700">{amenity}</span>
                       </label>
@@ -1260,21 +1269,21 @@ export default function NewProperty() {
           {/* Campos específicos para terreno */}
           {formData.category === 'terreno' && (
             <div className="bg-white shadow rounded-lg">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900">Informações do Terreno</h3>
+              <div className="px-6 py-4 border-b border-gray-300">
+                <h3 className="text-lg font-medium text-black" style={{ color: '#000000' }}>Informações do Terreno</h3>
                 <p className="text-sm text-gray-500 mt-1">Dados específicos para terrenos</p>
               </div>
               <div className="p-6 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Zoneamento
                     </label>
                     <select
                       name="zoning"
                       value={formData.zoning}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     >
                       <option value="">Selecione o zoneamento</option>
                       <option value="residencial">Residencial</option>
@@ -1286,14 +1295,14 @@ export default function NewProperty() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Topografia
                     </label>
                     <select
                       name="slope"
                       value={formData.slope}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     >
                       <option value="">Selecione a topografia</option>
                       <option value="plano">Plano</option>
@@ -1305,7 +1314,7 @@ export default function NewProperty() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Frente do Terreno (metros)
                   </label>
                   <input
@@ -1315,7 +1324,7 @@ export default function NewProperty() {
                     onChange={handleChange}
                     step="0.01"
                     min="0"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     placeholder="Ex: 12.50"
                   />
                 </div>
@@ -1326,21 +1335,21 @@ export default function NewProperty() {
           {/* Campos específicos para fazenda */}
           {formData.category === 'fazenda' && (
             <div className="bg-white shadow rounded-lg">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900">Informações da Fazenda</h3>
+              <div className="px-6 py-4 border-b border-gray-300">
+                <h3 className="text-lg font-medium text-black" style={{ color: '#000000' }}>Informações da Fazenda</h3>
                 <p className="text-sm text-gray-500 mt-1">Dados específicos para propriedades rurais</p>
               </div>
               <div className="p-6 space-y-6">
                 {/* Seletor de Unidade de Medida */}
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Unidade de Medida para Área
                   </label>
                   <select
                     name="areaUnit"
                     value={formData.areaUnit}
                     onChange={handleChange}
-                    className="w-full md:w-64 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full md:w-64 px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                   >
                     <option value="hectares">Hectares (ha)</option>
                     <option value="alqueires-sp">Alqueires Paulista (24.200 m²)</option>
@@ -1360,7 +1369,7 @@ export default function NewProperty() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Área Total ({formData.areaUnit === 'metros' ? 'm²' :
                                   formData.areaUnit === 'quilometros' ? 'km²' :
                                   formData.areaUnit === 'hectares' ? 'ha' :
@@ -1376,13 +1385,13 @@ export default function NewProperty() {
                       onChange={handleChange}
                       step="0.01"
                       min="0"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       placeholder="Ex: 50.75"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Área Cultivada ({formData.areaUnit === 'metros' ? 'm²' :
                                       formData.areaUnit === 'quilometros' ? 'km²' :
                                       formData.areaUnit === 'hectares' ? 'ha' :
@@ -1398,13 +1407,13 @@ export default function NewProperty() {
                       onChange={handleChange}
                       step="0.01"
                       min="0"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       placeholder="Ex: 30.00"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Área de Pastagens ({formData.areaUnit === 'metros' ? 'm²' :
                                          formData.areaUnit === 'quilometros' ? 'km²' :
                                          formData.areaUnit === 'hectares' ? 'ha' :
@@ -1420,14 +1429,14 @@ export default function NewProperty() {
                       onChange={handleChange}
                       step="0.01"
                       min="0"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                       placeholder="Ex: 15.25"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Fontes de Água
                   </label>
                   <input
@@ -1435,13 +1444,13 @@ export default function NewProperty() {
                     name="waterSources"
                     value={formData.waterSources}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     placeholder="Ex: Rio, 2 poços artesianos, açude"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Benfeitorias da Fazenda
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -1482,7 +1491,7 @@ export default function NewProperty() {
                               }))
                             }
                           }}
-                          className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded mr-2"
+                          className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded mr-2"
                         />
                         <span className="text-sm text-gray-700">{building}</span>
                       </label>
@@ -1496,22 +1505,22 @@ export default function NewProperty() {
           {/* Campos específicos para comercial */}
           {formData.category === 'comercial' && (
             <div className="bg-white shadow rounded-lg">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900">Características Comerciais</h3>
+              <div className="px-6 py-4 border-b border-gray-300">
+                <h3 className="text-lg font-medium text-black" style={{ color: '#000000' }}>Características Comerciais</h3>
                 <p className="text-sm text-gray-500 mt-1">Informações específicas para imóveis comerciais</p>
               </div>
               <div className="p-6 space-y-6">
                 {/* Informações básicas comerciais */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Tipo de Imóvel Comercial
                     </label>
                     <select
                       name="commercialType"
                       value={formData.commercialType}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     >
                       <option value="">Selecione o tipo</option>
                       <option value="loja">Loja</option>
@@ -1533,7 +1542,7 @@ export default function NewProperty() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Andar (se aplicável)
                   </label>
                   <input
@@ -1542,13 +1551,13 @@ export default function NewProperty() {
                     value={formData.floor_commercial}
                     onChange={handleChange}
                     min="0"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     placeholder="Ex: 3"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Centro Empresarial/Edifício/Shopping
                   </label>
                   <input
@@ -1556,13 +1565,13 @@ export default function NewProperty() {
                     name="businessCenter"
                     value={formData.businessCenter}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
                     placeholder="Ex: Centro Empresarial ABC, Shopping XYZ"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Características e Facilidades
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -1607,7 +1616,7 @@ export default function NewProperty() {
                               }))
                             }
                           }}
-                          className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded mr-2"
+                          className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded mr-2"
                         />
                         <span className="text-sm text-gray-700">{feature}</span>
                       </label>
@@ -1620,8 +1629,8 @@ export default function NewProperty() {
 
           {/* Upload de Imagens */}
           <div className="bg-white shadow rounded-lg">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Imagens do Imóvel</h3>
+            <div className="px-6 py-4 border-b border-gray-300">
+              <h3 className="text-lg font-medium text-black" style={{ color: '#000000' }}>Imagens do Imóvel</h3>
               <p className="text-sm text-gray-500 mt-1">Adicione quantas imagens quiser (JPEG, PNG - máx 5MB cada)</p>
             </div>
             <div className="p-6">
@@ -1635,7 +1644,7 @@ export default function NewProperty() {
                     onChange={handleImageUpload}
                     className="hidden"
                   />
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer">
+                  <div className="border-2 border-dashed border-gray-400 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer">
                     <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                       <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -1710,8 +1719,8 @@ export default function NewProperty() {
 
           {/* Upload de Vídeo */}
           <div className="bg-white shadow rounded-lg">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Vídeo Shorts do Imóvel</h3>
+            <div className="px-6 py-4 border-b border-gray-300">
+              <h3 className="text-lg font-medium text-black" style={{ color: '#000000' }}>Vídeo Shorts do Imóvel</h3>
               <p className="text-sm text-gray-500 mt-1">Adicione um vídeo vertical de até 60 segundos (formato shorts - máx 100MB)</p>
             </div>
             <div className="p-6">
@@ -1725,7 +1734,7 @@ export default function NewProperty() {
                     multiple
                     className="hidden"
                   />
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer">
+                  <div className="border-2 border-dashed border-gray-400 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer">
                     <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
@@ -1780,22 +1789,65 @@ export default function NewProperty() {
 
           {/* Configurações */}
           <div className="bg-white shadow rounded-lg">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Configurações</h3>
+            <div className="px-6 py-4 border-b border-gray-300">
+              <h3 className="text-lg font-medium text-black" style={{ color: '#000000' }}>Configurações</h3>
             </div>
-            <div className="p-6">
+            <div className="p-6 space-y-4">
               <label className="flex items-center">
                 <input
                   type="checkbox"
                   name="featured"
                   checked={formData.featured}
                   onChange={handleChange}
-                  className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-300 rounded"
+                  className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded"
                 />
                 <span className="ml-2 text-sm text-gray-700">
                   Imóvel em destaque (aparecerá na página inicial)
                 </span>
               </label>
+
+              <div className="mt-4 pt-4 border-t border-gray-300">
+                <p className="text-sm font-medium text-gray-700 mb-3">Formas de Pagamento Aceitas:</p>
+
+                <label className="flex items-center mb-2">
+                  <input
+                    type="checkbox"
+                    name="acceptsFinancing"
+                    checked={formData.acceptsFinancing}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">
+                    Aceita Financiamento Bancário
+                  </span>
+                </label>
+
+                <label className="flex items-center mb-2">
+                  <input
+                    type="checkbox"
+                    name="acceptsTrade"
+                    checked={formData.acceptsTrade}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">
+                    Aceita Permuta/Troca
+                  </span>
+                </label>
+
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="acceptsCar"
+                    checked={formData.acceptsCar}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-[#7360ee] focus:ring-[#7360ee] border-gray-400 rounded"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">
+                    Aceita Carro como Parte do Pagamento
+                  </span>
+                </label>
+              </div>
             </div>
           </div>
 
@@ -1803,7 +1855,7 @@ export default function NewProperty() {
           <div className="flex justify-end space-x-4">
             <Link
               href="/admin/properties"
-              className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+              className="px-6 py-2 border border-gray-400 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
             >
               Cancelar
             </Link>

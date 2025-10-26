@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
 import { geocodeCEPWithCache } from '@/lib/geocoding'
+import { sendWhatsAppMessage } from '@/lib/whatsapp-twilio'
 
 // GET - Buscar imóvel específico
 export async function GET(
@@ -101,7 +102,11 @@ export async function PUT(
       commercialType,
       floor_commercial,
       businessCenter,
-      features
+      features,
+      // Formas de pagamento
+      acceptsFinancing,
+      acceptsTrade,
+      acceptsCar
     } = body
 
 
@@ -115,21 +120,26 @@ export async function PUT(
       return NextResponse.json({ error: 'Imóvel não encontrado' }, { status: 404 })
     }
 
+    // Função para normalizar texto para URL (remove acentos, caracteres especiais, etc)
+    const normalizeForUrl = (text: string) => {
+      return text
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // Remove acentos
+        .replace(/[^a-z0-9\s-]/g, '') // Remove caracteres especiais
+        .replace(/\s+/g, '-') // Substitui espaços por hífens
+        .replace(/-+/g, '-') // Remove hífens duplos
+        .trim()
+    }
+
     // Gerar novo slug se o título mudou
     let slug = existingProperty.slug
     if (title !== existingProperty.title) {
-      slug = title
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .trim()
+      slug = normalizeForUrl(title)
 
       // Verificar se o slug já existe
       const existingSlug = await prisma.property.findFirst({
-        where: { 
+        where: {
           slug,
           id: { not: id }
         }
@@ -191,6 +201,16 @@ export async function PUT(
       }
     }
 
+    // 💰 Verificar se houve redução de preço para enviar alertas
+    const currentPrice = existingProperty.price
+    const newPrice = typeof price === 'string' ? parseFloat(price) : price
+    const isPriceReduction = newPrice < currentPrice
+
+    console.log('💰 Verificação de preço:')
+    console.log('  - Preço atual:', currentPrice)
+    console.log('  - Novo preço:', newPrice)
+    console.log('  - É redução?:', isPriceReduction)
+
     const updatedProperty = await prisma.property.update({
       where: { id },
       data: {
@@ -200,7 +220,10 @@ export async function PUT(
         address,
         city,
         state,
-        price,
+        price: newPrice,
+        previousPrice: isPriceReduction ? currentPrice : existingProperty.previousPrice,
+        priceReduced: isPriceReduction,
+        priceReducedAt: isPriceReduction ? new Date() : existingProperty.priceReducedAt,
         type,
         category,
         bedrooms: bedrooms || null,
@@ -243,9 +266,122 @@ export async function PUT(
         commercialType,
         floor_commercial: floor_commercial || null,
         businessCenter,
-        features
+        features,
+        // Formas de pagamento
+        acceptsFinancing: acceptsFinancing || false,
+        acceptsTrade: acceptsTrade || false,
+        acceptsCar: acceptsCar || false
       }
     })
+
+    // 📢 Se houve redução de preço, enviar alertas via WhatsApp
+    console.log('🔔 ========== VERIFICANDO ALERTAS DE PREÇO ==========')
+    console.log(`  Property ID: ${id}`)
+    console.log(`  isPriceReduction: ${isPriceReduction}`)
+    console.log(`  currentPrice: ${currentPrice}`)
+    console.log(`  newPrice: ${newPrice}`)
+
+    if (isPriceReduction) {
+      console.log(`💰 ✅ PREÇO REDUZIDO DETECTADO! De R$ ${currentPrice} para R$ ${newPrice}`)
+
+      try {
+        console.log(`🔍 Buscando alertas ativos para propertyId: ${id}`)
+
+        const priceAlerts = await prisma.priceAlert.findMany({
+          where: {
+            propertyId: id,
+            active: true
+          }
+        })
+
+        console.log(`📱 RESULTADO: ${priceAlerts.length} alertas encontrados`)
+        if (priceAlerts.length > 0) {
+          console.log('📋 Alertas:', JSON.stringify(priceAlerts.map(a => ({
+            name: a.name,
+            phone: a.phone,
+            active: a.active
+          })), null, 2))
+        }
+
+        // Buscar imagem do imóvel
+        let propertyImage = null
+        if (images) {
+          try {
+            const parsedImages = JSON.parse(images)
+            if (Array.isArray(parsedImages) && parsedImages.length > 0) {
+              propertyImage = parsedImages[0]
+              console.log('📷 Imagem do imóvel encontrada:', propertyImage)
+            }
+          } catch (err) {
+            console.log('⚠️ Erro ao parsear imagens:', err)
+          }
+        }
+
+        // Enviar WhatsApp para cada pessoa que cadastrou alerta
+        for (const alert of priceAlerts) {
+          try {
+            const oldPriceFormatted = new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+              minimumFractionDigits: 0
+            }).format(currentPrice)
+
+            const newPriceFormatted = new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+              minimumFractionDigits: 0
+            }).format(newPrice)
+
+            const savings = currentPrice - newPrice
+            const savingsFormatted = new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+              minimumFractionDigits: 0
+            }).format(savings)
+
+            // Enviar para o ADMIN (não para o cliente)
+            const phoneAdmin = process.env.WHATSAPP_ADMIN_PHONE || '5561996900444'
+
+            const message = `🏡 *ALERTA: PREÇO REDUZIDO!*
+
+🔔 Cliente interessado: ${alert.name}
+📱 Telefone: ${alert.phone}
+
+📍 Imóvel: *${title}*
+
+💸 Preço anterior: ~${oldPriceFormatted}~
+✅ *Novo preço: ${newPriceFormatted}*
+💰 *Economia: ${savingsFormatted}*
+
+⚠️ Entre em contato com ${alert.name} no ${alert.phone} para avisar sobre a redução!
+
+Ver detalhes: ${process.env.NEXT_PUBLIC_SITE_URL || 'https://imobiliaria-six-tau.vercel.app'}/imovel/${updatedProperty.slug}`
+
+            // Enviar com imagem se disponível
+            console.log(`📞 Tentando enviar WhatsApp ADMIN para ${phoneAdmin}`)
+            console.log(`   Cliente interessado: ${alert.name} (${alert.phone})`)
+            console.log(`   Mensagem: ${message.substring(0, 100)}...`)
+            console.log(`   Tem imagem: ${!!propertyImage}`)
+
+            const sent = await sendWhatsAppMessage(phoneAdmin, message, propertyImage || undefined)
+
+            if (sent) {
+              console.log(`✅✅✅ SUCESSO! Alerta enviado para ADMIN ${phoneAdmin}`)
+            } else {
+              console.log(`❌❌❌ FALHA! Não enviou para ADMIN ${phoneAdmin}`)
+            }
+          } catch (err) {
+            console.error(`Erro ao enviar alerta para ${alert.phone}:`, err)
+          }
+        }
+      } catch (err) {
+        console.error('❌ Erro ao processar alertas de preço:', err)
+      }
+    } else {
+      console.log(`⚠️ NÃO É REDUÇÃO DE PREÇO - Não enviará alertas`)
+      console.log(`   Motivo: newPrice (${newPrice}) >= currentPrice (${currentPrice})`)
+    }
+    console.log('🔔 ========== FIM VERIFICAÇÃO ALERTAS ==========')
 
     return NextResponse.json(updatedProperty)
   } catch (error) {

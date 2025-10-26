@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { sendWhatsAppMessage } from '@/lib/whatsapp-twilio'
 
 export async function POST(request: NextRequest) {
   try {
@@ -88,133 +89,119 @@ export async function POST(request: NextRequest) {
       preferenciasExtraidas: Object.keys(preferredData).length > 0
     })
 
-    // Enviar notificação via WhatsApp usando UltraMsg
+    // Enviar notificação via WhatsApp usando Twilio
     try {
-      const phoneAdmin = process.env.ULTRAMSG_ADMIN_PHONE || '5561996900444'
-      const instanceId = process.env.ULTRAMSG_INSTANCE_ID
-      const token = process.env.ULTRAMSG_TOKEN
+      const phoneAdmin = process.env.WHATSAPP_ADMIN_PHONE || '5561996900444'
 
-      if (instanceId && token) {
-        // Buscar dados completos do imóvel para pegar a imagem
-        let propertyImage = null
-        let fullProperty = null
+      // Buscar imagem do imóvel
+      let propertyImage = null
+      if (propertyId) {
+        try {
+          const property = await prisma.property.findUnique({
+            where: { id: propertyId },
+            select: { images: true }
+          })
 
-        if (propertyId) {
-          try {
-            fullProperty = await prisma.property.findUnique({
-              where: { id: propertyId }
-            })
-
-            if (fullProperty && fullProperty.images) {
-              const images = JSON.parse(fullProperty.images)
-              if (Array.isArray(images) && images.length > 0) {
-                propertyImage = images[0] // Primeira imagem (principal)
-              }
+          if (property && property.images) {
+            const images = JSON.parse(property.images)
+            if (Array.isArray(images) && images.length > 0) {
+              propertyImage = images[0] // Primeira imagem
+              console.log('📷 Imagem do imóvel encontrada:', propertyImage)
             }
-          } catch (error) {
-            console.log('⚠️ Erro ao buscar imagem do imóvel:', error)
           }
+        } catch (error) {
+          console.log('⚠️ Erro ao buscar imagem:', error)
         }
+      }
 
-        // Mensagem mais natural como se fosse o cliente falando
-        const clientMessage = lead.message || `Olá! Tenho interesse no imóvel "${lead.propertyTitle}". Gostaria de mais informações.`
+      // Mensagem mais natural
+      const clientMessage = lead.message || `Tenho interesse no imóvel "${lead.propertyTitle}". Gostaria de mais informações.`
 
-        const whatsappMessage = `*NOVO LEAD INTERESSADO*
+      const whatsappMessage = `🔔 NOVO LEAD INTERESSADO
 
-*Cliente:* ${lead.name}
-*WhatsApp:* ${lead.phone || 'Não informado'}
-*Email:* ${lead.email || 'Não informado'}
+👤 Cliente: ${lead.name}
+📱 WhatsApp: ${lead.phone || 'Não informado'}
+📧 Email: ${lead.email || 'Não informado'}
 
-*Imóvel de interesse:*
-${lead.propertyTitle || 'Não informado'}
-*Valor:* ${lead.propertyPrice ? `R$ ${lead.propertyPrice.toLocaleString('pt-BR')}` : 'Não informado'}
+🏠 Imóvel: ${lead.propertyTitle || 'Não informado'}
+💰 Valor: ${lead.propertyPrice ? `R$ ${lead.propertyPrice.toLocaleString('pt-BR')}` : 'Não informado'}
 
-*Mensagem do cliente:*
+💬 Mensagem:
 "${clientMessage}"
 
-*Recebido em:* ${new Date().toLocaleString('pt-BR')}
-*Lead ID:* ${lead.id}`
+📅 Recebido: ${new Date().toLocaleString('pt-BR')}
+🆔 Lead ID: ${lead.id}`
 
-        // Função para normalizar telefone
-        function normalizePhoneNumber(phone: string): string {
-          const cleanPhone = phone.replace(/\D/g, '')
-          if (cleanPhone.length === 13 && cleanPhone.startsWith('55')) return cleanPhone
-          if (cleanPhone.length === 11) return '55' + cleanPhone
-          if (cleanPhone.length === 10) return '55' + cleanPhone.substring(0, 2) + '9' + cleanPhone.substring(2)
-          return cleanPhone
-        }
+      // 1. Enviar notificação para o admin
+      const sentToAdmin = await sendWhatsAppMessage(phoneAdmin, whatsappMessage, propertyImage || undefined)
 
-        const normalizedAdminPhone = normalizePhoneNumber(phoneAdmin)
+      if (sentToAdmin) {
+        console.log('✅ WhatsApp enviado para admin via Twilio')
 
-        let ultraMsgResponse
-
-        // Se tem imagem, enviar como mídia com caption
-        if (propertyImage) {
-          console.log('Enviando lead com imagem do imóvel:', propertyImage)
-
-          const mediaUrl = `https://api.ultramsg.com/${instanceId}/messages/image`
-          const mediaPayload = {
-            token: token,
-            to: normalizedAdminPhone,
-            image: propertyImage,
-            caption: whatsappMessage,
-            priority: 'high'
-          }
-
-          ultraMsgResponse = await fetch(mediaUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(mediaPayload)
-          })
-        } else {
-          // Sem imagem, enviar só texto
-          console.log('Enviando lead sem imagem (só texto)')
-
-          const textUrl = `https://api.ultramsg.com/${instanceId}/messages/chat`
-          const textPayload = {
-            token: token,
-            to: normalizedAdminPhone,
+        await prisma.whatsAppMessage.create({
+          data: {
+            messageId: `lead-admin-${Date.now()}`,
+            from: 'twilio',
+            to: phoneAdmin,
             body: whatsappMessage,
-            priority: 'high'
+            type: 'text',
+            timestamp: new Date(),
+            fromMe: true,
+            status: 'sent',
+            source: 'lead_notification',
+            contactName: lead.name,
+            propertyId: lead.propertyId
           }
+        })
+      } else {
+        console.log('⚠️ Falha ao enviar WhatsApp para admin')
+      }
 
-          ultraMsgResponse = await fetch(textUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(textPayload)
-          })
-        }
+      // 2. Enviar confirmação para o cliente (se tiver telefone)
+      if (lead.phone) {
+        const settings = await prisma.settings.findFirst()
+        const siteName = settings?.siteName || 'BS Imóveis DF'
+        const sitePhone = settings?.whatsappNumber || phoneAdmin
 
-        const responseData = await ultraMsgResponse.json()
+        const clientConfirmation = `✅ Olá ${lead.name}!
 
-        if (ultraMsgResponse.ok && responseData.sent) {
-          console.log('✅ WhatsApp enviado para admin (interesse imóvel)')
+Recebemos seu interesse no imóvel:
+🏠 ${lead.propertyTitle || 'Imóvel selecionado'}
 
-          // Salvar mensagem no banco
+Em breve entraremos em contato para fornecer mais informações e agendar uma visita!
+
+📱 WhatsApp: ${sitePhone}
+
+${siteName}
+Obrigado pelo contato! 😊`
+
+        const sentToClient = await sendWhatsAppMessage(lead.phone, clientConfirmation)
+
+        if (sentToClient) {
+          console.log('✅ Confirmação enviada para cliente')
+
           await prisma.whatsAppMessage.create({
             data: {
-              messageId: String(responseData.id) || `lead-${Date.now()}`,
-              from: instanceId,
-              to: normalizedAdminPhone,
-              body: whatsappMessage,
+              messageId: `lead-client-${Date.now()}`,
+              from: 'twilio',
+              to: lead.phone,
+              body: clientConfirmation,
               type: 'text',
               timestamp: new Date(),
               fromMe: true,
               status: 'sent',
-              source: 'lead_notification',
+              source: 'lead_confirmation',
               contactName: lead.name,
               propertyId: lead.propertyId
             }
           })
         } else {
-          console.error('❌ Falha ao enviar WhatsApp (interesse imóvel):', responseData)
+          console.log('⚠️ Falha ao enviar confirmação para cliente')
         }
-      } else {
-        console.log('⚠️ UltraMsg não configurado para interesse em imóvel')
       }
 
     } catch (whatsappError) {
-      console.error('⚠️ Erro ao enviar notificação WhatsApp (interesse):', whatsappError)
+      console.error('⚠️ Erro ao enviar notificação WhatsApp:', whatsappError)
       // Não falha o lead se o WhatsApp falhar
     }
 

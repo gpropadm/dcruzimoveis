@@ -15,15 +15,30 @@ export async function sendWhatsAppMessage(
     const authToken = process.env.TWILIO_AUTH_TOKEN;
     const twilioWhatsAppNumber = process.env.TWILIO_WHATSAPP_NUMBER; // Ex: whatsapp:+14155238886
 
+    console.log('🔍 DEBUG Twilio:');
+    console.log('  ACCOUNT_SID:', accountSid ? `${accountSid.substring(0, 10)}...` : '❌ FALTANDO');
+    console.log('  AUTH_TOKEN:', authToken ? '✅ Configurado' : '❌ FALTANDO');
+    console.log('  WHATSAPP_NUMBER:', twilioWhatsAppNumber || '❌ FALTANDO');
+
     if (!accountSid || !authToken || !twilioWhatsAppNumber) {
       console.log('⚠️ Variáveis Twilio não configuradas');
       return false;
     }
 
-    // Normalizar número
-    const cleanPhone = phoneNumber.replace(/\D/g, '');
-    const formattedPhone = cleanPhone.startsWith('55') ? cleanPhone : '55' + cleanPhone;
+    // Normalizar número (remove TUDO que não é número)
+    let cleanPhone = phoneNumber.replace(/\D/g, '');
+
+    // Se começar com 55, remove para adicionar depois (evita duplicação)
+    if (cleanPhone.startsWith('55')) {
+      cleanPhone = cleanPhone.substring(2);
+    }
+
+    const formattedPhone = '55' + cleanPhone;
     const whatsappNumber = `whatsapp:+${formattedPhone}`;
+
+    console.log('📞 Número original:', phoneNumber);
+    console.log('📞 Número limpo:', cleanPhone);
+    console.log('📞 Número formatado:', whatsappNumber);
 
     console.log(`📱 Enviando WhatsApp via Twilio para ${whatsappNumber}...`);
 

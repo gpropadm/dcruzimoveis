@@ -20,6 +20,20 @@ export async function GET(request: NextRequest) {
     const maxArea = searchParams.get('maxArea')
     const bedrooms = searchParams.get('bedrooms')
     const bathrooms = searchParams.get('bathrooms')
+    const slugs = searchParams.get('slugs') // Para busca por slugs do chatbot
+
+    // Busca por slugs específicos (usado pelo chatbot)
+    if (slugs) {
+      const slugList = slugs.split(',').filter(Boolean)
+      const properties = await prisma.property.findMany({
+        where: {
+          slug: { in: slugList },
+          status: 'disponivel'
+        },
+        orderBy: { createdAt: 'desc' }
+      })
+      return NextResponse.json(properties)
+    }
 
     // Criar chave de cache baseada nos parâmetros (versão 2 com novos campos)
     const cacheKey = `v2-${featured}-${limit}-${type}-${category}-${city}-${state}-${minPrice}-${maxPrice}-${minArea}-${maxArea}-${bedrooms}-${bathrooms}`
