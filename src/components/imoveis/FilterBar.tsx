@@ -137,8 +137,8 @@ export default function FilterBar() {
             )}
           </div>
 
-          {/* Botão Toggle do Mapa - Lado Direito */}
-          <div className="flex items-center gap-3 ml-4">
+          {/* Botão Toggle do Mapa - Lado Direito - ESCONDIDO NO MOBILE */}
+          <div className="hidden md:flex items-center gap-3 ml-4">
             <span className="text-sm text-gray-600 whitespace-nowrap">Mapa</span>
             <button
               onClick={() => setShowMap(!showMap)}
