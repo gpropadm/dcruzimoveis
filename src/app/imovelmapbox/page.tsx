@@ -600,22 +600,25 @@ export default function ImovelMapboxPage() {
                     ⚙️ Controles Avançados
                   </button>
 
-                  <span className="text-sm text-gray-600 whitespace-nowrap">Mapa</span>
-                  <button
-                    onClick={() => setShowMap(!showMap)}
-                    className={`relative inline-flex h-7 w-12 items-center rounded-full border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                      showMap
-                        ? 'border-gray-300 shadow-lg'
-                        : 'bg-gradient-to-r from-gray-200 to-gray-300 border-gray-300'
-                    }`}
-                    style={showMap ? { backgroundColor: '#4f2de8' } : {}}
-                  >
-                    <span
-                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-lg transition-transform duration-300 ring-0 ${
-                        showMap ? 'translate-x-5' : 'translate-x-0'
+                  {/* Toggle do mapa - só aparece no desktop */}
+                  <div className="hidden lg:flex items-center gap-3">
+                    <span className="text-sm text-gray-600 whitespace-nowrap">Mapa</span>
+                    <button
+                      onClick={() => setShowMap(!showMap)}
+                      className={`relative inline-flex h-7 w-12 items-center rounded-full border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                        showMap
+                          ? 'border-gray-300 shadow-lg'
+                          : 'bg-gradient-to-r from-gray-200 to-gray-300 border-gray-300'
                       }`}
-                    />
-                  </button>
+                      style={showMap ? { backgroundColor: '#4f2de8' } : {}}
+                    >
+                      <span
+                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-lg transition-transform duration-300 ring-0 ${
+                          showMap ? 'translate-x-5' : 'translate-x-0'
+                        }`}
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
 
