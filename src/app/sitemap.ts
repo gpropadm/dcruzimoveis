@@ -1,16 +1,21 @@
 import { MetadataRoute } from 'next'
-import { getPropertyUrl } from '@/lib/propertyUrl'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'https://faimoveis.com.br'
+  const baseUrl = 'https://www.bsimoveisdf.com.br'
 
-  // Static pages
-  const staticRoutes = [
+  // Páginas estáticas
+  const routes = [
     {
-      url: `${baseUrl}`,
+      url: baseUrl,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
-      priority: 1,
+      priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/imoveis`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/venda`,
@@ -25,58 +30,51 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/anunciar`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/favoritos`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.6,
-    },
-    {
       url: `${baseUrl}/contato`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/anunciar`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
   ]
 
-  // Dynamic property pages - only fetch in production or if server is running
-  let propertyRoutes: MetadataRoute.Sitemap = []
-  
-  // Skip API calls during build to avoid connection errors
-  if (process.env.NODE_ENV === 'production' && process.env.NEXTAUTH_URL) {
-    try {
-      const response = await fetch(`${process.env.NEXTAUTH_URL}/api/properties`, {
-        // Add timeout to prevent hanging during build
-        signal: AbortSignal.timeout(5000)
+  try {
+    // Buscar imóveis do banco de dados
+    const response = await fetch(`${baseUrl}/api/properties?limit=1000`, {
+      next: { revalidate: 3600 } // Revalidar a cada 1 hora
+    })
+
+    if (response.ok) {
+      const properties = await response.json()
+
+      // Adicionar cada imóvel ao sitemap
+      const propertyRoutes = properties.map((property: any) => {
+        // Usar o formato de URL correto do seu sistema
+        const slug = property.slug || property.id
+        const category = property.category || 'imovel'
+        const type = property.type === 'venda' ? 'venda' : 'aluguel'
+        const state = property.state?.toLowerCase() || 'df'
+        const city = property.city?.toLowerCase().replace(/\s+/g, '-') || 'brasilia'
+
+        return {
+          url: `${baseUrl}/imovel/${type}/${category}/${state}/${city}/${slug}`,
+          lastModified: property.updatedAt ? new Date(property.updatedAt) : new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        }
       })
-      if (response.ok) {
-        const properties = await response.json()
-        propertyRoutes = properties.map((property: any) => {
-          const propertyPath = getPropertyUrl({
-            category: property.category || 'imovel',
-            type: property.type,
-            state: property.state,
-            city: property.city,
-            slug: property.slug
-          })
-          return {
-            url: `${baseUrl}${propertyPath}`,
-            lastModified: new Date(property.updatedAt || property.createdAt || new Date()),
-            changeFrequency: 'weekly' as const,
-            priority: 0.8,
-          }
-        })
-      }
-    } catch (error) {
-      console.error('Error fetching properties for sitemap:', error)
-      // Fail silently during build - properties can be added later via dynamic generation
+
+      return [...routes, ...propertyRoutes]
     }
+  } catch (error) {
+    console.error('Erro ao gerar sitemap:', error)
   }
 
-  return [...staticRoutes, ...propertyRoutes]
+  // Se der erro, retorna só as rotas estáticas
+  return routes
 }

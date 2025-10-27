@@ -1,0 +1,31 @@
+# robots.txt - BS Imóveis DF
+# https://www.bsimoveisdf.com.br/robots.txt
+
+User-agent: *
+Allow: /
+Allow: /imoveis
+Allow: /imovel/
+Allow: /venda
+Allow: /aluguel
+Allow: /contato
+Allow: /anunciar
+
+# Bloquear áreas admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /admin-preview
+Disallow: /setup-admin
+Disallow: /test*
+Disallow: /_next/
+Disallow: /static/
+
+# Bloquear páginas duplicadas ou técnicas
+Disallow: /properties
+Disallow: /mapa-teste
+Disallow: /imovelmapbox
+
+# Sitemap
+Sitemap: https://www.bsimoveisdf.com.br/sitemap.xml
+
+# Crawl-delay (opcional - remove se não precisar)
+# Crawl-delay: 1

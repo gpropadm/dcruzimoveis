@@ -16,31 +16,61 @@ const publicSans = Public_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.bsimoveisdf.com.br'),
   title: {
-    default: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis",
-    template: "%s | BS Imóveis"
+    default: "Imóveis em Brasília - Casas e Apartamentos à Venda e Aluguel | BS Imóveis DF",
+    template: "%s | BS Imóveis DF"
   },
-  description: "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na BS Imóveis DF.",
-  keywords: ["imóveis brasília", "casas brasília df", "apartamentos brasília", "venda imóveis df", "aluguel brasília", "imobiliária brasília", "bs imóveis", "imóveis distrito federal"],
+  description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. +1000 casas, apartamentos e terrenos para venda e aluguel. ⭐ Atendimento especializado, financiamento facilitado. Confira!",
+  keywords: ["imóveis brasília", "casas brasília df", "apartamentos brasília", "venda imóveis df", "aluguel brasília", "imobiliária brasília", "bs imóveis df", "imóveis distrito federal", "apartamento asa sul", "casa águas claras", "imóveis taguatinga", "aluguel asa norte"],
   authors: [{ name: "BS Imóveis DF" }],
   creator: "BS Imóveis DF",
   publisher: "BS Imóveis DF",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: 'https://www.bsimoveisdf.com.br',
   },
   openGraph: {
     type: "website",
     locale: "pt_BR",
     url: "https://www.bsimoveisdf.com.br",
-    siteName: "BS Imóveis",
-    title: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis",
-    description: "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na BS Imóveis DF.",
+    siteName: "BS Imóveis DF",
+    title: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis DF",
+    description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. +1000 casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado!",
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'BS Imóveis DF - Imóveis em Brasília',
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis",
-    description: "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na BS Imóveis DF.",
+    site: "@bsimoveisdf",
+    creator: "@bsimoveisdf",
+    title: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis DF",
+    description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. +1000 opções para venda e aluguel!",
+    images: ['/og-image.jpg'],
+  },
+  verification: {
+    google: 'seu-codigo-google-search-console-aqui',
   },
 };
 
