@@ -27,7 +27,9 @@ export default function NewProperty() {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
+    seoTitle: '',
     description: '',
+    seoDescription: '',
     price: '',
     type: 'venda',
     status: 'disponivel',
@@ -636,6 +638,49 @@ export default function NewProperty() {
                   onChange={(content) => setFormData({ ...formData, description: content })}
                   placeholder="Descreva as características do imóvel..."
                 />
+              </div>
+
+              {/* Campos SEO */}
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <h3 className="text-sm font-semibold text-blue-900 mb-3">🎯 Otimização SEO (Opcional)</h3>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-900 mb-1">
+                      Título SEO (aparece no Google)
+                    </label>
+                    <input
+                      type="text"
+                      name="seoTitle"
+                      value={formData.seoTitle || ''}
+                      onChange={handleChange}
+                      maxLength={120}
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      placeholder="Ex: Apartamento 3 quartos com suíte no Centro próximo ao metrô"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Se vazio, será gerado automaticamente. Ideal: 50-60 caracteres com palavras-chave.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-900 mb-1">
+                      Descrição SEO (aparece no Google)
+                    </label>
+                    <textarea
+                      name="seoDescription"
+                      value={formData.seoDescription || ''}
+                      onChange={handleChange}
+                      rows={3}
+                      maxLength={160}
+                      className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-[#7360ee] focus:border-[#7360ee]"
+                      placeholder="Descrição otimizada com palavras-chave para melhor ranqueamento no Google"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Ideal: 150-160 caracteres. Inclua localização, características e call-to-action.
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
