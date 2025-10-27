@@ -85,7 +85,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const {
       title,
+      seoTitle,
       description,
+      seoDescription,
       price,
       type,
       category,
@@ -201,8 +203,10 @@ export async function POST(request: NextRequest) {
     const property = await prisma.property.create({
       data: {
         title,
+        seoTitle: seoTitle || null,
         slug: finalSlug,
         description: description || null,
+        seoDescription: seoDescription || null,
         price,
         type,
         category,
