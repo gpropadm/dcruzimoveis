@@ -208,7 +208,7 @@ export default function MainSearchForm() {
         style={{
           marginTop: '1.5rem',
           backgroundColor: 'white',
-          borderRadius: '8px',
+          borderRadius: '16px',
           boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
           padding: '12px',
           display: 'flex',
@@ -318,6 +318,7 @@ export default function MainSearchForm() {
                 paddingLeft: '44px',
                 paddingRight: '16px',
                 border: 'none',
+                borderBottom: '1px solid #e0e0e0',
                 borderRadius: '10px',
                 outline: 'none',
                 backgroundColor: 'transparent',
@@ -406,7 +407,7 @@ export default function MainSearchForm() {
               e.currentTarget.style.color = 'white'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent'
+              e.currentTarget.style.backgroundColor = '#eaeaea'
               e.currentTarget.style.color = '#666'
             }}
             style={{
@@ -417,7 +418,7 @@ export default function MainSearchForm() {
               padding: '0 32px',
               borderRadius: '26px',
               border: 'none',
-              backgroundColor: 'transparent',
+              backgroundColor: '#eaeaea',
               color: '#666',
               fontWeight: '500',
               fontSize: '13px',
