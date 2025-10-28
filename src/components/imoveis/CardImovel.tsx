@@ -192,7 +192,7 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
         <div className="flex items-center mb-3" style={{ color: '#666' }}>
           <MapPin className="w-4 h-4 mr-1" />
           <span style={{ fontSize: '14px', lineHeight: '1.4' }}>
-            {imovel.address}, {imovel.city} - {imovel.state}
+            {imovel.city} - {imovel.state}
           </span>
         </div>
 

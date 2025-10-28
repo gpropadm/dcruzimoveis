@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { MapPin, Home } from 'lucide-react'
 
 interface CategoryLocation {
   category: string
@@ -42,19 +41,7 @@ export default function CategoryLocationLinks({ type, limit = 12 }: CategoryLoca
     loadCategoryLocations()
   }, [type, limit])
 
-  if (loading) {
-    return (
-      <section className="py-12 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <div className="animate-pulse text-gray-400">Carregando...</div>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  if (categoryLocations.length === 0) {
+  if (loading || categoryLocations.length === 0) {
     return null
   }
 
@@ -73,45 +60,17 @@ export default function CategoryLocationLinks({ type, limit = 12 }: CategoryLoca
   }
 
   return (
-    <section className="py-12 bg-gray-50">
-      <div className="container mx-auto px-4">
-        {/* Título da seção */}
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-            Encontre seu imóvel ideal
-          </h2>
-          <p className="text-gray-600">
-            Navegue por categoria e localização
-          </p>
-        </div>
-
-        {/* Grid de links */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+    <section className="py-12 bg-white">
+      <div className="container mx-auto px-4 max-w-6xl">
+        {/* Links simples */}
+        <div className="flex flex-wrap gap-3 justify-center">
           {categoryLocations.map((item, index) => (
             <Link
               key={index}
               href={generateSearchUrl(item)}
-              className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 p-4 border border-gray-200 hover:border-blue-400"
+              className="text-blue-600 hover:text-blue-800 hover:underline text-sm"
             >
-              <div className="flex items-start gap-3">
-                {/* Ícone */}
-                <div className="flex-shrink-0 mt-1">
-                  <div className="w-10 h-10 rounded-full bg-blue-50 group-hover:bg-blue-100 flex items-center justify-center transition-colors">
-                    <Home className="w-5 h-5 text-blue-600" />
-                  </div>
-                </div>
-
-                {/* Conteúdo */}
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors text-sm mb-1">
-                    {formatCategory(item.category)} em {item.city}
-                  </h3>
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <MapPin className="w-3 h-3" />
-                    <span>{item.count} {item.count === 1 ? 'imóvel' : 'imóveis'}</span>
-                  </div>
-                </div>
-              </div>
+              {formatCategory(item.category)} em {item.city}
             </Link>
           ))}
         </div>
