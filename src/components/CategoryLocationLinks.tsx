@@ -63,12 +63,12 @@ export default function CategoryLocationLinks({ type, limit = 12 }: CategoryLoca
     <section className="py-12 bg-white">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Links simples */}
-        <div className="flex flex-wrap gap-3 justify-center">
+        <div className="flex flex-wrap gap-4 justify-center">
           {categoryLocations.map((item, index) => (
             <Link
               key={index}
               href={generateSearchUrl(item)}
-              className="text-blue-600 hover:text-blue-800 hover:underline text-sm"
+              className="text-gray-700 hover:text-gray-900 text-base transition-colors"
             >
               {formatCategory(item.category)} em {item.city}
             </Link>
