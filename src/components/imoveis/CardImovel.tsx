@@ -77,6 +77,10 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
     toggleFavoriteHook(imovel.id.toString())
   }
 
+  // Verificar se a cidade já está no título para evitar duplicação
+  const titleContainsCity = imovel.city && imovel.title.toLowerCase().includes(imovel.city.toLowerCase())
+  const shouldShowLocation = !titleContainsCity
+
   return (
     <div
       className={`bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer ${
@@ -189,12 +193,14 @@ export default function CardImovel({ imovel, isSelected, onClick }: CardImovelPr
         </h3>
 
         {/* Localização */}
-        <div className="flex items-center mb-3" style={{ color: '#666' }}>
-          <MapPin className="w-4 h-4 mr-1" />
-          <span style={{ fontSize: '14px', lineHeight: '1.4' }}>
-            {imovel.city} - {imovel.state}
-          </span>
-        </div>
+        {shouldShowLocation && (
+          <div className="flex items-center mb-3" style={{ color: '#666' }}>
+            <MapPin className="w-4 h-4 mr-1" />
+            <span style={{ fontSize: '14px', lineHeight: '1.4' }}>
+              {imovel.city} - {imovel.state}
+            </span>
+          </div>
+        )}
 
         {/* Características */}
         <div className="mb-4" style={{ borderBottom: '1px solid #eee', paddingBottom: '12px' }}>
