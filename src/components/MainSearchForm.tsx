@@ -110,7 +110,7 @@ export default function MainSearchForm() {
           padding-bottom: 6px;
           padding-left: 12px;
           padding-right: 28px;
-          border: 1px solid #e0e0e0;
+          border: none;
           border-radius: 10px;
           outline: none;
           cursor: pointer;
@@ -317,7 +317,7 @@ export default function MainSearchForm() {
                 height: '52px',
                 paddingLeft: '44px',
                 paddingRight: '16px',
-                border: '1px solid #e0e0e0',
+                border: 'none',
                 borderRadius: '10px',
                 outline: 'none',
                 backgroundColor: 'transparent',
@@ -381,7 +381,7 @@ export default function MainSearchForm() {
               gap: '8px',
               padding: '0 16px',
               borderRadius: '10px',
-              border: '1px solid #e0e0e0',
+              border: 'none',
               backgroundColor: 'transparent',
               color: '#666',
               fontWeight: '500',
@@ -415,8 +415,8 @@ export default function MainSearchForm() {
               justifyContent: 'center',
               gap: '8px',
               padding: '0 32px',
-              borderRadius: '10px',
-              border: '1px solid #e0e0e0',
+              borderRadius: '26px',
+              border: 'none',
               backgroundColor: 'transparent',
               color: '#666',
               fontWeight: '500',
