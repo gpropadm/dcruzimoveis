@@ -7,6 +7,7 @@ import Footer from '@/components/Footer'
 import SearchForm from '@/components/MainSearchForm'
 import AIRecommendations from '@/components/AIRecommendations'
 import MobileBottomNav from '@/components/MobileBottomNav'
+import CategoryLocationLinks from '@/components/CategoryLocationLinks'
 import { useTheme } from '@/contexts/ThemeContext'
 import { useChatbot } from '@/contexts/ChatbotContext'
 
@@ -138,6 +139,9 @@ export default function Home() {
             title="Imóveis recentes para alugar"
           />
         )}
+
+        {/* Links de categorias por localização */}
+        <CategoryLocationLinks limit={12} />
 
         {/* IA Recommendations - DESABILITADO temporariamente para performance */}
         {/* {!propertiesLoading && <AIRecommendations />} */}

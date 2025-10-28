@@ -106,9 +106,8 @@ export default function PropertyCard({ property, onOpenVideo }: PropertyCardProp
           {/* Endereço - estilo Arbo */}
           <p className="text-sm text-gray-600 mb-4">
             {property.address && (
-              <span>{property.address} - </span>
+              <span>{property.address}</span>
             )}
-            <span>{property.city}</span>
             <br />
             <span>{property.city} - {property.state}</span>
           </p>
