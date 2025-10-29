@@ -12,6 +12,7 @@ body {
   background-color: #ffffff;
   color: #e0e0e0;
   line-height: 1.6;
+  font-weight: 500;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -454,4 +455,61 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateX(100%);
     opacity: 1;
   }
+}
+
+/* Escurecer placeholders dos inputs no admin */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #6b7280 !important; /* gray-500 mais escuro */
+  opacity: 1 !important;
+}
+
+/* Escurecer texto dos selects */
+select {
+  color: #000000 !important;
+  font-weight: 500;
+}
+
+select option {
+  color: #000000 !important;
+}
+
+/* Escurecer texto dos inputs no admin */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+textarea {
+  color: #000000 !important;
+  font-weight: 500;
+}
+
+/* Escurecer títulos de seção no admin */
+h3.text-gray-900,
+h3.font-semibold,
+h4.text-gray-900,
+h4.font-medium,
+h5.text-blue-800,
+h5.text-gray-700,
+h5.font-medium,
+h5.font-semibold {
+  color: #000000 !important;
+}
+
+/* Remover cantos redondos dos campos de formulário no admin */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="search"],
+select,
+textarea {
+  border-radius: 0 !important;
 }

@@ -47,6 +47,10 @@ export default function PropertyCard({ property, onOpenVideo }: PropertyCardProp
     slug: property.slug
   })
 
+  // Verificar se a cidade já está no título para evitar duplicação
+  const titleContainsCity = property.title.toLowerCase().includes(property.city.toLowerCase())
+  const shouldShowLocation = !titleContainsCity
+
   return (
     <div className="bg-white rounded-lg overflow-hidden hover:shadow-md transition-shadow group">
         <div className="h-48 bg-gray-200 relative overflow-hidden">
@@ -104,14 +108,11 @@ export default function PropertyCard({ property, onOpenVideo }: PropertyCardProp
           </h3>
 
           {/* Endereço - estilo Arbo */}
-          <p className="text-sm text-gray-600 mb-4">
-            {property.address && (
-              <span>{property.address} - </span>
-            )}
-            <span>{property.city}</span>
-            <br />
-            <span>{property.city} - {property.state}</span>
-          </p>
+          {shouldShowLocation && (
+            <p className="text-sm text-gray-600 mb-4">
+              <span>{property.city} - {property.state}</span>
+            </p>
+          )}
 
           {/* Ícones de características - estilo Arbo */}
           <div className="border-b border-gray-200 pb-3 mb-3">

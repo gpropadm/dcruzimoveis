@@ -169,15 +169,10 @@ export default function ImoveisContent() {
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh-140px)]">
-        <div className="w-1/2 p-6 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Carregando imóveis...</p>
-          </div>
-        </div>
-        <div className="w-1/2 bg-gray-200 flex items-center justify-center">
-          <p className="text-gray-500">Carregando mapa...</p>
+      <div className="flex items-center justify-center h-[calc(100vh-140px)] bg-white">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 text-lg">Carregando imóveis...</p>
         </div>
       </div>
     )
@@ -187,18 +182,18 @@ export default function ImoveisContent() {
     <>
       <ArboCardStyleInjector />
 
-      {/* CSS inline para esconder lista no mobile */}
+      {/* CSS inline para esconder MAPA no mobile e mostrar apenas cards */}
       <style jsx>{`
         @media (max-width: 767px) {
-          .lista-imoveis-mobile-hidden {
+          .mapa-mobile-hidden {
             display: none !important;
           }
         }
       `}</style>
 
       <div className="flex h-[calc(100vh-120px)]">
-      {/* Lista de Imóveis - Lado Esquerdo */}
-      <div className={`${showMap ? 'w-full md:w-1/2 lista-imoveis-mobile-hidden' : 'w-full'} overflow-y-auto bg-white transition-all duration-300`}>
+      {/* Lista de Imóveis - Lado Esquerdo - SEMPRE VISÍVEL */}
+      <div className={`${showMap ? 'w-full md:w-1/2' : 'w-full'} overflow-y-auto bg-white transition-all duration-300`}>
         <div className="p-6">
           <div className="mb-6">
             <h1 className="text-2xl font-bold" style={{ color: '#333333' }}>
@@ -232,9 +227,9 @@ export default function ImoveisContent() {
         </div>
       </div>
 
-      {/* Mapa - Lado Direito - FULL WIDTH NO MOBILE */}
+      {/* Mapa - Lado Direito - ESCONDIDO NO MOBILE */}
       {showMap && (
-        <div className="w-full md:w-1/2 relative sticky top-0 h-[calc(100vh-120px)] bg-gray-200 transition-all duration-300">
+        <div className="mapa-mobile-hidden w-full md:w-1/2 relative sticky top-0 h-[calc(100vh-120px)] bg-gray-200 transition-all duration-300">
           {allProperties.length > 0 ? (
             <MapaImoveis
               imoveis={adaptPropertiesForMap(allProperties)}

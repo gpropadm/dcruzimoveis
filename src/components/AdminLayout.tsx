@@ -15,6 +15,7 @@ interface AdminLayoutProps {
 export default function AdminLayout({ children, title = 'Admin', subtitle, currentPage = '', actions }: AdminLayoutProps) {
   const { data: session } = useSession()
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const navigationItems = [
     { name: 'Dashboard', href: '/admin', icon: 'dashboard', current: currentPage === 'dashboard' },
@@ -78,23 +79,42 @@ export default function AdminLayout({ children, title = 'Admin', subtitle, curre
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+      {/* Overlay/Backdrop para mobile */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Layout com Flexbox - Sidebar fixo e conteúdo ao lado */}
       <div className="flex">
 
-        {/* Sidebar - Largura fixa */}
-        <div className={`w-64 min-h-screen ${isDarkMode ? 'bg-gray-800' : 'bg-white'} border-r ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+        {/* Sidebar - Largura fixa no desktop, menu mobile drawer */}
+        <div className={`fixed lg:static inset-y-0 left-0 z-50 w-64 min-h-screen ${isDarkMode ? 'bg-gray-800' : 'bg-white'} border-r ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
 
           {/* Logo/Header do Sidebar */}
           <div className="p-4 border-b border-gray-200">
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-[#7360ee] rounded-lg flex items-center justify-center mr-3">
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-                </svg>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-[#7360ee] rounded-lg flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                  </svg>
+                </div>
+                <span className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                  All Gestor
+                </span>
               </div>
-              <span className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                All Gestor
-              </span>
+              {/* Botão fechar menu mobile */}
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`lg:hidden p-2 rounded-lg ${isDarkMode ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-500 hover:bg-gray-100'}`}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
           </div>
 
@@ -105,6 +125,7 @@ export default function AdminLayout({ children, title = 'Admin', subtitle, curre
                 <li key={item.name}>
                   <Link
                     href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className={`flex items-center p-3 rounded-lg transition-colors ${
                       item.current
                         ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'}`
@@ -121,25 +142,40 @@ export default function AdminLayout({ children, title = 'Admin', subtitle, curre
         </div>
 
         {/* Área Principal - Ocupa o restante da tela */}
-        <div className="flex-1">
+        <div className="flex-1 w-full lg:w-auto">
 
           {/* Header/Navbar do conteúdo */}
-          <header className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b p-4`}>
+          <header className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b p-3 lg:p-4`}>
             <div className="flex items-center justify-between">
-              <div>
-                <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                  {title}
-                </h1>
-                {subtitle && (
-                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    {subtitle}
-                  </p>
-                )}
+              <div className="flex items-center space-x-4">
+                {/* Botão hambúrguer - visível apenas em mobile */}
+                <button
+                  onClick={() => setIsMobileMenuOpen(true)}
+                  className={`lg:hidden p-2 rounded-lg ${isDarkMode ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-500 hover:bg-gray-100'}`}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </button>
+
+                <div>
+                  <h1
+                    className={`text-xl lg:text-2xl font-bold ${isDarkMode ? 'text-white' : ''}`}
+                    style={!isDarkMode ? { color: '#000000' } : undefined}
+                  >
+                    {title}
+                  </h1>
+                  {subtitle && (
+                    <p className={`text-xs lg:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {subtitle}
+                    </p>
+                  )}
+                </div>
               </div>
 
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 lg:space-x-4">
                 {/* Actions */}
-                {actions && <div className="flex-shrink-0">{actions}</div>}
+                {actions && <div className="flex-shrink-0 hidden sm:block">{actions}</div>}
 
                 {/* Botão Dark Mode */}
                 <button
@@ -162,7 +198,7 @@ export default function AdminLayout({ children, title = 'Admin', subtitle, curre
                   onClick={() => signOut({ callbackUrl: '/admin/login' })}
                   className="flex items-center space-x-2 text-sm"
                 >
-                  <div className="w-8 h-8 bg-[#7360ee] text-white rounded-full flex items-center justify-center">
+                  <div className="w-7 h-7 lg:w-8 lg:h-8 bg-[#7360ee] text-white rounded-full flex items-center justify-center text-sm lg:text-base">
                     {session?.user?.name?.charAt(0)?.toUpperCase()}
                   </div>
                 </button>
@@ -171,8 +207,8 @@ export default function AdminLayout({ children, title = 'Admin', subtitle, curre
           </header>
 
           {/* Conteúdo Principal */}
-          <main className="p-6">
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
+          <main className="p-3 lg:p-6">
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-x-auto">
               {children}
             </div>
           </main>

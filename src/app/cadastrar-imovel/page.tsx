@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import MobileBottomNav from '@/components/MobileBottomNav'
 
 export default function CadastrarImovelPage() {
   const [loading, setLoading] = useState(false)
@@ -434,7 +433,6 @@ export default function CadastrarImovelPage() {
           </form>
         </div>
       </div>
-      <MobileBottomNav />
     </div>
   )
 }

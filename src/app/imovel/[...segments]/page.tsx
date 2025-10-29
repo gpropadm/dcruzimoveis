@@ -13,7 +13,9 @@ interface PropertyDetailProps {
 interface Property {
   id: string
   title: string
+  seoTitle: string | null
   description: string | null
+  seoDescription: string | null
   price: number
   previousPrice?: number | null
   priceReduced?: boolean
@@ -37,6 +39,9 @@ interface Property {
   iptu: number | null
   apartmentTotalArea: number | null
   apartmentUsefulArea: number | null
+  acceptsFinancing: boolean
+  acceptsTrade: boolean
+  acceptsCar: boolean
   createdAt: string
   updatedAt: string
 }
@@ -64,7 +69,9 @@ async function getProperty(segments: string[]): Promise<Property | null> {
       select: {
         id: true,
         title: true,
+        seoTitle: true,
         description: true,
+        seoDescription: true,
         price: true,
         previousPrice: true,
         priceReduced: true,
@@ -88,6 +95,9 @@ async function getProperty(segments: string[]): Promise<Property | null> {
         iptu: true,
         apartmentTotalArea: true,
         apartmentUsefulArea: true,
+        acceptsFinancing: true,
+        acceptsTrade: true,
+        acceptsCar: true,
         createdAt: true,
         updatedAt: true
       }
@@ -132,8 +142,13 @@ export async function generateMetadata({ params }: PropertyDetailProps): Promise
 
   const firstImage = getFirstImage(property.images)
 
-  const title = `${property.category} ${property.bedrooms ? `${property.bedrooms} quartos` : ''} ${property.type === 'venda' ? 'à venda' : 'para alugar'} ${property.city} - ${formatPrice(property.price)}`
-  const description = property.description ||
+  // Usar seoTitle se existir, senão gera automaticamente
+  const title = property.seoTitle ||
+    `${property.category} ${property.bedrooms ? `${property.bedrooms} quartos` : ''} ${property.type === 'venda' ? 'à venda' : 'para alugar'} ${property.city} - ${formatPrice(property.price)}`
+
+  // Usar seoDescription se existir, senão usa description normal ou gera
+  const description = property.seoDescription ||
+    property.description ||
     `${property.category} para ${property.type} em ${property.city}, ${property.state}. ${property.bedrooms ? `${property.bedrooms} quartos` : ''} ${property.bathrooms ? `${property.bathrooms} banheiros` : ''} ${property.area ? `${property.area}m²` : ''}. Confira na BS Imóveis DF.`
 
   // Gerar URL canônica no formato SEO-friendly

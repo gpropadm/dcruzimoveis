@@ -1,46 +1,76 @@
 import type { Metadata } from "next";
-import { Sora } from "next/font/google";
+import { Public_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from '@/components/Providers';
-import WhatsAppButton from '@/components/WhatsAppButton';
-import ChatbotSimple from '@/components/ChatbotSimple';
+import ConditionalSiteComponents from '@/components/ConditionalSiteComponents';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'leaflet/dist/leaflet.css';
 
-const sora = Sora({
+const publicSans = Public_Sans({
   variable: "--font-sora",
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.bsimoveisdf.com.br'),
   title: {
-    default: "Imóveis em Brasília - Casas e Apartamentos | Dcruz Imóveis",
-    template: "%s | Dcruz Imóveis"
+    default: "Imóveis em Brasília - Casas e Apartamentos à Venda e Aluguel | BS Imóveis DF",
+    template: "%s | BS Imóveis DF"
   },
-  description: "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na Dcruz Imóveis DF.",
-  keywords: ["imóveis brasília", "casas brasília df", "apartamentos brasília", "venda imóveis df", "aluguel brasília", "imobiliária brasília", "dcruz imóveis", "imóveis distrito federal"],
-  authors: [{ name: "Dcruz Imóveis DF" }],
-  creator: "Dcruz Imóveis DF",
-  publisher: "Dcruz Imóveis DF",
+  description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. +1000 casas, apartamentos e terrenos para venda e aluguel. ⭐ Atendimento especializado, financiamento facilitado. Confira!",
+  keywords: ["imóveis brasília", "casas brasília df", "apartamentos brasília", "venda imóveis df", "aluguel brasília", "imobiliária brasília", "bs imóveis df", "imóveis distrito federal", "apartamento asa sul", "casa águas claras", "imóveis taguatinga", "aluguel asa norte"],
+  authors: [{ name: "BS Imóveis DF" }],
+  creator: "BS Imóveis DF",
+  publisher: "BS Imóveis DF",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: 'https://www.bsimoveisdf.com.br',
   },
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://www.dcruzimoveis.com.br",
-    siteName: "Dcruz Imóveis",
-    title: "Imóveis em Brasília - Casas e Apartamentos | Dcruz Imóveis",
-    description: "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na Dcruz Imóveis DF.",
+    url: "https://www.bsimoveisdf.com.br",
+    siteName: "BS Imóveis DF",
+    title: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis DF",
+    description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. +1000 casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado!",
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'BS Imóveis DF - Imóveis em Brasília',
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Imóveis em Brasília - Casas e Apartamentos | Dcruz Imóveis",
-    description: "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na Dcruz Imóveis DF.",
+    site: "@bsimoveisdf",
+    creator: "@bsimoveisdf",
+    title: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis DF",
+    description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. +1000 opções para venda e aluguel!",
+    images: ['/og-image.jpg'],
+  },
+  verification: {
+    google: 'seu-codigo-google-search-console-aqui',
   },
 };
 
@@ -53,10 +83,10 @@ export default function RootLayout({
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
-    "name": "Dcruz Imóveis",
-    "description": "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na Dcruz Imóveis.",
-    "url": "https://www.dcruzimoveis.com.br",
-    "logo": "https://www.dcruzimoveis.com.br/logo.png",
+    "name": "BS Imóveis",
+    "description": "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na BS Imóveis.",
+    "url": "https://www.bsimoveisdf.com.br",
+    "logo": "https://www.bsimoveisdf.com.br/logo.png",
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "BR",
@@ -86,13 +116,12 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${sora.variable} antialiased`}
+        className={`${publicSans.variable} antialiased`}
         suppressHydrationWarning={true}
       >
         <Providers>
           {children}
-          <WhatsAppButton />
-          <ChatbotSimple />
+          <ConditionalSiteComponents />
           <ToastContainer
             position="top-right"
             autoClose={3000}

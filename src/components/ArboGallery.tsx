@@ -55,6 +55,7 @@ export default function ArboGallery({ images, propertyTitle }: ArboGalleryProps)
 
   const closeImageModal = () => {
     setShowImageModal(false)
+    document.body.style.overflow = 'auto'
   }
 
   const nextImage = () => {
@@ -389,11 +390,15 @@ export default function ArboGallery({ images, propertyTitle }: ArboGalleryProps)
 
               {/* Imagem Principal */}
               <div
-                className="position-relative w-100 h-100 d-flex align-items-center justify-content-center"
+                className="position-relative w-100 d-flex align-items-center justify-content-center"
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
-                style={{ touchAction: 'pan-y' }}
+                style={{
+                  touchAction: 'pan-y',
+                  height: 'calc(100% - 140px)',
+                  marginBottom: '140px'
+                }}
               >
                 <Image
                   src={images[currentImageIndex]}

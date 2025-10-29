@@ -110,7 +110,7 @@ export default function MainSearchForm() {
           padding-bottom: 6px;
           padding-left: 12px;
           padding-right: 28px;
-          border: 1px solid #e0e0e0;
+          border: none;
           border-radius: 10px;
           outline: none;
           cursor: pointer;
@@ -208,7 +208,7 @@ export default function MainSearchForm() {
         style={{
           marginTop: '1.5rem',
           backgroundColor: 'white',
-          borderRadius: '8px',
+          borderRadius: '16px',
           boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
           padding: '12px',
           display: 'flex',
@@ -317,7 +317,8 @@ export default function MainSearchForm() {
                 height: '52px',
                 paddingLeft: '44px',
                 paddingRight: '16px',
-                border: '1px solid #e0e0e0',
+                border: 'none',
+                borderBottom: '1px solid #e0e0e0',
                 borderRadius: '10px',
                 outline: 'none',
                 backgroundColor: 'transparent',
@@ -381,7 +382,7 @@ export default function MainSearchForm() {
               gap: '8px',
               padding: '0 16px',
               borderRadius: '10px',
-              border: '1px solid #e0e0e0',
+              border: 'none',
               backgroundColor: 'transparent',
               color: '#666',
               fontWeight: '500',
@@ -406,7 +407,7 @@ export default function MainSearchForm() {
               e.currentTarget.style.color = 'white'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent'
+              e.currentTarget.style.backgroundColor = '#eaeaea'
               e.currentTarget.style.color = '#666'
             }}
             style={{
@@ -415,9 +416,9 @@ export default function MainSearchForm() {
               justifyContent: 'center',
               gap: '8px',
               padding: '0 32px',
-              borderRadius: '10px',
-              border: '1px solid #e0e0e0',
-              backgroundColor: 'transparent',
+              borderRadius: '26px',
+              border: 'none',
+              backgroundColor: '#eaeaea',
               color: '#666',
               fontWeight: '500',
               fontSize: '13px',

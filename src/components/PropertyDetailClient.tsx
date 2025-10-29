@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import MobileBottomNav from '@/components/MobileBottomNav'
 import ArboGallery from '@/components/ArboGallery'
 import ArboBreadcrumbs from '@/components/ArboBreadcrumbs'
 import SmartCalculator from '@/components/SmartCalculator'
@@ -52,6 +51,9 @@ interface Property {
   iptu: number | null
   apartmentTotalArea: number | null
   apartmentUsefulArea: number | null
+  acceptsFinancing: boolean
+  acceptsTrade: boolean
+  acceptsCar: boolean
 }
 
 interface PropertyDetailClientProps {
@@ -62,7 +64,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
   const [relatedProperties, setRelatedProperties] = useState<any[]>([])
   const [loadingRelated, setLoadingRelated] = useState(true)
   const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false)
-  const [companyName, setCompanyName] = useState('Dcruz Imóveis')
+  const [companyName, setCompanyName] = useState('BS Imóveis')
   const [contactPhone, setContactPhone] = useState('(61) 9999-9999')
 
   // Breadcrumbs baseados na propriedade
@@ -214,7 +216,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               <div className="bg-white rounded-xl shadow-sm p-6">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h1 className="text-2xl md:text-3xl font-bold mb-1" style={{ color: '#000000' }}>
+                    <h1 className="text-xl md:text-2xl font-bold mb-1" style={{ color: '#000000' }}>
                       {property.title}
                     </h1>
                     <div className="flex items-center" style={{ color: '#5a5a5a' }}>
@@ -345,6 +347,107 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                 </div>
               </div>
 
+              {/* Informações Principais do Imóvel */}
+              <div className="bg-white rounded-xl shadow-sm p-6">
+                <h2 className="text-lg md:text-xl font-bold mb-4 flex items-center" style={{ color: '#000000' }}>
+                  <HomeIcon className="w-6 h-6 mr-2" />
+                  Informações do Imóvel
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {property.bedrooms && (
+                    <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-bed" style={{ fontSize: '18px', color: '#6c757d' }}></i>
+                      <div className="font-bold" style={{ fontSize: '16px', color: '#212529' }}>
+                        {property.bedrooms}
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Quartos
+                      </div>
+                    </div>
+                  )}
+                  {property.bathrooms && (
+                    <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-bath" style={{ fontSize: '18px', color: '#6c757d' }}></i>
+                      <div className="font-bold" style={{ fontSize: '16px', color: '#212529' }}>
+                        {property.bathrooms}
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Banheiros
+                      </div>
+                    </div>
+                  )}
+                  {property.suites && (
+                    <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-door-open" style={{ fontSize: '18px', color: '#6c757d' }}></i>
+                      <div className="font-bold" style={{ fontSize: '16px', color: '#212529' }}>
+                        {property.suites}
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Suítes
+                      </div>
+                    </div>
+                  )}
+                  {property.area && (
+                    <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-ruler-combined" style={{ fontSize: '18px', color: '#6c757d' }}></i>
+                      <div className="font-bold" style={{ fontSize: '16px', color: '#212529' }}>
+                        {property.area}m²
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Área
+                      </div>
+                    </div>
+                  )}
+                  {property.parking && (
+                    <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-gray-50">
+                      <i className="fas fa-car" style={{ fontSize: '18px', color: '#6c757d' }}></i>
+                      <div className="font-bold" style={{ fontSize: '16px', color: '#212529' }}>
+                        {property.parking}
+                      </div>
+                      <div className="text-sm" style={{ color: '#6c757d' }}>
+                        Vagas
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Formas de Pagamento Aceitas */}
+              {(property.acceptsFinancing || property.acceptsTrade || property.acceptsCar) && (
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                  <h2 className="text-lg md:text-xl font-bold mb-4 flex items-center" style={{ color: '#000000' }}>
+                    <CurrencyDollarIcon className="w-6 h-6 mr-2" />
+                    Formas de Pagamento Aceitas
+                  </h2>
+                  <div className="flex flex-wrap gap-3">
+                    {property.acceptsFinancing && (
+                      <div className="flex items-center">
+                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                        </svg>
+                        <span className="text-sm text-gray-700">Aceita Financiamento Bancário</span>
+                      </div>
+                    )}
+                    {property.acceptsTrade && (
+                      <div className="flex items-center">
+                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                        </svg>
+                        <span className="text-sm text-gray-700">Aceita Permuta/Troca</span>
+                      </div>
+                    )}
+                    {property.acceptsCar && (
+                      <div className="flex items-center">
+                        <svg className="w-5 h-5 mr-2 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                        </svg>
+                        <span className="text-sm text-gray-700">Aceita Carro como Parte do Pagamento</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {/* Sobre o Imóvel - Estilo Arbo */}
               {property.description && (
                 <div className="bg-white rounded-3 border p-4 p-md-5" style={{ borderColor: '#e9ecef' }}>
@@ -400,14 +503,26 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                 {/* Card de Contato Principal - Estilo Arbo */}
                 <div className="bg-white rounded-3 border p-4 mb-4" style={{ borderColor: '#e9ecef' }}>
                   <div className="mb-4">
-                    <div
-                      className="fw-bold mb-2 font-sora text-lg md:text-xl"
-                      style={{
-                        color: '#212529',
-                        lineHeight: '1.2'
-                      }}
-                    >
-                      {formatPrice(property.price)}
+                    {/* Tipo de Negócio e Preço na mesma linha */}
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <div
+                        className="fw-bold font-sora"
+                        style={{
+                          fontSize: '17px',
+                          color: '#212529'
+                        }}
+                      >
+                        {property.type === 'venda' ? 'Venda' : 'Aluguel'}
+                      </div>
+                      <div
+                        className="fw-bold font-sora"
+                        style={{
+                          fontSize: '17px',
+                          color: '#212529'
+                        }}
+                      >
+                        {formatPrice(property.price)}
+                      </div>
                     </div>
 
                     {/* Badge de Preço Reduzido */}
@@ -422,16 +537,18 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                       </div>
                     )}
 
-                    <div
-                      className="font-sora"
-                      style={{
-                        fontSize: '14px',
-                        color: '#6c757d'
-                      }}
-                    >
-                      {property.type === 'venda' ? 'À venda' : 'Para alugar'}
-                      {property.area && ` • ${formatPrice(property.price / property.area)}/m²`}
-                    </div>
+                    {/* Preço por m² */}
+                    {property.area && (
+                      <div
+                        className="font-sora text-end"
+                        style={{
+                          fontSize: '12px',
+                          color: '#6c757d'
+                        }}
+                      >
+                        {formatPrice(property.price / property.area)}/m²
+                      </div>
+                    )}
 
                     {/* Condomínio e IPTU */}
                     {(property.condoFee || property.iptu) && (
@@ -582,92 +699,6 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   propertyType={property.type}
                 />
 
-                {/* Card de Características Rápidas */}
-                <div className="bg-white rounded-3 border p-4" style={{ borderColor: '#e9ecef' }}>
-                  <h4
-                    className="fw-bold mb-3 font-sora"
-                    style={{
-                      fontSize: '16px',
-                      color: '#212529'
-                    }}
-                  >
-                    Características
-                  </h4>
-
-                  <div className="d-flex justify-content-between text-center">
-                    {property.bedrooms && (
-                      <div>
-                        <i className="fas fa-bed" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.bedrooms}
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Quartos
-                        </div>
-                      </div>
-                    )}
-
-                    {property.bathrooms && (
-                      <div>
-                        <i className="fas fa-bath" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.bathrooms}
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Banheiros
-                        </div>
-                      </div>
-                    )}
-
-                    {property.area && (
-                      <div>
-                        <i className="fas fa-ruler-combined" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.area}m²
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Área
-                        </div>
-                      </div>
-                    )}
-
-                    {property.parking && (
-                      <div>
-                        <i className="fas fa-car" style={{ fontSize: '20px', color: '#6c757d' }}></i>
-                        <div
-                          className="fw-bold font-sora"
-                          style={{ fontSize: '14px', color: '#212529' }}
-                        >
-                          {property.parking}
-                        </div>
-                        <div
-                          className="font-sora"
-                          style={{ fontSize: '11px', color: '#6c757d' }}
-                        >
-                          Vagas
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -677,17 +708,17 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
         {relatedProperties.length > 0 && (
           <div className="pb-8">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-black mb-6 mt-2 text-center">Imóveis que Poderá Gostar</h2>
+              <h2 className="text-3xl font-bold mb-6 mt-2 text-center" style={{ color: '#000000' }}>Imóveis que Poderá Gostar</h2>
             </div>
             <PropertyStoriesSection
               properties={relatedProperties}
               loading={loadingRelated}
+              title=""
             />
           </div>
         )}
 
         <Footer />
-        <MobileBottomNav />
 
         {/* Modal de Agendamento */}
         <AppointmentModal

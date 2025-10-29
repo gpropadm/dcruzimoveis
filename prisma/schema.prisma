@@ -70,7 +70,9 @@ model Property {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique // SEO-friendly URL slug
+  seoTitle    String?  // Título otimizado para SEO (aparece no Google)
   description String?
+  seoDescription String? @db.Text // Descrição otimizada para SEO
   price       Float
   previousPrice Float? // preço anterior para mostrar redução
   priceReduced Boolean @default(false) // se houve redução recente

@@ -55,7 +55,9 @@ export async function PUT(
 
     const {
       title,
+      seoTitle,
       description,
+      seoDescription,
       cep,
       address,
       city,
@@ -215,7 +217,9 @@ export async function PUT(
       where: { id },
       data: {
         title,
+        seoTitle: seoTitle || null,
         description,
+        seoDescription: seoDescription || null,
         cep: cep || null,
         address,
         city,

@@ -6,7 +6,6 @@ import FavoriteButton from '@/components/FavoriteButton'
 import ShareButton from '@/components/ShareButton'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import MobileBottomNav from '@/components/MobileBottomNav'
 import { useSettings } from '@/hooks/useSettings'
 import Link from 'next/link'
 
@@ -226,7 +225,6 @@ export default function FavoritesPage() {
       </div>
 
       <Footer />
-      <MobileBottomNav />
     </div>
   )
 }

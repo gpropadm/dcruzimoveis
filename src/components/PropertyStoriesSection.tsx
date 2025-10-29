@@ -438,6 +438,8 @@ export default function PropertyStoriesSection({ properties, loading, title = 'D
           cursor: pointer;
           opacity: 0;
           transition: opacity 0.3s ease;
+          display: flex;
+          align-items: center;
         }
 
         .ImovelCard_card__2FVbS:hover .ImovelCard_leftArrow__SY2Vj,
@@ -446,11 +448,11 @@ export default function PropertyStoriesSection({ properties, loading, title = 'D
         }
 
         .ImovelCard_leftArrow__SY2Vj {
-          left: 10px;
+          left: 8px;
         }
 
         .ImovelCard_rightArrow__wzdqx {
-          right: 10px;
+          right: 8px;
         }
 
         .ImovelCard_leftArrow__SY2Vj > div,
@@ -460,6 +462,9 @@ export default function PropertyStoriesSection({ properties, loading, title = 'D
           background: rgba(255,255,255,0.9);
           box-shadow: 0 2px 8px rgba(0,0,0,0.15);
           transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .ImovelCard_leftArrow__SY2Vj > div:hover,
@@ -781,8 +786,9 @@ function ArboPropertyCard({ property, onViewDetails, onVideoClick, formatPrice }
                           <div
                             className="d-flex justify-content-center align-items-center c-pointer rounded-circle bg-white"
                             onClick={prevImage}
+                            style={{ width: '32px', height: '32px' }}
                           >
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                               <polyline points="15,18 9,12 15,6"></polyline>
                             </svg>
                           </div>
@@ -839,8 +845,9 @@ function ArboPropertyCard({ property, onViewDetails, onVideoClick, formatPrice }
                           <div
                             className="d-flex justify-content-center align-items-center c-pointer rounded-circle bg-white"
                             onClick={nextImage}
+                            style={{ width: '32px', height: '32px' }}
                           >
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                               <polyline points="9,18 15,12 9,6"></polyline>
                             </svg>
                           </div>

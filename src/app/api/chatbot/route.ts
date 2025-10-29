@@ -51,9 +51,22 @@ export async function POST(request: NextRequest) {
       take: 50 // Limitar para não sobrecarregar o contexto
     })
 
+    // Informações de contato da imobiliária (do banco de dados)
+    const contactInfo = settings ? `
+=== INFORMAÇÕES DE CONTATO DA IMOBILIÁRIA ===
+${settings.contactWhatsapp ? `📱 WhatsApp: ${settings.contactWhatsapp}` : ''}
+${settings.contactPhone ? `📞 Telefone: ${settings.contactPhone}` : ''}
+${settings.contactEmail ? `📧 E-mail: ${settings.contactEmail}` : ''}
+${settings.address ? `📍 Endereço: ${settings.address}, ${settings.city} - ${settings.state}` : ''}
+
+**IMPORTANTE**: Use APENAS estas informações de contato. NUNCA invente telefones ou emails.
+` : ''
+
     // Criar contexto sobre os imóveis disponíveis
     const propertyContext = `
 Você é um assistente virtual de uma imobiliária no Distrito Federal.
+
+${contactInfo}
 
 === BANCO DE DADOS DE IMÓVEIS DISPONÍVEIS ===
 ${properties.length === 0 ? 'NENHUM IMÓVEL CADASTRADO NO MOMENTO' : properties.map((p, i) => {
@@ -72,7 +85,7 @@ ${i + 1}. ${p.title}
    - Área: ${p.area || 'N/A'} m²
    - Localização: ${p.address}, ${p.city} - ${p.state}
    ${paymentOptions.length > 0 ? `- Formas de pagamento aceitas: ${paymentOptions.join(', ')}` : '- Formas de pagamento: À vista'}
-   - Link: https://imobiliaria-six-tau.vercel.app/imovel/${p.slug}
+   - Link: https://www.bsimoveisdf.com.br/imovel/${p.slug}
 `;
 }).join('\n')}
 
@@ -95,7 +108,7 @@ ${i + 1}. ${p.title}
 
 ✅ FORMATO DE RESPOSTA:
 - Máximo 5-6 linhas
-- Links apenas no formato: https://imobiliaria-six-tau.vercel.app/imovel/[slug-do-imovel]
+- Links apenas no formato: https://www.bsimoveisdf.com.br/imovel/[slug-do-imovel]
 - Seja direto, honesto e preciso
 - SEMPRE mencione o VALOR do imóvel quando mostrar
 `
@@ -114,9 +127,17 @@ ${i + 1}. ${p.title}
       messages: messages as any,
     })
 
-    const assistantMessage = response.content[0].type === 'text'
+    let assistantMessage = response.content[0].type === 'text'
       ? response.content[0].text
       : 'Desculpe, não consegui processar sua mensagem.'
+
+    // Detectar se há link de imóvel na resposta e adicionar aviso
+    const urlRegex = /https:\/\/www\.bsimoveisdf\.com\.br\/imovel\/([^\s]+)/g
+    const matches = assistantMessage.match(urlRegex)
+    if (matches && matches.length > 0) {
+      const count = matches.length
+      assistantMessage += `\n\n✨ ${count > 1 ? `Atualizei a página com ${count} imóveis` : 'Atualizei a página com o imóvel'} que você procura!${count === 1 ? ' Você também pode clicar no link para ver mais detalhes.' : ''}`
+    }
 
     // Calcular custo estimado (Claude Sonnet 4.5)
     // Input: $3 por 1M tokens | Output: $15 por 1M tokens
