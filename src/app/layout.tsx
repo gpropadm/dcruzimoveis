@@ -18,14 +18,14 @@ const publicSans = Public_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.bsimoveisdf.com.br'),
   title: {
-    default: "Imóveis em Brasília - Casas e Apartamentos à Venda e Aluguel | BS Imóveis DF",
-    template: "%s | BS Imóveis DF"
+    default: "Imóveis em Brasília - Casas e Apartamentos à Venda e Aluguel | DCruz Imóveis",
+    template: "%s | DCruz Imóveis"
   },
   description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. +1000 casas, apartamentos e terrenos para venda e aluguel. ⭐ Atendimento especializado, financiamento facilitado. Confira!",
   keywords: ["imóveis brasília", "casas brasília df", "apartamentos brasília", "venda imóveis df", "aluguel brasília", "imobiliária brasília", "bs imóveis df", "imóveis distrito federal", "apartamento asa sul", "casa águas claras", "imóveis taguatinga", "aluguel asa norte"],
-  authors: [{ name: "BS Imóveis DF" }],
-  creator: "BS Imóveis DF",
-  publisher: "BS Imóveis DF",
+  authors: [{ name: "DCruz Imóveis" }],
+  creator: "DCruz Imóveis",
+  publisher: "DCruz Imóveis",
   formatDetection: {
     email: false,
     address: false,
@@ -49,15 +49,15 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pt_BR",
     url: "https://www.bsimoveisdf.com.br",
-    siteName: "BS Imóveis DF",
-    title: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis DF",
+    siteName: "DCruz Imóveis",
+    title: "Imóveis em Brasília - Casas e Apartamentos | DCruz Imóveis",
     description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. +1000 casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado!",
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'BS Imóveis DF - Imóveis em Brasília',
+        alt: 'DCruz Imóveis - Imóveis em Brasília',
       },
     ],
   },
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@bsimoveisdf",
     creator: "@bsimoveisdf",
-    title: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis DF",
+    title: "Imóveis em Brasília - Casas e Apartamentos | DCruz Imóveis",
     description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. +1000 opções para venda e aluguel!",
     images: ['/og-image.jpg'],
   },
@@ -83,8 +83,8 @@ export default function RootLayout({
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
-    "name": "BS Imóveis",
-    "description": "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na BS Imóveis.",
+    "name": "DCruz Imóveis",
+    "description": "Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado na DCruz Imóveis.",
     "url": "https://www.bsimoveisdf.com.br",
     "logo": "https://www.bsimoveisdf.com.br/logo.png",
     "address": {

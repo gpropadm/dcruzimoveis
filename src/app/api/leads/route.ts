@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
       // 2. Enviar confirmação para o cliente (se tiver telefone)
       if (lead.phone) {
         const settings = await prisma.settings.findFirst()
-        const siteName = settings?.siteName || 'BS Imóveis DF'
+        const siteName = settings?.siteName || 'DCruz Imóveis'
         const sitePhone = settings?.whatsappNumber || phoneAdmin
 
         const clientConfirmation = `✅ Olá ${lead.name}!

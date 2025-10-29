@@ -260,7 +260,7 @@ Responda esta mensagem ou ligue para nós!
 ---
 Para não receber mais sugestões: ${optOutUrl}
 
-BS Imóveis DF`
+DCruz Imóveis`
 
     const normalizedPhone = normalizePhoneNumber(lead.phone)
     console.log(`📱 Enviando WhatsApp para ${lead.name}:`, {
