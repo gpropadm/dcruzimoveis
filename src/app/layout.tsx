@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     default: "Imóveis em Brasília - Casas e Apartamentos à Venda e Aluguel | BS Imóveis DF",
     template: "%s | BS Imóveis DF"
   },
-  description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. +1000 casas, apartamentos e terrenos para venda e aluguel. ⭐ Atendimento especializado, financiamento facilitado. Confira!",
+  description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. ⭐ Atendimento especializado, financiamento facilitado. Confira!",
   keywords: ["imóveis brasília", "casas brasília df", "apartamentos brasília", "venda imóveis df", "aluguel brasília", "imobiliária brasília", "bs imóveis df", "imóveis distrito federal", "apartamento asa sul", "casa águas claras", "imóveis taguatinga", "aluguel asa norte"],
   authors: [{ name: "BS Imóveis DF" }],
   creator: "BS Imóveis DF",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     url: "https://www.bsimoveisdf.com.br",
     siteName: "BS Imóveis DF",
     title: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis DF",
-    description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. +1000 casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado!",
+    description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. Casas, apartamentos e terrenos para venda e aluguel. Atendimento especializado!",
     images: [
       {
         url: '/og-image.jpg',
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     site: "@bsimoveisdf",
     creator: "@bsimoveisdf",
     title: "Imóveis em Brasília - Casas e Apartamentos | BS Imóveis DF",
-    description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. +1000 opções para venda e aluguel!",
+    description: "🏠 Encontre seu imóvel ideal em Brasília e Distrito Federal. Imóveis para venda e aluguel!",
     images: ['/og-image.jpg'],
   },
   verification: {
