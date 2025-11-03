@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     images: ['/og-image.jpg'],
   },
   verification: {
-    google: 'seu-codigo-google-search-console-aqui',
+    google: 'fa5301674a0f6dac',
   },
 };
 
