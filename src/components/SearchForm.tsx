@@ -15,6 +15,7 @@ export default function SearchForm() {
   const [filters, setFilters] = useState<SearchFilters>({ types: [], categoriesByType: {} })
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [selectedType, setSelectedType] = useState<string>('')
+  const [bedrooms, setBedrooms] = useState<string>('')
   const [location, setLocation] = useState<string>('')
   const [loading, setLoading] = useState(true)
 
@@ -43,6 +44,7 @@ export default function SearchForm() {
 
     if (selectedType) searchParams.set('type', selectedType)
     if (selectedCategory) searchParams.set('category', selectedCategory)
+    if (bedrooms) searchParams.set('bedrooms', bedrooms)
     if (location.trim()) {
       const locationParts = location.trim().split(' - ')
       if (locationParts.length === 2) {
@@ -58,51 +60,33 @@ export default function SearchForm() {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto px-4">
         <div className="animate-pulse">
-          <div className="h-10 bg-white rounded mb-6"></div>
-          <div className="h-14 bg-white rounded-full"></div>
+          <div className="h-20 bg-white/80 rounded-2xl"></div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4">
-      {/* Formulário de Busca Melhorado */}
-      <div className="bg-white/95 backdrop-blur-sm rounded-3xl md:rounded-full shadow-2xl">
+    <div className="max-w-6xl mx-auto px-4">
+      {/* Formulário de Busca Redesenhado */}
+      <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
         <form onSubmit={handleSearch}>
-          <div className="flex flex-col md:flex-row items-stretch md:items-center">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
 
-            {/* Tipo de Imóvel - Sem borda */}
-            <div className="w-full md:w-auto border-b md:border-b-0 border-gray-200">
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full md:w-[180px] h-16 px-6 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-700 font-medium text-base appearance-none cursor-pointer rounded-t-3xl md:rounded-l-full md:rounded-t-none"
-                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath fill=\'%23666\' d=\'M6 9L1 4h10z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1.5rem center' }}
-              >
-                <option value="">Tipo</option>
-                {filters.categoriesByType && Object.values(filters.categoriesByType).flat().filter((v, i, a) => a.indexOf(v) === i).map((category) => (
-                  <option key={category} value={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Divisor vertical - apenas desktop */}
-            <div className="hidden md:block h-10 w-px bg-gray-300"></div>
-
-            {/* Finalidade - Venda/Aluguel */}
-            <div className="w-full md:w-auto border-b md:border-b-0 border-gray-200">
+            {/* 1. Venda/Aluguel - Destaque */}
+            <div className="relative group border-b md:border-b-0 md:border-r border-gray-200">
+              <div className="absolute top-3 left-6 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Negócio
+              </div>
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="w-full md:w-[180px] h-16 px-6 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-700 font-medium text-base appearance-none cursor-pointer"
-                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath fill=\'%23666\' d=\'M6 9L1 4h10z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1.5rem center' }}
+                className="w-full h-20 pt-6 pb-2 px-6 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-800 font-semibold text-lg appearance-none cursor-pointer hover:bg-gray-50 transition-colors"
+                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\' viewBox=\'0 0 14 14\'%3E%3Cpath fill=\'%23999\' d=\'M7 10L2 5h10z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1.5rem center' }}
               >
-                <option value="">Finalidade</option>
+                <option value="">Selecione</option>
                 {filters.types && filters.types.map((type) => (
                   <option key={type} value={type}>
                     {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -111,33 +95,72 @@ export default function SearchForm() {
               </select>
             </div>
 
-            {/* Divisor vertical - apenas desktop */}
-            <div className="hidden md:block h-10 w-px bg-gray-300"></div>
+            {/* 2. Tipo de Imóvel */}
+            <div className="relative group border-b md:border-b-0 md:border-r border-gray-200">
+              <div className="absolute top-3 left-6 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Tipo
+              </div>
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="w-full h-20 pt-6 pb-2 px-6 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-800 font-semibold text-lg appearance-none cursor-pointer hover:bg-gray-50 transition-colors"
+                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\' viewBox=\'0 0 14 14\'%3E%3Cpath fill=\'%23999\' d=\'M7 10L2 5h10z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1.5rem center' }}
+              >
+                <option value="">Selecione</option>
+                {filters.categoriesByType && Object.values(filters.categoriesByType).flat().filter((v, i, a) => a.indexOf(v) === i).map((category) => (
+                  <option key={category} value={category}>
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-            {/* Localização - Grande */}
-            <div className="w-full md:flex-1 border-b md:border-b-0 border-gray-200">
+            {/* 3. Cidade */}
+            <div className="relative group border-b md:border-b-0 md:border-r border-gray-200 md:col-span-2">
+              <div className="absolute top-3 left-6 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Localização
+              </div>
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder="Onde você quer morar? (cidade, bairro...)"
-                className="w-full h-16 px-6 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-700 text-base placeholder:text-gray-400"
+                placeholder="Cidade, bairro..."
+                className="w-full h-20 pt-6 pb-2 px-6 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-800 font-semibold text-lg placeholder:text-gray-400 hover:bg-gray-50 transition-colors"
               />
             </div>
 
-            {/* Botão Buscar - Apenas Lupa */}
-            <div className="w-full md:w-auto flex justify-center md:pr-6">
-              <button
-                type="submit"
-                className="w-full md:w-auto h-16 px-4 bg-transparent hover:bg-gray-50 rounded-b-3xl md:rounded-r-full md:rounded-b-none transition-all duration-200 flex items-center justify-center cursor-pointer"
-                style={{ color: primaryColor }}
-                title="Buscar"
+            {/* 4. Quartos */}
+            <div className="relative group">
+              <div className="absolute top-3 left-6 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Quartos
+              </div>
+              <select
+                value={bedrooms}
+                onChange={(e) => setBedrooms(e.target.value)}
+                className="w-full h-20 pt-6 pb-2 px-6 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-800 font-semibold text-lg appearance-none cursor-pointer hover:bg-gray-50 transition-colors"
+                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\' viewBox=\'0 0 14 14\'%3E%3Cpath fill=\'%23999\' d=\'M7 10L2 5h10z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1.5rem center' }}
               >
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
+                <option value="">Todos</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4+</option>
+              </select>
             </div>
+          </div>
+
+          {/* Botão de Busca - Inferior */}
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 flex justify-end">
+            <button
+              type="submit"
+              className="px-8 py-3 rounded-xl font-bold text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
+              style={{ backgroundColor: primaryColor }}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <span>Buscar Imóveis</span>
+            </button>
           </div>
         </form>
       </div>
